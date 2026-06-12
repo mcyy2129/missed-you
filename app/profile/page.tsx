@@ -1,0 +1,118 @@
+'use client';
+
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { useApp } from '@/lib/store';
+import Navbar from '@/components/layout/Navbar';
+import BottomNav from '@/components/layout/BottomNav';
+import Avatar from '@/components/ui/Avatar';
+import Button from '@/components/ui/Button';
+import InterestTags from '@/components/profile/InterestTags';
+import PhotoGrid from '@/components/profile/PhotoGrid';
+
+function ProfileContent() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+  const { currentUser, getUser, matchedUsers } = useApp();
+
+  const isOwn = !id || id === 'current';
+  const user = isOwn ? currentUser : getUser(id);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-cream-50">
+        <Navbar />
+        <main className="mx-auto max-w-lg px-4 pt-20 pb-28 flex flex-col items-center justify-center">
+          <p className="text-sm text-bronze-500">用户不存在</p>
+        </main>
+        <BottomNav />
+      </div>
+    );
+  }
+
+  const isMatched = matchedUsers.has(user.id);
+
+  return (
+    <div className="min-h-screen bg-cream-50">
+      <Navbar />
+
+      <main className="mx-auto max-w-lg px-4 pt-20 pb-28">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-display font-semibold text-brown-800">
+              {isOwn ? '我的主页' : '个人资料'}
+            </h1>
+            {isOwn && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => (window.location.href = '/settings')}
+              >
+                ⚙️ 设置
+              </Button>
+            )}
+          </div>
+
+          {/* Profile Info Card */}
+          <div className="bg-cream-50 rounded-card p-6 shadow-md mb-6">
+            <div className="flex items-center gap-5 mb-4">
+              <Avatar src={user.avatar} alt={user.name} size="xl" />
+              <div>
+                <h2 className="text-xl font-semibold text-brown-800">
+                  {user.name}
+                  <span className="text-sm font-normal text-bronze-500 ml-2">{user.age}岁</span>
+                </h2>
+                <p className="text-sm text-brown-600 mt-0.5">{user.city}</p>
+              </div>
+            </div>
+
+            <p className="text-sm text-brown-600 leading-relaxed mb-4">
+              {user.bio}
+            </p>
+
+            <InterestTags interests={user.interests} />
+
+            {!isOwn && (
+              <div className="flex gap-3 mt-5">
+                <Button variant="primary" size="md" className="flex-1">
+                  {isMatched ? '发消息' : '喜欢'}
+                </Button>
+                <Button variant="secondary" size="md" className="flex-1">
+                  返回
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Photo Grid */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-brown-800 mb-3">相册</h3>
+            <PhotoGrid photos={user.photos} editable={isOwn} />
+          </div>
+        </motion.div>
+      </main>
+
+      <BottomNav />
+    </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-cream-50 flex items-center justify-center">
+          <p className="text-sm text-bronze-500">加载中...</p>
+        </div>
+      }
+    >
+      <ProfileContent />
+    </Suspense>
+  );
+}

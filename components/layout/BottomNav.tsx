@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 const tabs = [
   { href: '/', label: '发现', icon: '🏠' },
   { href: '/match', label: '匹配', icon: '💫' },
-  { href: '/messages', label: '消息', icon: '💬' },
+  { href: '/chat', label: '消息', icon: '💬' },
   { href: '/profile', label: '我的', icon: '👤' },
 ];
 
