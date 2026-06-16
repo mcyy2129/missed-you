@@ -40,7 +40,7 @@ export default function SwipeCard({ user, isTop, onSwipe, style }: SwipeCardProp
           : { scale: 0.95 - (style?.zIndex === 1 ? 0 : 0.05), opacity: 0.7 }
       }
       exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
-      className="absolute w-full bg-cream-50 rounded-card shadow-lg overflow-hidden cursor-grab active:cursor-grabbing touch-none select-none"
+      className="absolute w-full glass-card rounded-2xl shadow-lg overflow-hidden cursor-grab active:cursor-grabbing touch-none select-none border border-white/10"
     >
       <div className="relative h-[420px] overflow-hidden">
         {user.avatar ? (
@@ -50,7 +50,7 @@ export default function SwipeCard({ user, isTop, onSwipe, style }: SwipeCardProp
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-br from-lime-600/40 to-emerald-600/40 flex items-center justify-center backdrop-blur-sm">
             <span className="text-6xl text-white">{user.name[0]}</span>
           </div>
         )}

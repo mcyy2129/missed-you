@@ -148,7 +148,7 @@ const ConversationList = memo(function ConversationList({ searchQuery = '' }: Co
                     className="flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors rounded-xl"
                   >
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-xl">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-lime-600/30 to-cyan-600/30 flex items-center justify-center text-white text-xl backdrop-blur-sm border border-white/10">
                         👥
                       </div>
                       <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-violet-500 rounded-full border-2 border-white flex items-center justify-center">

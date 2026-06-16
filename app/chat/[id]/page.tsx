@@ -286,7 +286,7 @@ export default function ChatWindowPage() {
 
   if (!conversation) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0a' }}>
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-sm text-white/50">对话不存在</p>
       </div>
     );
@@ -296,13 +296,12 @@ export default function ChatWindowPage() {
   const displayName = isGroup ? conversation.groupName : otherUser?.name;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0a0a0a' }}>
+    <div className="min-h-screen flex flex-col">
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+        className="fixed top-0 left-0 right-0 z-50 glass-nav"
       >
         <div className="mx-auto max-w-lg flex items-center gap-3 px-4 h-14">
           <button
@@ -325,7 +324,7 @@ export default function ChatWindowPage() {
             }}
           >
             {isGroup ? (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-lg hover:opacity-90 transition-opacity">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-lime-600/30 to-cyan-600/30 flex items-center justify-center text-white text-lg hover:opacity-90 transition-opacity backdrop-blur-sm border border-white/10">
                 👥
               </div>
             ) : (

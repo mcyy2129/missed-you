@@ -87,10 +87,10 @@ export default function AdminPage() {
         >
           <div className="text-center mb-8">
             <div className="text-4xl mb-3">🛡️</div>
-            <h1 className="font-display text-2xl text-slate-800 tracking-tight">
+            <h1 className="font-display text-2xl text-white tracking-tight">
               管理后台
             </h1>
-            <p className="text-sm text-slate-500 mt-2">
+            <p className="text-sm text-white/50 mt-2">
               请使用管理员账号登录
             </p>
           </div>
@@ -149,10 +149,10 @@ export default function AdminPage() {
         >
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-2xl font-display font-semibold text-slate-800">
+              <h1 className="text-2xl font-display font-semibold text-white">
                 管理后台
               </h1>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-white/50 mt-1">
                 管理用户、对话和系统数据
               </p>
             </div>
@@ -162,7 +162,7 @@ export default function AdminPage() {
                 setEmail('');
                 setPassword('');
               }}
-              className="text-sm text-slate-500 hover:text-slate-700"
+              className="text-sm text-white/50 hover:text-white/70"
             >
               退出管理
             </button>
@@ -170,13 +170,13 @@ export default function AdminPage() {
 
           {statsLoading ? (
             <div className="flex items-center justify-center py-20">
-              <p className="text-sm text-slate-500">加载中...</p>
+              <p className="text-sm text-white/50">加载中...</p>
             </div>
           ) : (
             <>
               {/* Quick Actions */}
               <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl p-5 mb-8 border border-rose-100">
-                <h3 className="font-semibold text-slate-800 mb-3">快捷操作</h3>
+                <h3 className="font-semibold text-white mb-3">快捷操作</h3>
                 <div className="flex flex-wrap gap-3">
                   <button
                     onClick={async () => {
@@ -185,7 +185,7 @@ export default function AdminPage() {
                         fetchStats();
                       }
                     }}
-                    className="px-4 py-2 bg-white rounded-xl text-sm text-slate-700 hover:bg-slate-50 transition-colors border border-slate-200"
+                    className="px-4 py-2 rounded-xl text-sm text-white/70 hover:bg-white/10 transition-colors border border-white/10"
                   >
                     🗑️ 清空对话
                   </button>
@@ -196,13 +196,13 @@ export default function AdminPage() {
                         fetchStats();
                       }
                     }}
-                    className="px-4 py-2 bg-white rounded-xl text-sm text-slate-700 hover:bg-slate-50 transition-colors border border-slate-200"
+                    className="px-4 py-2 rounded-xl text-sm text-white/70 hover:bg-white/10 transition-colors border border-white/10"
                   >
                     🔄 重置用户
                   </button>
                   <button
                     onClick={() => window.location.href = '/admin/database'}
-                    className="px-4 py-2 bg-white rounded-xl text-sm text-slate-700 hover:bg-slate-50 transition-colors border border-slate-200"
+                    className="px-4 py-2 rounded-xl text-sm text-white/70 hover:bg-white/10 transition-colors border border-white/10"
                   >
                     📦 数据库备份
                   </button>
@@ -232,8 +232,8 @@ export default function AdminPage() {
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{stat.icon}</span>
                       <div>
-                        <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
-                        <p className="text-xs text-slate-600">{stat.label}</p>
+                        <p className="text-2xl font-bold text-white">{stat.value}</p>
+                        <p className="text-xs text-white/60">{stat.label}</p>
                       </div>
                     </div>
                   </motion.div>
@@ -248,8 +248,8 @@ export default function AdminPage() {
                   className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">👥</span>
-                  <h3 className="font-semibold text-slate-800 mb-1">用户管理</h3>
-                  <p className="text-xs text-slate-500">查看、编辑、删除用户</p>
+                  <h3 className="font-semibold text-white mb-1">用户管理</h3>
+                  <p className="text-xs text-white/50">查看、编辑、删除用户</p>
                 </motion.button>
 
                 <motion.button
@@ -259,15 +259,16 @@ export default function AdminPage() {
                   className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">🤖</span>
-                  <h3 className="font-semibold text-slate-800 mb-1">AI 角色管理</h3>
-                  <p className="text-xs text-slate-500">配置AI机器人资料和头像</p>
+                  <h3 className="font-semibold text-white mb-1">AI 角色管理</h3>
+                  <p className="text-xs text-white/50">配置AI机器人资料和头像</p>
                 </motion.button>
 
                 <motion.button
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/ai-skills'}
-                  className="bg-gradient-to-br from-violet-500 to-purple-500 rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow text-white"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow text-white"
+                  style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(168, 85, 247, 0.2))', border: '1px solid rgba(139, 92, 246, 0.3)' }}
                 >
                   <span className="text-2xl mb-2 block">✨</span>
                   <h3 className="font-semibold mb-1">AI Skill 管理</h3>
@@ -281,8 +282,8 @@ export default function AdminPage() {
                   className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">⚙️</span>
-                  <h3 className="font-semibold text-slate-800 mb-1">模型配置</h3>
-                  <p className="text-xs text-slate-500">配置AI模型和API接口</p>
+                  <h3 className="font-semibold text-white mb-1">模型配置</h3>
+                  <p className="text-xs text-white/50">配置AI模型和API接口</p>
                 </motion.button>
               </div>
 
@@ -291,7 +292,8 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/analytics'}
-                  className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow text-white"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow text-white"
+                  style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.2))', border: '1px solid rgba(59, 130, 246, 0.3)' }}
                 >
                   <span className="text-2xl mb-2 block">📊</span>
                   <h3 className="font-semibold mb-1">数据分析</h3>
@@ -302,7 +304,8 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/settings'}
-                  className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow text-white"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow text-white"
+                  style={{ background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(234, 88, 12, 0.2))', border: '1px solid rgba(245, 158, 11, 0.3)' }}
                 >
                   <span className="text-2xl mb-2 block">⚙️</span>
                   <h3 className="font-semibold mb-1">站点设置</h3>
@@ -316,8 +319,8 @@ export default function AdminPage() {
                   className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">💬</span>
-                  <h3 className="font-semibold text-slate-800 mb-1">对话管理</h3>
-                  <p className="text-xs text-slate-500">查看所有对话记录</p>
+                  <h3 className="font-semibold text-white mb-1">对话管理</h3>
+                  <p className="text-xs text-white/50">查看所有对话记录</p>
                 </motion.button>
               </div>
 
@@ -329,8 +332,8 @@ export default function AdminPage() {
                   className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">🗄️</span>
-                  <h3 className="font-semibold text-slate-800 mb-1">数据库</h3>
-                  <p className="text-xs text-slate-500">数据库状态和管理</p>
+                  <h3 className="font-semibold text-white mb-1">数据库</h3>
+                  <p className="text-xs text-white/50">数据库状态和管理</p>
                 </motion.button>
 
                 <motion.button
@@ -340,14 +343,14 @@ export default function AdminPage() {
                   className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">🤖</span>
-                  <h3 className="font-semibold text-slate-800 mb-1">AI 角色管理</h3>
-                  <p className="text-xs text-slate-500">配置AI机器人资料和头像</p>
+                  <h3 className="font-semibold text-white mb-1">AI 角色管理</h3>
+                  <p className="text-xs text-white/50">配置AI机器人资料和头像</p>
                 </motion.button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-100">
-                  <h3 className="font-semibold text-slate-800 mb-4">最近注册用户</h3>
+                  <h3 className="font-semibold text-white mb-4">最近注册用户</h3>
                   {stats?.recentUsers && stats.recentUsers.length > 0 ? (
                     <div className="space-y-3">
                       {stats.recentUsers.map((user: any) => (
@@ -356,8 +359,8 @@ export default function AdminPage() {
                             {user.name?.[0] || '?'}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-slate-800 truncate">{user.name}</p>
-                            <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                            <p className="text-sm font-medium text-white truncate">{user.name}</p>
+                            <p className="text-xs text-white/50 truncate">{user.email}</p>
                           </div>
                           <span className="text-[10px] text-slate-400">
                             {new Date(user.created_at).toLocaleDateString('zh-CN')}
@@ -366,12 +369,12 @@ export default function AdminPage() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-slate-500 text-center py-4">暂无数据</p>
+                    <p className="text-sm text-white/50 text-center py-4">暂无数据</p>
                   )}
                 </div>
 
                 <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-100">
-                  <h3 className="font-semibold text-slate-800 mb-4">最近消息</h3>
+                  <h3 className="font-semibold text-white mb-4">最近消息</h3>
                   {stats?.recentMessages && stats.recentMessages.length > 0 ? (
                     <div className="space-y-3">
                       {stats.recentMessages.slice(0, 5).map((msg: any) => (
@@ -380,8 +383,8 @@ export default function AdminPage() {
                             {msg.sender_name?.[0] || '?'}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs text-slate-500">{msg.sender_name}</p>
-                            <p className="text-sm text-slate-700 truncate">{msg.text || '[图片/语音]'}</p>
+                            <p className="text-xs text-white/50">{msg.sender_name}</p>
+                            <p className="text-sm text-white/70 truncate">{msg.text || '[图片/语音]'}</p>
                           </div>
                           <span className="text-[10px] text-slate-400 shrink-0">
                             {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
@@ -390,7 +393,7 @@ export default function AdminPage() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-slate-500 text-center py-4">暂无数据</p>
+                    <p className="text-sm text-white/50 text-center py-4">暂无数据</p>
                   )}
                 </div>
               </div>
