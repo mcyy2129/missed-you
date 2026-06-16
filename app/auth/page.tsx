@@ -1,18 +1,53 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import QQLoginButton from '@/components/auth/QQLoginButton';
-import LoginForm from '@/components/auth/LoginForm';
+import Input from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
 import { useApp } from '@/lib/store';
 
 export default function AuthPage() {
   const router = useRouter();
-  const { login } = useApp();
+  const { login, register } = useApp();
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    login('新用户', 25, '北京');
-    router.push('/onboarding');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        const success = await login(email, password);
+        if (success) {
+          router.push('/');
+        } else {
+          setError('登录失败，请检查邮箱和密码');
+        }
+      } else {
+        if (!name.trim()) {
+          setError('请输入昵称');
+          setLoading(false);
+          return;
+        }
+        const success = await register(email, password, name);
+        if (success) {
+          router.push('/onboarding');
+        } else {
+          setError('注册失败，请稍后重试');
+        }
+      }
+    } catch (err) {
+      setError('网络错误，请稍后重试');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,16 +67,74 @@ export default function AuthPage() {
           </p>
         </div>
 
-        <div className="w-full flex flex-col gap-4">
-          <QQLoginButton onClick={handleLogin} />
-
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-bronze-300/30" />
-            <span className="text-xs text-brown-600/60 font-sans">或</span>
-            <div className="flex-1 h-px bg-bronze-300/30" />
+        <div className="w-full bg-white rounded-2xl p-6 shadow-md border border-slate-100">
+          <div className="flex gap-1 bg-slate-100 rounded-xl p-1 mb-6">
+            <button
+              type="button"
+              onClick={() => { setIsLogin(true); setError(''); }}
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer ${
+                isLogin
+                  ? 'bg-white text-slate-800 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              登录
+            </button>
+            <button
+              type="button"
+              onClick={() => { setIsLogin(false); setError(''); }}
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors cursor-pointer ${
+                !isLogin
+                  ? 'bg-white text-slate-800 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              注册
+            </button>
           </div>
 
-          <LoginForm onSubmit={handleLogin} />
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {!isLogin && (
+              <Input
+                label="昵称"
+                placeholder="请输入你的昵称"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            )}
+            <Input
+              label="邮箱"
+              type="email"
+              placeholder="请输入邮箱地址"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              label="密码"
+              type="password"
+              placeholder="请输入密码"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            {error && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-sm text-red-500"
+              >
+                {error}
+              </motion.p>
+            )}
+
+            <Button
+              type="submit"
+              className="w-full mt-2"
+              disabled={loading || !email || !password}
+            >
+              {loading ? '处理中...' : isLogin ? '登录' : '注册'}
+            </Button>
+          </form>
         </div>
 
         <p className="text-xs text-brown-600/50 font-sans text-center">

@@ -9,7 +9,7 @@ import Avatar from '@/components/ui/Avatar';
 const navLinks = [
   { href: '/', label: '发现' },
   { href: '/match', label: '匹配' },
-  { href: '/messages', label: '消息' },
+  { href: '/chat', label: '消息' },
 ];
 
 export default function Navbar() {

@@ -1,0 +1,67 @@
+.entertainment-dock-outer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.entertainment-dock-panel {
+  display: flex;
+  align-items: flex-end;
+  width: fit-content;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  background: rgba(18, 15, 23, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 1rem 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dock-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s;
+}
+
+.dock-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s;
+  font-size: 20px;
+}
+
+.dock-icon-active {
+  color: #a855f7;
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+}
+
+.dock-label {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  width: fit-content;
+  white-space: pre;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(18, 15, 23, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  color: #fff;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 10;
+}

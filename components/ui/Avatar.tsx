@@ -27,11 +27,17 @@ export default function Avatar({ src, alt = '', size = 'md', className = '' }: A
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className={`relative inline-flex items-center justify-center rounded-full ring-2 ring-bronze-300/20 ring-offset-2 ring-offset-cream-50 ${dimensions} ${className}`}
     >
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-full rounded-full object-cover"
-      />
+      {src ? (
+        <img
+          src={src}
+          alt={alt}
+          className="w-full h-full rounded-full object-cover"
+        />
+      ) : (
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center">
+          <span className={`${text} text-white font-medium`}>{alt[0] || '?'}</span>
+        </div>
+      )}
     </motion.div>
   );
 }

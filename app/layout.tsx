@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AppProvider from "@/lib/store";
+import GlobalDanmaku from "@/components/entertainment/GlobalDanmaku";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="h-full antialiased">
       <body className="min-h-full flex flex-col film-grain">
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>{children}<GlobalDanmaku /></AppProvider>
       </body>
     </html>
   );

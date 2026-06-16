@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useApp } from '@/lib/store';
 import Navbar from '@/components/layout/Navbar';
@@ -23,6 +24,7 @@ const item = {
 
 export default function HomePage() {
   const { isLoggedIn, users } = useApp();
+  const router = useRouter();
 
   return (
     <div className="relative min-h-screen bg-cream-50">
@@ -78,10 +80,20 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-col gap-3">
-              <Button variant="primary" size="lg" className="w-full">
+              <Button 
+                variant="primary" 
+                size="lg" 
+                className="w-full"
+                onClick={() => router.push('/auth')}
+              >
                 开始探索
               </Button>
-              <Button variant="secondary" size="lg" className="w-full">
+              <Button 
+                variant="secondary" 
+                size="lg" 
+                className="w-full"
+                onClick={() => router.push('/auth')}
+              >
                 了解更多
               </Button>
             </div>

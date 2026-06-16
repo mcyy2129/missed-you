@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useApp } from '@/lib/store';
 import Navbar from '@/components/layout/Navbar';
@@ -56,7 +57,13 @@ const item = {
 };
 
 export default function SettingsPage() {
-  const { currentUser } = useApp();
+  const { currentUser, logout } = useApp();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
 
   return (
     <div className="min-h-screen bg-cream-50">
@@ -129,7 +136,10 @@ export default function SettingsPage() {
 
           {/* Logout */}
           <div className="mt-8 text-center">
-            <button className="text-sm text-bronze-500 hover:text-bronze-400 transition-colors">
+            <button 
+              onClick={handleLogout}
+              className="text-sm text-bronze-500 hover:text-bronze-400 transition-colors"
+            >
               退出登录
             </button>
           </div>

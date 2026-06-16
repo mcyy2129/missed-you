@@ -43,11 +43,17 @@ export default function SwipeCard({ user, isTop, onSwipe, style }: SwipeCardProp
       className="absolute w-full bg-cream-50 rounded-card shadow-lg overflow-hidden cursor-grab active:cursor-grabbing touch-none select-none"
     >
       <div className="relative h-[420px] overflow-hidden">
-        <img
-          src={user.avatar}
-          alt={user.name}
-          className="w-full h-full object-cover"
-        />
+        {user.avatar ? (
+          <img
+            src={user.avatar}
+            alt={user.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center">
+            <span className="text-6xl text-white">{user.name[0]}</span>
+          </div>
+        )}
 
         {isTop && (
           <>

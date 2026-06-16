@@ -1,7 +1,7 @@
 'use client';
 
-import { Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { Suspense, useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useApp } from '@/lib/store';
 import Navbar from '@/components/layout/Navbar';
@@ -12,12 +12,20 @@ import InterestTags from '@/components/profile/InterestTags';
 import PhotoGrid from '@/components/profile/PhotoGrid';
 
 function ProfileContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const { currentUser, getUser, matchedUsers } = useApp();
+  const [photos, setPhotos] = useState<string[]>([]);
 
   const isOwn = !id || id === 'current';
   const user = isOwn ? currentUser : getUser(id);
+
+  useEffect(() => {
+    if (user) {
+      setPhotos(user.photos || []);
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -43,23 +51,12 @@ function ProfileContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-display font-semibold text-brown-800">
               {isOwn ? '我的主页' : '个人资料'}
             </h1>
-            {isOwn && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => (window.location.href = '/settings')}
-              >
-                ⚙️ 设置
-              </Button>
-            )}
           </div>
 
-          {/* Profile Info Card */}
           <div className="bg-cream-50 rounded-card p-6 shadow-md mb-6">
             <div className="flex items-center gap-5 mb-4">
               <Avatar src={user.avatar} alt={user.name} size="xl" />
@@ -78,22 +75,52 @@ function ProfileContent() {
 
             <InterestTags interests={user.interests} />
 
+            {isOwn && user.userCode && (
+              <div className="mt-4 p-3 bg-cream-100 rounded-lg">
+                <p className="text-xs text-bronze-400 mb-1">我的邀请码</p>
+                <p className="text-lg font-mono font-semibold text-brown-800 tracking-wider">{user.userCode}</p>
+              </div>
+            )}
+
+            {isOwn && (
+              <div className="flex gap-3 mt-5">
+                <Button
+                  variant="primary"
+                  size="md"
+                  className="flex-1"
+                  onClick={() => router.push('/profile/edit')}
+                >
+                  编辑资料
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="md"
+                  onClick={() => router.push('/settings')}
+                >
+                  设置
+                </Button>
+              </div>
+            )}
+
             {!isOwn && (
               <div className="flex gap-3 mt-5">
                 <Button variant="primary" size="md" className="flex-1">
                   {isMatched ? '发消息' : '喜欢'}
                 </Button>
-                <Button variant="secondary" size="md" className="flex-1">
+                <Button variant="secondary" size="md" className="flex-1" onClick={() => router.back()}>
                   返回
                 </Button>
               </div>
             )}
           </div>
 
-          {/* Photo Grid */}
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-brown-800 mb-3">相册</h3>
-            <PhotoGrid photos={user.photos} editable={isOwn} />
+            <PhotoGrid 
+              photos={photos} 
+              editable={isOwn} 
+              onPhotosChange={isOwn ? setPhotos : undefined}
+            />
           </div>
         </motion.div>
       </main>

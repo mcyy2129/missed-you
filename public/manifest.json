@@ -1,0 +1,17 @@
+{
+  "name": "Missed You",
+  "short_name": "Missed You",
+  "description": "真诚交友平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#FAF8F5",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
