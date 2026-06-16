@@ -21,10 +21,11 @@ export default function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-50 bg-cream-50/80 backdrop-blur-md border-b border-cream-200/50"
+      className="fixed top-0 left-0 right-0 z-50"
+      style={{ background: 'rgba(10, 10, 10, 0.8)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
     >
       <nav className="mx-auto max-w-lg flex items-center justify-between px-5 h-14">
-        <Link href="/" className="font-display text-xl font-semibold text-brown-800 tracking-tight">
+        <Link href="/" className="font-display text-xl font-semibold tracking-tight" style={{ color: '#84cc16' }}>
           Missed You
         </Link>
 
@@ -35,13 +36,15 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
-                className="relative text-sm font-medium text-brown-700 hover:text-brown-800 transition-colors py-1"
+                className="relative text-sm font-medium transition-colors py-1"
+                style={{ color: isActive ? '#84cc16' : 'rgba(255,255,255,0.6)' }}
               >
                 {label}
                 {isActive && (
                   <motion.div
                     layoutId="nav-indicator"
-                    className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-bronze-400"
+                    className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full"
+                    style={{ background: '#84cc16' }}
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}

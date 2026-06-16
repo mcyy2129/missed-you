@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { useApp } from '@/lib/store';
 import Navbar from '@/components/layout/Navbar';
 import BottomNav from '@/components/layout/BottomNav';
-import PetalParticles from '@/components/effects/PetalParticles';
 import ProfileCard from '@/components/profile/ProfileCard';
 import Button from '@/components/ui/Button';
 
@@ -27,9 +26,7 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="relative min-h-screen bg-cream-50">
-      <PetalParticles />
-
+    <div className="relative min-h-screen">
       {isLoggedIn ? (
         <>
           <Navbar />
@@ -40,10 +37,10 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-6"
             >
-              <h1 className="text-2xl font-display font-semibold text-brown-800 mb-1">
+              <h1 className="text-2xl font-display font-semibold text-white mb-1">
                 发现新朋友
               </h1>
-              <p className="text-sm text-bronze-500">
+              <p className="text-sm text-white/50">
                 为你推荐志同道合的人
               </p>
             </motion.div>
@@ -72,10 +69,15 @@ export default function HomePage() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-center max-w-sm"
           >
-            <h1 className="text-5xl font-display font-bold text-brown-800 mb-3">
-              Missed You
-            </h1>
-            <p className="text-lg text-bronze-500 font-serif mb-10">
+            <motion.div
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            >
+              <h1 className="text-5xl font-display font-bold mb-3" style={{ color: '#84cc16', textShadow: '0 0 30px rgba(132, 204, 22, 0.3)' }}>
+                Missed You
+              </h1>
+            </motion.div>
+            <p className="text-lg text-white/60 font-serif mb-10">
               真诚交友平台
             </p>
 

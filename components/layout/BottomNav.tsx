@@ -70,7 +70,7 @@ export default function BottomNav() {
   const totalUnread = getTotalUnread();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-slate-200/60 safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom" style={{ background: 'rgba(10, 10, 10, 0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div className="mx-auto max-w-lg flex items-center justify-around h-16 px-2">
         {navItems.map((item) => {
           const isActive = item.href === '/' 
@@ -86,7 +86,7 @@ export default function BottomNav() {
               <motion.div
                 whileTap={{ scale: 0.9 }}
                 className={`relative flex flex-col items-center gap-0.5 ${
-                  isActive ? 'text-rose-500' : 'text-slate-400'
+                  isActive ? 'text-lime-500' : 'text-white/40'
                 }`}
               >
                 {item.icon(isActive)}
@@ -96,7 +96,7 @@ export default function BottomNav() {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-2 min-w-[16px] h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center px-1"
+                    className="absolute -top-1 -right-2 min-w-[16px] h-4 rounded-full bg-lime-500 text-black text-[10px] font-bold flex items-center justify-center px-1"
                   >
                     {totalUnread > 99 ? '99+' : totalUnread}
                   </motion.span>
@@ -105,7 +105,8 @@ export default function BottomNav() {
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute -bottom-2 w-5 h-0.5 bg-rose-500 rounded-full"
+                    className="absolute -bottom-2 w-5 h-0.5 rounded-full"
+                    style={{ background: '#84cc16' }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}

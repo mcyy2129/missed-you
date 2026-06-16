@@ -286,8 +286,8 @@ export default function ChatWindowPage() {
 
   if (!conversation) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <p className="text-sm text-slate-500">对话不存在</p>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0a0a0a' }}>
+        <p className="text-sm text-white/50">对话不存在</p>
       </div>
     );
   }
@@ -296,17 +296,18 @@ export default function ChatWindowPage() {
   const displayName = isGroup ? conversation.groupName : otherUser?.name;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ background: '#0a0a0a' }}>
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-200/60"
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{ background: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
       >
         <div className="mx-auto max-w-lg flex items-center gap-3 px-4 h-14">
           <button
             onClick={() => router.push('/chat')}
-            className="text-slate-600 hover:text-slate-800 transition-colors p-1"
+            className="text-white/60 hover:text-white transition-colors p-1"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
