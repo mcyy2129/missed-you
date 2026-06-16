@@ -45,3 +45,11 @@ next-env.d.ts
 
 # persona data
 /data/personas.json
+
+# database
+/data/*.db
+/data/*.db-shm
+/data/*.db-wal
+
+# logs
+*.log
