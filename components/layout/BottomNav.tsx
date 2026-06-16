@@ -70,7 +70,7 @@ export default function BottomNav() {
   const totalUnread = getTotalUnread();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom" style={{ background: 'rgba(10, 10, 10, 0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 glass-nav safe-area-bottom">
       <div className="mx-auto max-w-lg flex items-center justify-around h-16 px-2">
         {navItems.map((item) => {
           const isActive = item.href === '/' 
@@ -84,8 +84,9 @@ export default function BottomNav() {
               className="relative flex flex-col items-center justify-center w-16 h-full"
             >
               <motion.div
-                whileTap={{ scale: 0.9 }}
-                className={`relative flex flex-col items-center gap-0.5 ${
+                whileTap={{ scale: 0.85 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                className={`relative flex flex-col items-center gap-0.5 transition-colors duration-300 ${
                   isActive ? 'text-lime-500' : 'text-white/40'
                 }`}
               >
@@ -96,7 +97,9 @@ export default function BottomNav() {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 15 }}
                     className="absolute -top-1 -right-2 min-w-[16px] h-4 rounded-full bg-lime-500 text-black text-[10px] font-bold flex items-center justify-center px-1"
+                    style={{ boxShadow: '0 0 10px rgba(132, 204, 22, 0.5)' }}
                   >
                     {totalUnread > 99 ? '99+' : totalUnread}
                   </motion.span>
@@ -106,7 +109,7 @@ export default function BottomNav() {
                   <motion.div
                     layoutId="activeTab"
                     className="absolute -bottom-2 w-5 h-0.5 rounded-full"
-                    style={{ background: '#84cc16' }}
+                    style={{ background: '#84cc16', boxShadow: '0 0 8px rgba(132, 204, 22, 0.6)' }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}

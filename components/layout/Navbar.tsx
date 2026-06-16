@@ -20,12 +20,11 @@ export default function Navbar() {
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-50"
-      style={{ background: 'rgba(10, 10, 10, 0.8)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      className="fixed top-0 left-0 right-0 z-50 glass-nav"
     >
       <nav className="mx-auto max-w-lg flex items-center justify-between px-5 h-14">
-        <Link href="/" className="font-display text-xl font-semibold tracking-tight" style={{ color: '#84cc16' }}>
+        <Link href="/" className="font-display text-xl font-semibold tracking-tight" style={{ color: '#84cc16', textShadow: '0 0 20px rgba(132, 204, 22, 0.3)' }}>
           Missed You
         </Link>
 
@@ -36,15 +35,15 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
-                className="relative text-sm font-medium transition-colors py-1"
-                style={{ color: isActive ? '#84cc16' : 'rgba(255,255,255,0.6)' }}
+                className="relative text-sm font-medium transition-all duration-300 py-1"
+                style={{ color: isActive ? '#84cc16' : 'rgba(255,255,255,0.5)' }}
               >
                 {label}
                 {isActive && (
                   <motion.div
                     layoutId="nav-indicator"
                     className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full"
-                    style={{ background: '#84cc16' }}
+                    style={{ background: '#84cc16', boxShadow: '0 0 10px rgba(132, 204, 22, 0.5)' }}
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -55,7 +54,9 @@ export default function Navbar() {
 
         {currentUser && (
           <Link href="/profile">
-            <Avatar src={currentUser.avatar} alt={currentUser.name} size="sm" />
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Avatar src={currentUser.avatar} alt={currentUser.name} size="sm" />
+            </motion.div>
           </Link>
         )}
       </nav>

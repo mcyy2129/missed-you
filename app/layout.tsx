@@ -15,6 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="h-full antialiased">
+      <head>
+        <link rel="preload" href="/bg.png" as="image" />
+      </head>
       <body className="min-h-full flex flex-col film-grain">
         <AppProvider>{children}<GlobalDanmaku /></AppProvider>
       </body>

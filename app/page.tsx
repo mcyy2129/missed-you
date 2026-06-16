@@ -12,12 +12,12 @@ const container = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08 },
+    transition: { staggerChildren: 0.06 },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0 },
 };
 
@@ -35,6 +35,7 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               className="mb-6"
             >
               <h1 className="text-2xl font-display font-semibold text-white mb-1">
@@ -64,16 +65,16 @@ export default function HomePage() {
       ) : (
         <main className="flex flex-col items-center justify-center min-h-screen px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
             className="text-center max-w-sm"
           >
             <motion.div
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              animate={{ scale: [1, 1.03, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <h1 className="text-5xl font-display font-bold mb-3" style={{ color: '#84cc16', textShadow: '0 0 30px rgba(132, 204, 22, 0.3)' }}>
+              <h1 className="text-5xl font-display font-bold mb-3" style={{ color: '#84cc16', textShadow: '0 0 40px rgba(132, 204, 22, 0.4), 0 0 80px rgba(132, 204, 22, 0.1)' }}>
                 Missed You
               </h1>
             </motion.div>
