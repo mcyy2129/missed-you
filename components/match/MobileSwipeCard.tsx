@@ -33,7 +33,7 @@ export default function MobileSwipeCard({ user, onSwipe, style }: MobileSwipeCar
       onDragEnd={handleDragEnd}
       className="absolute w-full cursor-grab active:cursor-grabbing"
     >
-      <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100">
+      <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl border border-white/8">
         <div className="relative h-[420px]">
           <img
             src={user.avatar || user.photos?.[0]}

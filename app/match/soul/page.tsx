@@ -112,7 +112,7 @@ export default function SoulMatchPage() {
     return (
       <div className="min-h-screen">
         <div className="text-center">
-          <h2 className="text-xl font-display font-semibold text-brown-800 mb-4">
+          <h2 className="text-xl font-display font-semibold text-white mb-4">
             请先登录
           </h2>
           <Button onClick={() => router.push('/auth')}>去登录</Button>
@@ -131,10 +131,10 @@ export default function SoulMatchPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-2xl font-display font-semibold text-brown-800 mb-2">
+          <h1 className="text-2xl font-display font-semibold text-white mb-2">
             灵魂匹配
           </h1>
-          <p className="text-sm text-bronze-500">
+          <p className="text-sm text-white/50">
             基于兴趣和性格的随机匹配，遇见最懂你的人
           </p>
         </motion.div>
@@ -158,7 +158,7 @@ export default function SoulMatchPage() {
               </div>
             </motion.div>
             
-            <p className="text-xs text-slate-400 text-center max-w-xs">
+            <p className="text-xs text-white/40 text-center max-w-xs">
               点击开始，系统将根据你的兴趣和性格为你推荐最合适的灵魂伴侣
             </p>
           </motion.div>
@@ -191,7 +191,7 @@ export default function SoulMatchPage() {
               <motion.p
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="text-sm text-slate-600"
+                className="text-sm text-white/60"
               >
                 正在寻找你的灵魂伴侣...
               </motion.p>
@@ -220,16 +220,16 @@ export default function SoulMatchPage() {
               className="flex flex-col items-center justify-center py-16"
             >
               <div className="text-5xl mb-4">🤷</div>
-              <h3 className="text-lg font-display font-semibold text-brown-800 mb-2">
+              <h3 className="text-lg font-display font-semibold text-white mb-2">
                 暂时没有匹配到
               </h3>
-              <p className="text-sm text-bronze-500 mb-6">
+              <p className="text-sm text-white/50 mb-6">
                 稍后再试试，或者完善你的个人资料提高匹配率
               </p>
               <div className="flex gap-3">
                 <button
                   onClick={() => { setNoMatch(false); }}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors"
+                  className="px-4 py-2 bg-white/5 text-white/80 rounded-xl text-sm font-medium hover:bg-white/8 transition-colors"
                 >
                   返回
                 </button>
@@ -256,10 +256,10 @@ export default function SoulMatchPage() {
                 className="text-center mb-6"
               >
                 <div className="text-5xl mb-3">💕</div>
-                <h2 className="text-xl font-display font-semibold text-brown-800">
+                <h2 className="text-xl font-display font-semibold text-white">
                   匹配成功！
                 </h2>
-                <p className="text-sm text-bronze-500 mt-1">
+                <p className="text-sm text-white/50 mt-1">
                   匹配度 {matchResult.matchScore}%
                 </p>
               </motion.div>
@@ -279,24 +279,24 @@ export default function SoulMatchPage() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-slate-800">
+                    <h3 className="text-lg font-semibold text-white">
                       {matchResult.user.name}
-                      <span className="text-sm font-normal text-slate-500 ml-2">
+                      <span className="text-sm font-normal text-white/50 ml-2">
                         {matchResult.user.age}岁
                       </span>
                     </h3>
-                    <p className="text-xs text-slate-500">{matchResult.user.city}</p>
+                    <p className="text-xs text-white/50">{matchResult.user.city}</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                <p className="text-sm text-white/60 leading-relaxed mb-4">
                   {matchResult.user.bio}
                 </p>
 
                 {/* 共同兴趣 */}
                 {matchResult.commonInterests.length > 0 && (
                   <div className="mb-4">
-                    <p className="text-xs text-slate-500 mb-2">共同兴趣</p>
+                    <p className="text-xs text-white/50 mb-2">共同兴趣</p>
                     <div className="flex flex-wrap gap-2">
                       {matchResult.commonInterests.map(interest => (
                         <span
@@ -312,12 +312,12 @@ export default function SoulMatchPage() {
 
                 {/* 所有兴趣 */}
                 <div>
-                  <p className="text-xs text-slate-500 mb-2">兴趣爱好</p>
+                  <p className="text-xs text-white/50 mb-2">兴趣爱好</p>
                   <div className="flex flex-wrap gap-2">
                     {matchResult.user.interests.map(interest => (
                       <span
                         key={interest}
-                        className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full text-[10px]"
+                        className="px-2 py-0.5 bg-white/5 text-white/60 rounded-full text-[10px]"
                       >
                         {interest}
                       </span>
@@ -335,7 +335,7 @@ export default function SoulMatchPage() {
               >
                 <button
                   onClick={handleSkip}
-                  className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors"
+                  className="flex-1 px-4 py-3 bg-white/5 text-white/80 rounded-xl text-sm font-medium hover:bg-white/8 transition-colors"
                 >
                   跳过
                 </button>
@@ -354,7 +354,7 @@ export default function SoulMatchPage() {
             animate={{ opacity: 1 }}
             className="mt-12"
           >
-            <h3 className="text-sm font-medium text-slate-600 mb-4">
+            <h3 className="text-sm font-medium text-white/60 mb-4">
               最近匹配 ({matchHistory.length})
             </h3>
             <div className="flex gap-3 overflow-x-auto pb-4">
@@ -373,7 +373,7 @@ export default function SoulMatchPage() {
                       {match.matchScore}%
                     </div>
                   </div>
-                  <p className="text-xs text-slate-700 truncate">{match.user.name}</p>
+                  <p className="text-xs text-white/80 truncate">{match.user.name}</p>
                 </motion.div>
               ))}
             </div>

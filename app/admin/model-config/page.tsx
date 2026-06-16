@@ -98,7 +98,7 @@ export default function ModelConfigPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-white/5">
       <Navbar />
       
       <main className="mx-auto max-w-4xl px-4 pt-20 pb-8">
@@ -112,15 +112,15 @@ export default function ModelConfigPage() {
               <div className="flex items-center gap-2 mb-2">
                 <button
                   onClick={() => router.push('/admin')}
-                  className="text-slate-500 hover:text-slate-700 transition-colors"
+                  className="text-white/50 hover:text-white/80 transition-colors"
                 >
                   ← 返回
                 </button>
               </div>
-              <h1 className="text-2xl font-display font-semibold text-slate-800">
+              <h1 className="text-2xl font-display font-semibold text-white">
                 模型配置
               </h1>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-white/50 mt-1">
                 配置AI模型、API接口和对话参数
               </p>
             </div>
@@ -128,34 +128,34 @@ export default function ModelConfigPage() {
 
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <p className="text-sm text-slate-500">加载中...</p>
+              <p className="text-sm text-white/50">加载中...</p>
             </div>
           ) : (
             <div className="space-y-6">
               {/* API Configuration */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-                <h2 className="text-lg font-semibold text-slate-800 mb-4">API 配置</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+                <h2 className="text-lg font-semibold text-white mb-4">API 配置</h2>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs text-slate-500 mb-1 block">API Key</label>
+                    <label className="text-xs text-white/50 mb-1 block">API Key</label>
                     <input
                       type="password"
                       value={config.apiKey}
                       onChange={(e) => setConfig({ ...config, apiKey: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                      className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                       placeholder="nvapi-..."
                     />
-                    <p className="text-[10px] text-slate-400 mt-1">密钥不会明文存储，仅用于当前配置</p>
+                    <p className="text-[10px] text-white/40 mt-1">密钥不会明文存储，仅用于当前配置</p>
                   </div>
 
                   <div>
-                    <label className="text-xs text-slate-500 mb-1 block">API Base URL</label>
+                    <label className="text-xs text-white/50 mb-1 block">API Base URL</label>
                     <input
                       type="text"
                       value={config.baseUrl}
                       onChange={(e) => setConfig({ ...config, baseUrl: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                      className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                       placeholder="https://integrate.api.nvidia.com/v1"
                     />
                   </div>
@@ -163,12 +163,12 @@ export default function ModelConfigPage() {
               </div>
 
               {/* Model Selection */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-                <h2 className="text-lg font-semibold text-slate-800 mb-4">模型选择</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+                <h2 className="text-lg font-semibold text-white mb-4">模型选择</h2>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs text-slate-500 mb-2 block">选择模型</label>
+                    <label className="text-xs text-white/50 mb-2 block">选择模型</label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {AVAILABLE_MODELS.map(model => (
                         <button
@@ -177,13 +177,13 @@ export default function ModelConfigPage() {
                           className={`p-4 rounded-xl border-2 text-left transition-all ${
                             config.model === model.id
                               ? 'border-rose-500 bg-rose-50'
-                              : 'border-slate-200 hover:border-slate-300'
+                              : 'border-white/10 hover:border-slate-300'
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="text-sm font-medium text-slate-800">{model.name}</p>
-                              <p className="text-xs text-slate-500">{model.provider}</p>
+                              <p className="text-sm font-medium text-white">{model.name}</p>
+                              <p className="text-xs text-white/50">{model.provider}</p>
                             </div>
                             {config.model === model.id && (
                               <span className="text-rose-500">✓</span>
@@ -195,12 +195,12 @@ export default function ModelConfigPage() {
                   </div>
 
                   <div>
-                    <label className="text-xs text-slate-500 mb-1 block">自定义模型ID</label>
+                    <label className="text-xs text-white/50 mb-1 block">自定义模型ID</label>
                     <input
                       type="text"
                       value={config.model}
                       onChange={(e) => setConfig({ ...config, model: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                      className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                       placeholder="minimaxai/minimax-m3"
                     />
                   </div>
@@ -208,13 +208,13 @@ export default function ModelConfigPage() {
               </div>
 
               {/* Generation Parameters */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-                <h2 className="text-lg font-semibold text-slate-800 mb-4">生成参数</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+                <h2 className="text-lg font-semibold text-white mb-4">生成参数</h2>
                 
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs text-slate-500 mb-1 block">
+                      <label className="text-xs text-white/50 mb-1 block">
                         Max Tokens: {config.maxTokens}
                       </label>
                       <input
@@ -226,14 +226,14 @@ export default function ModelConfigPage() {
                         onChange={(e) => setConfig({ ...config, maxTokens: parseInt(e.target.value) })}
                         className="w-full accent-rose-500"
                       />
-                      <div className="flex justify-between text-[10px] text-slate-400">
+                      <div className="flex justify-between text-[10px] text-white/40">
                         <span>128</span>
                         <span>4096</span>
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-xs text-slate-500 mb-1 block">
+                      <label className="text-xs text-white/50 mb-1 block">
                         Temperature: {config.temperature.toFixed(1)}
                       </label>
                       <input
@@ -245,7 +245,7 @@ export default function ModelConfigPage() {
                         onChange={(e) => setConfig({ ...config, temperature: parseFloat(e.target.value) })}
                         className="w-full accent-rose-500"
                       />
-                      <div className="flex justify-between text-[10px] text-slate-400">
+                      <div className="flex justify-between text-[10px] text-white/40">
                         <span>精确</span>
                         <span>创意</span>
                       </div>
@@ -255,25 +255,25 @@ export default function ModelConfigPage() {
               </div>
 
               {/* System Prompt */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-                <h2 className="text-lg font-semibold text-slate-800 mb-4">系统提示词</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+                <h2 className="text-lg font-semibold text-white mb-4">系统提示词</h2>
                 
                 <div>
                   <textarea
                     value={config.systemPrompt}
                     onChange={(e) => setConfig({ ...config, systemPrompt: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 resize-none h-32"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-sm text-white resize-none h-32"
                     placeholder="你是一个友善、活泼的聊天伙伴..."
                   />
-                  <p className="text-[10px] text-slate-400 mt-1">
+                  <p className="text-[10px] text-white/40 mt-1">
                     定义AI的基础人格和行为准则，会影响所有对话
                   </p>
                 </div>
               </div>
 
               {/* Test Chat */}
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-                <h2 className="text-lg font-semibold text-slate-800 mb-4">测试对话</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+                <h2 className="text-lg font-semibold text-white mb-4">测试对话</h2>
                 
                 <div className="space-y-4">
                   <div className="flex gap-2">
@@ -281,7 +281,7 @@ export default function ModelConfigPage() {
                       type="text"
                       value={testMessage}
                       onChange={(e) => setTestMessage(e.target.value)}
-                      className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                      className="flex-1 px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                       placeholder="输入测试消息..."
                       onKeyDown={(e) => e.key === 'Enter' && handleTest()}
                     />
@@ -294,9 +294,9 @@ export default function ModelConfigPage() {
                   </div>
 
                   {testResult && (
-                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                      <p className="text-xs text-slate-500 mb-2">AI 回复：</p>
-                      <p className="text-sm text-slate-800 whitespace-pre-wrap">{testResult}</p>
+                    <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+                      <p className="text-xs text-white/50 mb-2">AI 回复：</p>
+                      <p className="text-sm text-white whitespace-pre-wrap">{testResult}</p>
                     </div>
                   )}
                 </div>

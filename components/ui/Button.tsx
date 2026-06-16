@@ -12,9 +12,9 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'size'> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-bronze-300 text-white hover:bg-bronze-400',
-  secondary: 'bg-cream-100 text-brown-700 hover:bg-cream-200',
-  ghost: 'bg-transparent text-brown-600 hover:bg-cream-100',
+  primary: 'bg-lime-500/20 text-lime-400 border border-lime-500/30 hover:bg-lime-500/30',
+  secondary: 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10',
+  ghost: 'bg-transparent text-white/50 hover:bg-white/5',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -31,7 +31,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-        className={`inline-flex items-center justify-center rounded-card font-sans font-light transition-colors cursor-pointer select-none ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={`inline-flex items-center justify-center rounded-xl font-sans font-light transition-all cursor-pointer select-none backdrop-blur-sm ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
         {...props}
       >
         {children}

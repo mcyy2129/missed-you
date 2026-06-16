@@ -71,7 +71,7 @@ export default function PhotoGrid({ photos, editable = false, onPhotosChange }: 
             className={`relative aspect-square rounded-xl overflow-hidden group ${
               photo
                 ? 'cursor-pointer'
-                : 'bg-slate-100 border-2 border-dashed border-slate-200 flex items-center justify-center'
+                : 'bg-white/5 border-2 border-dashed border-white/10 flex items-center justify-center'
             }`}
             onClick={() => photo && setViewingPhoto(photo)}
           >
@@ -107,7 +107,7 @@ export default function PhotoGrid({ photos, editable = false, onPhotosChange }: 
                   e.stopPropagation();
                   handleAddPhoto();
                 }}
-                className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-500 transition-colors"
+                className="flex flex-col items-center gap-1 text-white/40 hover:text-white/50 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -187,14 +187,14 @@ export default function PhotoGrid({ photos, editable = false, onPhotosChange }: 
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-800">删除照片</h3>
-                <p className="text-sm text-slate-500 mt-1">确定要删除这张照片吗？</p>
+                <h3 className="text-lg font-semibold text-white">删除照片</h3>
+                <p className="text-sm text-white/50 mt-1">确定要删除这张照片吗？</p>
               </div>
               
               <div className="flex gap-3">
                 <button
                   onClick={cancelDelete}
-                  className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors"
+                  className="flex-1 px-4 py-2.5 bg-white/5 text-white/80 rounded-xl text-sm font-medium hover:bg-white/8 transition-colors"
                 >
                   取消
                 </button>

@@ -16,7 +16,7 @@ export default function TypingIndicator({ isVisible }: TypingIndicatorProps) {
       exit={{ opacity: 0, y: 10 }}
       className="flex justify-start"
     >
-      <div className="bg-slate-100 border border-slate-200/60 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
+      <div className="bg-white/5 border border-white/10/60 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
         <div className="flex items-center gap-1.5">
           <motion.div
             className="w-2 h-2 rounded-full bg-slate-400"

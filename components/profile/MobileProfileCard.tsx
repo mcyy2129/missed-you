@@ -21,7 +21,7 @@ const MobileProfileCard = memo(function MobileProfileCard({
       <motion.div
         whileTap={{ scale: 0.97 }}
         onClick={onClick}
-        className="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 cursor-pointer active:bg-slate-50 transition-colors"
+        className="bg-white rounded-2xl p-3 shadow-sm border border-white/8 cursor-pointer active:bg-white/5 transition-colors"
       >
         <div className="flex items-center gap-3">
           <div className="relative shrink-0">
@@ -36,17 +36,17 @@ const MobileProfileCard = memo(function MobileProfileCard({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
-              <h3 className="text-sm font-semibold text-slate-800 truncate">{user.name}</h3>
-              <span className="text-xs text-slate-500">{user.age}</span>
+              <h3 className="text-sm font-semibold text-white truncate">{user.name}</h3>
+              <span className="text-xs text-white/50">{user.age}</span>
             </div>
-            <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+            <p className="text-xs text-white/50 flex items-center gap-1 mt-0.5">
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               {user.city}
             </p>
-            <p className="text-xs text-slate-600 line-clamp-1 mt-1">{user.bio}</p>
+            <p className="text-xs text-white/60 line-clamp-1 mt-1">{user.bio}</p>
           </div>
         </div>
       </motion.div>
@@ -57,7 +57,7 @@ const MobileProfileCard = memo(function MobileProfileCard({
     <motion.div
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 cursor-pointer active:bg-slate-50 transition-colors"
+      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-white/8 cursor-pointer active:bg-white/5 transition-colors"
     >
       <div className="relative">
         <img 
@@ -85,7 +85,7 @@ const MobileProfileCard = memo(function MobileProfileCard({
       </div>
       
       <div className="p-3">
-        <p className="text-sm text-slate-600 leading-relaxed line-clamp-2 mb-2">
+        <p className="text-sm text-white/60 leading-relaxed line-clamp-2 mb-2">
           {user.bio}
         </p>
         <InterestTags interests={user.interests.slice(0, 4)} />

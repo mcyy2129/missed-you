@@ -151,11 +151,11 @@ export default function PostDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen bg-transparent">
         <Navbar />
         <main className="mx-auto max-w-lg px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
-            <p className="text-sm text-bronze-500">加载中...</p>
+            <p className="text-sm text-white/50">加载中...</p>
           </div>
         </main>
       </div>
@@ -164,11 +164,11 @@ export default function PostDetailPage() {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen bg-transparent">
         <Navbar />
         <main className="mx-auto max-w-lg px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
-            <p className="text-sm text-bronze-500">帖子不存在</p>
+            <p className="text-sm text-white/50">帖子不存在</p>
           </div>
         </main>
       </div>
@@ -176,7 +176,7 @@ export default function PostDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen bg-transparent">
       <Navbar />
       
       <main className="mx-auto max-w-lg px-4 pt-20 pb-24">
@@ -186,16 +186,16 @@ export default function PostDetailPage() {
           transition={{ duration: 0.5 }}
         >
           {/* Post */}
-          <div className="bg-cream-50 rounded-card p-4 shadow-md mb-6">
+          <div className="bg-transparent rounded-card p-4 shadow-md mb-6">
             <div className="flex items-start gap-3 mb-3">
               <Avatar src={post.author_avatar} alt={post.author_name} size="md" />
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-brown-800">{post.author_name}</h3>
-                <span className="text-[10px] text-bronze-400">{formatTime(post.created_at)}</span>
+                <h3 className="text-sm font-medium text-white">{post.author_name}</h3>
+                <span className="text-[10px] text-white/40">{formatTime(post.created_at)}</span>
               </div>
             </div>
             
-            <p className="text-sm text-brown-700 leading-relaxed mb-3 whitespace-pre-wrap">
+            <p className="text-sm text-white/80 leading-relaxed mb-3 whitespace-pre-wrap">
               {post.content}
             </p>
             
@@ -207,17 +207,17 @@ export default function PostDetailPage() {
               />
             )}
             
-            <div className="flex items-center gap-4 pt-2 border-t border-cream-100">
+            <div className="flex items-center gap-4 pt-2 border-t border-white/8">
               <button
                 onClick={handleLike}
                 className={`flex items-center gap-1.5 text-xs transition-colors ${
-                  post.isLiked ? 'text-red-500' : 'text-bronze-500 hover:text-red-500'
+                  post.isLiked ? 'text-red-500' : 'text-white/50 hover:text-red-500'
                 }`}
               >
                 <span>{post.isLiked ? '❤️' : '🤍'}</span>
                 <span>{post.likes_count}</span>
               </button>
-              <span className="flex items-center gap-1.5 text-xs text-bronze-500">
+              <span className="flex items-center gap-1.5 text-xs text-white/50">
                 <span>💬</span>
                 <span>{post.comments_count}</span>
               </span>
@@ -226,11 +226,11 @@ export default function PostDetailPage() {
 
           {/* Comments */}
           <div className="mb-6">
-            <h3 className="text-sm font-medium text-brown-800 mb-4">评论 ({comments.length})</h3>
+            <h3 className="text-sm font-medium text-white mb-4">评论 ({comments.length})</h3>
             
             {comments.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-xs text-bronze-400">暂无评论，快来抢沙发吧！</p>
+                <p className="text-xs text-white/40">暂无评论，快来抢沙发吧！</p>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
@@ -239,20 +239,20 @@ export default function PostDetailPage() {
                     <Avatar src={comment.author_avatar} alt={comment.author_name} size="sm" />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <h4 className="text-xs font-medium text-brown-800">{comment.author_name}</h4>
+                        <h4 className="text-xs font-medium text-white">{comment.author_name}</h4>
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] text-bronze-400">{formatTime(comment.created_at)}</span>
+                          <span className="text-[10px] text-white/40">{formatTime(comment.created_at)}</span>
                           {currentUser?.id === comment.user_id && (
                             <button
                               onClick={() => handleDeleteComment(comment.id)}
-                              className="text-[10px] text-bronze-400 hover:text-red-500"
+                              className="text-[10px] text-white/40 hover:text-red-500"
                             >
                               删除
                             </button>
                           )}
                         </div>
                       </div>
-                      <p className="text-xs text-brown-600 mt-1">{comment.content}</p>
+                      <p className="text-xs text-white/60 mt-1">{comment.content}</p>
                     </div>
                   </div>
                 ))}
@@ -264,7 +264,7 @@ export default function PostDetailPage() {
 
       {/* Comment Input */}
       {isLoggedIn && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-cream-50/90 backdrop-blur-md border-t border-cream-200/50">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-transparent/90 backdrop-blur-md border-t border-white/10/50">
           <div className="flex items-center gap-2 px-4 py-3 max-w-lg mx-auto">
             <input
               ref={inputRef}
@@ -273,7 +273,7 @@ export default function PostDetailPage() {
               onChange={(e) => setNewComment(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleComment()}
               placeholder="写评论..."
-              className="flex-1 rounded-full bg-cream-100 border border-bronze-300/10 px-4 py-2 text-sm text-brown-800 placeholder:text-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-300/30"
+              className="flex-1 rounded-full bg-white/5 border border-white/15/10 px-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/10/30"
             />
             <Button
               size="sm"

@@ -346,30 +346,30 @@ export default function ChatWindowPage() {
             }}
           >
             <div className="flex items-center gap-1.5">
-              <span className="text-sm font-medium text-slate-800 truncate hover:text-rose-500 transition-colors">{displayName}</span>
+              <span className="text-sm font-medium text-white truncate hover:text-rose-500 transition-colors">{displayName}</span>
               {!isGroup && otherUser?.id.startsWith('ai-') && (
                 <span className="px-1.5 py-0.5 bg-gradient-to-r from-purple-400 to-pink-400 text-white text-[8px] font-bold rounded-full">AI</span>
               )}
             </div>
             {isGroup ? (
-              <span className="text-xs text-slate-500 block">
+              <span className="text-xs text-white/50 block">
                 {groupMembers.length} 位成员 · {aiMembers.length} 个 AI
               </span>
             ) : (
               <>
                 {isUsingFallback && (
-                  <span className="text-xs text-slate-400 block">智能回复模式</span>
+                  <span className="text-xs text-white/40 block">智能回复模式</span>
                 )}
                 {otherUser?.isOnline && !isUsingFallback && (
                   <span className="text-xs text-emerald-500 block">在线</span>
                 )}
                 {!otherUser?.isOnline && !isUsingFallback && otherUser?.lastSeen && (
-                  <span className="text-xs text-slate-400 block">
+                  <span className="text-xs text-white/40 block">
                     {formatLastSeen(otherUser.lastSeen)}
                   </span>
                 )}
                 {!otherUser?.isOnline && !isUsingFallback && !otherUser?.lastSeen && (
-                  <span className="text-xs text-slate-400 block">离线</span>
+                  <span className="text-xs text-white/40 block">离线</span>
                 )}
               </>
             )}
@@ -379,7 +379,7 @@ export default function ChatWindowPage() {
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-xs text-slate-400 flex items-center gap-1"
+              className="text-xs text-white/40 flex items-center gap-1"
             >
               {getUser(replyingAI)?.name} 正在输入
               <motion.span
@@ -394,7 +394,7 @@ export default function ChatWindowPage() {
           {isGroup && (
             <button
               onClick={() => setShowGroupInfo(!showGroupInfo)}
-              className="text-slate-500 hover:text-slate-700 p-1"
+              className="text-white/50 hover:text-white/80 p-1"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -413,14 +413,14 @@ export default function ChatWindowPage() {
             className="fixed top-14 left-0 right-0 z-40 glass-nav shadow-lg"
           >
             <div className="max-w-lg mx-auto p-4">
-              <h4 className="text-sm font-medium text-slate-800 mb-3">群成员</h4>
+              <h4 className="text-sm font-medium text-white mb-3">群成员</h4>
               <div className="flex flex-wrap gap-2">
                 {groupMembers.map(member => {
                   const m = member as any;
                   const isAI = m.id?.startsWith('ai-');
                   return (
                     <div key={m.id} className={`flex items-center gap-2 px-3 py-2 rounded-xl ${
-                      isAI ? 'bg-violet-50' : 'bg-slate-50'
+                      isAI ? 'bg-violet-50' : 'bg-white/5'
                     }`}>
                       <div className="relative">
                         <img src={m.avatar} alt={m.name} className="w-6 h-6 rounded-full object-cover" />
@@ -430,7 +430,7 @@ export default function ChatWindowPage() {
                           </div>
                         )}
                       </div>
-                      <span className="text-xs text-slate-700">{m.name}</span>
+                      <span className="text-xs text-white/80">{m.name}</span>
                       {m.isOnline && !isAI && (
                         <div className="w-2 h-2 bg-emerald-400 rounded-full" />
                       )}
@@ -439,7 +439,7 @@ export default function ChatWindowPage() {
                 })}
               </div>
               {aiMembers.length > 0 && (
-                <p className="text-[10px] text-slate-400 mt-2">
+                <p className="text-[10px] text-white/40 mt-2">
                   💡 提及 AI 名字即可让其回复，例如 @小美
                 </p>
               )}
@@ -457,11 +457,11 @@ export default function ChatWindowPage() {
               className="flex flex-col items-center justify-center py-16 text-center"
             >
               <div className="text-5xl mb-4">{isGroup ? '👥' : '🌸'}</div>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-white/50">
                 {isGroup ? '群聊已创建，开始聊天吧' : `和${displayName}开始对话吧`}
               </p>
               {isGroup && aiMembers.length > 0 && (
-                <p className="text-xs text-slate-400 mt-2">
+                <p className="text-xs text-white/40 mt-2">
                   提及 AI 名字即可让其回复
                 </p>
               )}
@@ -535,8 +535,8 @@ export default function ChatWindowPage() {
             >
               <div className="text-center mb-5">
                 <div className="text-5xl mb-3">🌟</div>
-                <h3 className="text-lg font-semibold text-slate-800 mb-2">关注后可继续聊天</h3>
-                <p className="text-sm text-slate-500">
+                <h3 className="text-lg font-semibold text-white mb-2">关注后可继续聊天</h3>
+                <p className="text-sm text-white/50">
                   未关注状态下只能发送3条私信，关注后可无限畅聊
                 </p>
               </div>
@@ -560,7 +560,7 @@ export default function ChatWindowPage() {
                     setShowFollowModal(false);
                     router.push(`/user/${otherUser?.id}`);
                   }}
-                  className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors"
+                  className="flex-1 px-4 py-2.5 bg-white/5 text-white/80 rounded-xl text-sm font-medium hover:bg-white/8 transition-colors"
                 >
                   去主页
                 </button>

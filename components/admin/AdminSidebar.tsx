@@ -19,9 +19,9 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-white border-r border-slate-200 min-h-screen fixed left-0 top-0 pt-16">
+    <div className="w-64 bg-white border-r border-white/10 min-h-screen fixed left-0 top-0 pt-16">
       <div className="p-4">
-        <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">
+        <div className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-4 px-4">
           管理菜单
         </div>
         <nav className="space-y-1">
@@ -34,7 +34,7 @@ export default function AdminSidebar() {
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-rose-50 text-rose-600'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
+                    : 'text-white/60 hover:bg-white/5 hover:text-white'
                 }`}
               >
                 <span className="text-lg">{item.icon}</span>

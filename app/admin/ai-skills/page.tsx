@@ -143,15 +143,15 @@ export default function AISkillsAdminPage() {
               <div className="flex items-center gap-2 mb-2">
                 <button
                   onClick={() => router.push('/admin')}
-                  className="text-slate-500 hover:text-slate-700 transition-colors"
+                  className="text-white/50 hover:text-white/80 transition-colors"
                 >
                   ← 返回
                 </button>
               </div>
-              <h1 className="text-2xl font-display font-semibold text-slate-800">
+              <h1 className="text-2xl font-display font-semibold text-white">
                 AI Skill 管理
               </h1>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-white/50 mt-1">
                 管理AI聊天机器人的对话风格和人设技能
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function AISkillsAdminPage() {
               />
               <button
                 onClick={() => fetchSkills()}
-                className="px-4 py-2.5 bg-slate-500 text-white rounded-xl text-sm font-medium hover:bg-slate-600 transition-colors"
+                className="px-4 py-2.5 bg-white/50 text-white rounded-xl text-sm font-medium hover:bg-slate-600 transition-colors"
               >
                 🔄 刷新
               </button>
@@ -190,21 +190,21 @@ export default function AISkillsAdminPage() {
             className={`mb-6 border-2 border-dashed rounded-2xl p-8 text-center transition-colors ${
               dragOver
                 ? 'border-violet-400 bg-violet-50'
-                : 'border-slate-200 bg-white hover:border-slate-300'
+                : 'border-white/10 bg-white hover:border-slate-300'
             }`}
           >
             <div className="text-4xl mb-2">📁</div>
-            <p className="text-sm text-slate-600 mb-1">
+            <p className="text-sm text-white/60 mb-1">
               拖拽 Skill 文件到这里，或点击上方「上传文件」按钮
             </p>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-white/40">
               支持 .txt（纯文本提示词）、.md（Markdown提示词）、.json（完整Skill配置）
             </p>
           </div>
 
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <p className="text-sm text-slate-500">加载中...</p>
+              <p className="text-sm text-white/50">加载中...</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -214,7 +214,7 @@ export default function AISkillsAdminPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-white rounded-2xl p-5 shadow-md border border-slate-100 hover:shadow-lg transition-shadow"
+                  className="bg-white rounded-2xl p-5 shadow-md border border-white/8 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
@@ -228,7 +228,7 @@ export default function AISkillsAdminPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-semibold text-slate-800">
+                        <h3 className="text-lg font-semibold text-white">
                           {skill.name}
                         </h3>
                         {skill.id.startsWith('codex-') && (
@@ -238,13 +238,13 @@ export default function AISkillsAdminPage() {
                           <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-600 rounded text-[8px] font-bold">上传</span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-white/50">
                         {skill.id.startsWith('codex-') ? 'Codex技能库' : RESPONSE_STYLES.find(s => s.value === skill.responseStyle)?.label}
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3 line-clamp-2">
+                  <p className="text-sm text-white/60 leading-relaxed mb-3 line-clamp-2">
                     {skill.description}
                   </p>
 
@@ -258,7 +258,7 @@ export default function AISkillsAdminPage() {
                       </span>
                     ))}
                     {skill.personalityTraits.length > 4 && (
-                      <span className="px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-[10px]">
+                      <span className="px-2 py-0.5 bg-white/5 text-white/50 rounded-full text-[10px]">
                         +{skill.personalityTraits.length - 4}
                       </span>
                     )}
@@ -270,13 +270,13 @@ export default function AISkillsAdminPage() {
                         setEditingSkill(skill);
                         setIsCreating(false);
                       }}
-                      className="flex-1 px-3 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200 transition-colors"
+                      className="flex-1 px-3 py-2 bg-white/5 text-white/80 rounded-lg text-sm hover:bg-white/8 transition-colors"
                     >
                       编辑
                     </button>
                     <button
                       onClick={() => handleDelete(skill.id)}
-                      className="px-3 py-2 text-slate-400 hover:text-rose-500 transition-colors"
+                      className="px-3 py-2 text-white/40 hover:text-rose-500 transition-colors"
                     >
                       🗑️
                     </button>
@@ -306,12 +306,12 @@ export default function AISkillsAdminPage() {
               className="bg-white rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl"
             >
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-slate-800">
+                <h3 className="text-lg font-semibold text-white">
                   {isCreating ? '新建Skill' : '编辑Skill'}
                 </h3>
                 <button
                   onClick={() => setEditingSkill(null)}
-                  className="text-slate-400 hover:text-slate-600"
+                  className="text-white/40 hover:text-white/60"
                 >
                   ✕
                 </button>
@@ -320,31 +320,31 @@ export default function AISkillsAdminPage() {
               <div className="space-y-4">
                 {/* Name */}
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block">Skill名称</label>
+                  <label className="text-xs text-white/50 mb-1 block">Skill名称</label>
                   <input
                     type="text"
                     value={editingSkill.name}
                     onChange={(e) => setEditingSkill({ ...editingSkill, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                     placeholder="可爱甜美"
                   />
                 </div>
 
                 {/* Description */}
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block">描述</label>
+                  <label className="text-xs text-white/50 mb-1 block">描述</label>
                   <input
                     type="text"
                     value={editingSkill.description}
                     onChange={(e) => setEditingSkill({ ...editingSkill, description: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                     placeholder="活泼可爱，喜欢用表情包..."
                   />
                 </div>
 
                 {/* Response Style */}
                 <div>
-                  <label className="text-xs text-slate-500 mb-2 block">回复风格</label>
+                  <label className="text-xs text-white/50 mb-2 block">回复风格</label>
                   <div className="flex flex-wrap gap-2">
                     {RESPONSE_STYLES.map(style => (
                       <button
@@ -353,7 +353,7 @@ export default function AISkillsAdminPage() {
                         className={`px-3 py-1.5 rounded-full text-xs transition-colors ${
                           editingSkill.responseStyle === style.value
                             ? 'bg-violet-500 text-white'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            : 'bg-white/5 text-white/60 hover:bg-white/8'
                         }`}
                       >
                         {style.emoji} {style.label}
@@ -364,21 +364,21 @@ export default function AISkillsAdminPage() {
 
                 {/* Greeting Template */}
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block">开场白模板</label>
+                  <label className="text-xs text-white/50 mb-1 block">开场白模板</label>
                   <textarea
                     value={editingSkill.greetingTemplate}
                     onChange={(e) => setEditingSkill({ ...editingSkill, greetingTemplate: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 resize-none h-16"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white resize-none h-16"
                     placeholder="嗨～你好呀！我是{名字}..."
                   />
-                  <p className="text-[10px] text-slate-400 mt-1">
+                  <p className="text-[10px] text-white/40 mt-1">
                     可用变量：{'{名字}'} {'{年龄}'} {'{城市}'} {'{兴趣}'} {'{emoji}'}
                   </p>
                 </div>
 
                 {/* Personality Traits */}
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block">性格标签</label>
+                  <label className="text-xs text-white/50 mb-1 block">性格标签</label>
                   <input
                     type="text"
                     value={editingSkill.personalityTraits.join(', ')}
@@ -386,28 +386,28 @@ export default function AISkillsAdminPage() {
                       ...editingSkill, 
                       personalityTraits: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
                     })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                     placeholder="活泼, 可爱, 爱撒娇"
                   />
                 </div>
 
                 {/* System Prompt */}
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block">系统提示词</label>
+                  <label className="text-xs text-white/50 mb-1 block">系统提示词</label>
                   <textarea
                     value={editingSkill.systemPrompt}
                     onChange={(e) => setEditingSkill({ ...editingSkill, systemPrompt: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 resize-none h-40 font-mono"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white resize-none h-40 font-mono"
                     placeholder="你是{名字}，{年龄}岁，来自{城市}..."
                   />
-                  <p className="text-[10px] text-slate-400 mt-1">
+                  <p className="text-[10px] text-white/40 mt-1">
                     定义AI角色的核心人设和对话规则
                   </p>
                 </div>
 
                 {/* Conversation Starters */}
                 <div>
-                  <label className="text-xs text-slate-500 mb-1 block">话题启动器</label>
+                  <label className="text-xs text-white/50 mb-1 block">话题启动器</label>
                   <input
                     type="text"
                     value={editingSkill.conversationStarters.join(', ')}
@@ -415,7 +415,7 @@ export default function AISkillsAdminPage() {
                       ...editingSkill, 
                       conversationStarters: e.target.value.split(',').map(s => s.trim()).filter(Boolean)
                     })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white"
                     placeholder="你今天过得怎么样呀？, 你喜欢吃什么呀？"
                   />
                 </div>
@@ -424,7 +424,7 @@ export default function AISkillsAdminPage() {
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => setEditingSkill(null)}
-                  className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200 transition-colors"
+                  className="flex-1 px-4 py-2.5 bg-white/5 text-white/80 rounded-lg text-sm hover:bg-white/8 transition-colors"
                 >
                   取消
                 </button>

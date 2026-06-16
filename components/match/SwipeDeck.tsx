@@ -67,10 +67,10 @@ export default function SwipeDeck({ onMatch }: SwipeDeckProps) {
         >
           ✨
         </motion.div>
-        <h3 className="text-lg font-display font-semibold text-brown-800 mb-2">
+        <h3 className="text-lg font-display font-semibold text-white mb-2">
           今天的故事就到这里
         </h3>
-        <p className="text-sm text-bronze-500 mb-6">
+        <p className="text-sm text-white/50 mb-6">
           明天还有更多新朋友等你发现
         </p>
         <motion.button
@@ -134,7 +134,7 @@ export default function SwipeDeck({ onMatch }: SwipeDeckProps) {
             whileHover={{ scale: 1.15, y: -4 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => handleSwipe('left')}
-            className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-xl border border-slate-100 hover:border-red-200 transition-colors"
+            className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-xl border border-white/8 hover:border-red-200 transition-colors"
           >
             ✕
           </motion.button>
@@ -142,7 +142,7 @@ export default function SwipeDeck({ onMatch }: SwipeDeckProps) {
             whileHover={{ scale: 1.15, y: -4 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleSuperLike}
-            className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-lg border border-slate-100 hover:border-blue-200 transition-colors text-blue-400"
+            className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-lg border border-white/8 hover:border-blue-200 transition-colors text-blue-400"
           >
             ⭐
           </motion.button>
@@ -150,7 +150,7 @@ export default function SwipeDeck({ onMatch }: SwipeDeckProps) {
             whileHover={{ scale: 1.15, y: -4 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => handleSwipe('right')}
-            className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-xl border border-slate-100 hover:border-rose-200 transition-colors text-rose-400"
+            className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-xl border border-white/8 hover:border-rose-200 transition-colors text-rose-400"
           >
             ♥
           </motion.button>

@@ -42,7 +42,7 @@ export default function AnalyticsPage() {
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
               <div className="w-12 h-12 border-4 border-rose-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-sm text-slate-500">加载分析数据...</p>
+              <p className="text-sm text-white/50">加载分析数据...</p>
             </div>
           </div>
         </main>
@@ -64,14 +64,14 @@ export default function AnalyticsPage() {
             <div>
               <button
                 onClick={() => router.push('/admin')}
-                className="text-sm text-slate-500 hover:text-slate-700 mb-2"
+                className="text-sm text-white/50 hover:text-white/80 mb-2"
               >
                 ← 返回管理后台
               </button>
-              <h1 className="text-2xl font-display font-semibold text-slate-800">
+              <h1 className="text-2xl font-display font-semibold text-white">
                 数据分析
               </h1>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-white/50 mt-1">
                 平台运营数据可视化
               </p>
             </div>
@@ -84,7 +84,7 @@ export default function AnalyticsPage() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     timeRange === range
                       ? 'bg-rose-500 text-white'
-                      : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                      : 'bg-white text-white/60 hover:bg-white/5 border border-white/10'
                   }`}
                 >
                   {range === '7d' ? '7天' : range === '30d' ? '30天' : '90天'}
@@ -123,9 +123,9 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-slate-100"
+              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
             >
-              <h3 className="font-semibold text-slate-800 mb-4">用户增长趋势</h3>
+              <h3 className="font-semibold text-white mb-4">用户增长趋势</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={data?.userGrowth || []}>
                   <defs>
@@ -156,9 +156,9 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-slate-100"
+              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
             >
-              <h3 className="font-semibold text-slate-800 mb-4">每日活跃度</h3>
+              <h3 className="font-semibold text-white mb-4">每日活跃度</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data?.dailyStats || []}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -178,9 +178,9 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-slate-100"
+              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
             >
-              <h3 className="font-semibold text-slate-800 mb-4">24小时消息分布</h3>
+              <h3 className="font-semibold text-white mb-4">24小时消息分布</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={data?.hourlyActivity || []}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -204,9 +204,9 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-slate-100"
+              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
             >
-              <h3 className="font-semibold text-slate-800 mb-4">用户城市分布</h3>
+              <h3 className="font-semibold text-white mb-4">用户城市分布</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -237,23 +237,23 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-slate-100 mb-8"
+              className="bg-white rounded-2xl p-6 shadow-md border border-white/8 mb-8"
             >
-              <h3 className="font-semibold text-slate-800 mb-4">最活跃用户</h3>
+              <h3 className="font-semibold text-white mb-4">最活跃用户</h3>
               <div className="space-y-3">
                 {data.summary.topActiveUsers.map((user: any, index: number) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                  <div key={index} className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
                       index === 0 ? 'bg-amber-500' : index === 1 ? 'bg-slate-400' : index === 2 ? 'bg-amber-700' : 'bg-slate-300'
                     }`}>
                       {index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-800">{user.name}</p>
+                      <p className="text-sm font-medium text-white">{user.name}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-rose-500">{user.messageCount}</p>
-                      <p className="text-xs text-slate-500">条消息</p>
+                      <p className="text-xs text-white/50">条消息</p>
                     </div>
                   </div>
                 ))}
@@ -268,42 +268,42 @@ export default function AnalyticsPage() {
             transition={{ delay: 0.9 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-4"
           >
-            <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-100">
+            <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">💬</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-800">{data?.summary?.totalConversations || 0}</p>
-                  <p className="text-sm text-slate-500">总对话数</p>
+                  <p className="text-2xl font-bold text-white">{data?.summary?.totalConversations || 0}</p>
+                  <p className="text-sm text-white/50">总对话数</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-100">
+            <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">📈</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-800">{data?.summary?.avgActiveUsers || 0}</p>
-                  <p className="text-sm text-slate-500">日均活跃用户</p>
+                  <p className="text-2xl font-bold text-white">{data?.summary?.avgActiveUsers || 0}</p>
+                  <p className="text-sm text-white/50">日均活跃用户</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-100">
+            <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">💕</span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-800">
+                  <p className="text-2xl font-bold text-white">
                     {data?.matchRate?.total > 0 
                       ? `${((data.matchRate.mutual / data.matchRate.total) * 100).toFixed(1)}%`
                       : '0%'}
                   </p>
-                  <p className="text-sm text-slate-500">匹配成功率</p>
+                  <p className="text-sm text-white/50">匹配成功率</p>
                 </div>
               </div>
             </div>

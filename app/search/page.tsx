@@ -57,13 +57,13 @@ export default function SearchUserPage() {
         <div className="mx-auto max-w-lg flex items-center gap-3 px-4 h-12">
           <button
             onClick={() => router.back()}
-            className="p-1 text-slate-600 hover:text-slate-800 transition-colors"
+            className="p-1 text-white/60 hover:text-white transition-colors"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-base font-medium text-slate-800">搜索用户</h1>
+          <h1 className="text-base font-medium text-white">搜索用户</h1>
         </div>
       </motion.header>
 
@@ -74,7 +74,7 @@ export default function SearchUserPage() {
           animate={{ opacity: 1, y: 0 }}
           className="glass-card rounded-2xl p-4 shadow-sm border border-white/10 mb-4"
         >
-          <p className="text-sm text-slate-600 mb-3">输入对方的邀请码添加好友</p>
+          <p className="text-sm text-white/60 mb-3">输入对方的邀请码添加好友</p>
           <div className="flex gap-2">
             <input
               type="text"
@@ -131,20 +131,20 @@ export default function SearchUserPage() {
                   )}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-base font-semibold text-slate-800">{searchResult.name}</h3>
-                  <p className="text-xs text-slate-500">{searchResult.city} · {searchResult.age}岁</p>
-                  <p className="text-xs text-slate-400 mt-0.5 font-mono">{searchResult.userCode}</p>
+                  <h3 className="text-base font-semibold text-white">{searchResult.name}</h3>
+                  <p className="text-xs text-white/50">{searchResult.city} · {searchResult.age}岁</p>
+                  <p className="text-xs text-white/40 mt-0.5 font-mono">{searchResult.userCode}</p>
                 </div>
               </div>
 
               {searchResult.bio && (
-                <p className="text-sm text-slate-600 mt-3 line-clamp-2">{searchResult.bio}</p>
+                <p className="text-sm text-white/60 mt-3 line-clamp-2">{searchResult.bio}</p>
               )}
 
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={handleViewProfile}
-                className="w-full mt-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors"
+                className="w-full mt-4 py-2.5 bg-white/5 text-white/80 rounded-xl text-sm font-medium hover:bg-white/8 transition-colors"
               >
                 查看主页
               </motion.button>
@@ -160,7 +160,7 @@ export default function SearchUserPage() {
             transition={{ delay: 0.1 }}
             className="mt-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-5 border border-rose-100"
           >
-            <p className="text-sm text-slate-600 mb-2">我的邀请码</p>
+            <p className="text-sm text-white/60 mb-2">我的邀请码</p>
             <div className="flex items-center justify-between">
               <span className="text-2xl font-mono font-bold text-rose-500 tracking-widest">
                 {(currentUser as any).userCode || '加载中...'}
@@ -179,7 +179,7 @@ export default function SearchUserPage() {
                 复制
               </motion.button>
             </div>
-            <p className="text-xs text-slate-500 mt-2">分享给好友，让他们输入邀请码添加你</p>
+            <p className="text-xs text-white/50 mt-2">分享给好友，让他们输入邀请码添加你</p>
           </motion.div>
         )}
       </main>

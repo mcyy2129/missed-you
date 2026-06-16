@@ -109,11 +109,11 @@ export default function PersonaProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen bg-transparent">
         <Navbar />
         <main className="mx-auto max-w-lg px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
-            <p className="text-sm text-bronze-500">加载中...</p>
+            <p className="text-sm text-white/50">加载中...</p>
           </div>
         </main>
       </div>
@@ -122,11 +122,11 @@ export default function PersonaProfilePage() {
 
   if (!persona) {
     return (
-      <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen bg-transparent">
         <Navbar />
         <main className="mx-auto max-w-lg px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
-            <p className="text-sm text-bronze-500">角色不存在</p>
+            <p className="text-sm text-white/50">角色不存在</p>
           </div>
         </main>
       </div>
@@ -134,7 +134,7 @@ export default function PersonaProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen bg-transparent">
       <Navbar />
       
       <main className="mx-auto max-w-lg px-4 pt-20 pb-24">
@@ -144,7 +144,7 @@ export default function PersonaProfilePage() {
           transition={{ duration: 0.5 }}
         >
           {/* Profile Header */}
-          <div className="bg-cream-50 rounded-card p-6 shadow-md mb-6">
+          <div className="bg-transparent rounded-card p-6 shadow-md mb-6">
             <div className="flex items-center gap-5 mb-4">
               <div className="relative">
                 <Avatar src={persona.avatar} alt={persona.name} size="xl" />
@@ -153,15 +153,15 @@ export default function PersonaProfilePage() {
                 </div>
               </div>
               <div>
-                <h1 className="text-xl font-semibold text-brown-800">
+                <h1 className="text-xl font-semibold text-white">
                   {persona.name}
-                  <span className="text-sm font-normal text-bronze-500 ml-2">{persona.age}岁</span>
+                  <span className="text-sm font-normal text-white/50 ml-2">{persona.age}岁</span>
                 </h1>
-                <p className="text-sm text-brown-600 mt-0.5">{persona.city}</p>
+                <p className="text-sm text-white/60 mt-0.5">{persona.city}</p>
               </div>
             </div>
 
-            <p className="text-sm text-brown-600 leading-relaxed mb-4">
+            <p className="text-sm text-white/60 leading-relaxed mb-4">
               {persona.bio}
             </p>
 
@@ -188,12 +188,12 @@ export default function PersonaProfilePage() {
 
           {/* Posts Section */}
           <div>
-            <h3 className="text-lg font-semibold text-brown-800 mb-4">动态</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">动态</h3>
             
             {posts.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <div className="text-4xl mb-3">📝</div>
-                <p className="text-sm text-bronze-500">暂无动态</p>
+                <p className="text-sm text-white/50">暂无动态</p>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
@@ -202,19 +202,19 @@ export default function PersonaProfilePage() {
                     key={post.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-cream-50 rounded-card p-4 shadow-md"
+                    className="bg-transparent rounded-card p-4 shadow-md"
                   >
                     <div className="flex items-start gap-3 mb-3">
                       <Avatar src={persona.avatar} alt={persona.name} size="md" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <h3 className="text-sm font-medium text-brown-800">{persona.name}</h3>
-                          <span className="text-[10px] text-bronze-400">{formatTime(post.created_at)}</span>
+                          <h3 className="text-sm font-medium text-white">{persona.name}</h3>
+                          <span className="text-[10px] text-white/40">{formatTime(post.created_at)}</span>
                         </div>
                       </div>
                     </div>
                     
-                    <p className="text-sm text-brown-700 leading-relaxed whitespace-pre-wrap">
+                    <p className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap">
                       {post.content}
                     </p>
                     
@@ -226,12 +226,12 @@ export default function PersonaProfilePage() {
                       />
                     )}
                     
-                    <div className="flex items-center gap-4 mt-3 pt-2 border-t border-cream-100">
-                      <span className="flex items-center gap-1.5 text-xs text-bronze-500">
+                    <div className="flex items-center gap-4 mt-3 pt-2 border-t border-white/8">
+                      <span className="flex items-center gap-1.5 text-xs text-white/50">
                         <span>❤️</span>
                         <span>{post.likes_count}</span>
                       </span>
-                      <span className="flex items-center gap-1.5 text-xs text-bronze-500">
+                      <span className="flex items-center gap-1.5 text-xs text-white/50">
                         <span>💬</span>
                         <span>{post.comments_count}</span>
                       </span>

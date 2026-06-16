@@ -94,21 +94,21 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-lg bg-white rounded-t-3xl max-h-[85vh] overflow-hidden"
           >
-            <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mt-3" />
+            <div className="w-10 h-1 bg-white/8 rounded-full mx-auto mt-3" />
 
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-slate-100">
-              <h3 className="text-lg font-semibold text-slate-800">群聊设置</h3>
+            <div className="flex items-center justify-between p-5 border-b border-white/8">
+              <h3 className="text-lg font-semibold text-white">群聊设置</h3>
               <button
                 onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/50 hover:bg-white/8 transition-colors"
               >
                 ✕
               </button>
             </div>
 
             {/* Tab Switcher */}
-            <div className="flex border-b border-slate-100">
+            <div className="flex border-b border-white/8">
               {[
                 { id: 'info' as const, label: '群信息', icon: '📋' },
                 { id: 'members' as const, label: '成员', icon: '👥' },
@@ -120,7 +120,7 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                   className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
                     activeTab === tab.id
                       ? 'text-rose-500'
-                      : 'text-slate-500 hover:text-slate-700'
+                      : 'text-white/50 hover:text-white/80'
                   }`}
                 >
                   <span className="mr-1">{tab.icon}</span>
@@ -151,8 +151,8 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                         </div>
                       )}
                       {isCreator && (
-                        <label className="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-full shadow-md flex items-center justify-center cursor-pointer hover:bg-slate-50">
-                          <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <label className="absolute -bottom-1 -right-1 w-7 h-7 bg-white rounded-full shadow-md flex items-center justify-center cursor-pointer hover:bg-white/5">
+                          <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
@@ -171,29 +171,29 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                           type="text"
                           value={groupName}
                           onChange={(e) => setGroupName(e.target.value)}
-                          className="w-full text-lg font-semibold text-slate-800 bg-transparent border-b border-slate-200 focus:outline-none focus:border-rose-500 pb-1"
+                          className="w-full text-lg font-semibold text-white bg-transparent border-b border-white/10 focus:outline-none focus:border-rose-500 pb-1"
                           placeholder="输入群聊名称"
                         />
                       ) : (
-                        <h4 className="text-lg font-semibold text-slate-800">{groupName || '未命名群聊'}</h4>
+                        <h4 className="text-lg font-semibold text-white">{groupName || '未命名群聊'}</h4>
                       )}
-                      <p className="text-xs text-slate-500 mt-1">{members.length} 位成员</p>
+                      <p className="text-xs text-white/50 mt-1">{members.length} 位成员</p>
                     </div>
                   </div>
 
                   {/* Group Description */}
                   <div className="mb-6">
-                    <label className="text-xs text-slate-500 mb-2 block font-medium">群公告/简介</label>
+                    <label className="text-xs text-white/50 mb-2 block font-medium">群公告/简介</label>
                     {isCreator ? (
                       <textarea
                         value={groupDescription}
                         onChange={(e) => setGroupDescription(e.target.value)}
-                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/30 resize-none"
+                        className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-500/30 resize-none"
                         rows={3}
                         placeholder="输入群聊简介..."
                       />
                     ) : (
-                      <p className="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl">
+                      <p className="text-sm text-white/60 bg-white/5 p-3 rounded-xl">
                         {groupDescription || '暂无简介'}
                       </p>
                     )}
@@ -202,20 +202,20 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                   {/* Group Info */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-sm text-slate-500">群聊ID</span>
-                      <span className="text-xs text-slate-400 font-mono">{conversationId.slice(0, 16)}...</span>
+                      <span className="text-sm text-white/50">群聊ID</span>
+                      <span className="text-xs text-white/40 font-mono">{conversationId.slice(0, 16)}...</span>
                     </div>
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-sm text-slate-500">创建时间</span>
-                      <span className="text-xs text-slate-400">
+                      <span className="text-sm text-white/50">创建时间</span>
+                      <span className="text-xs text-white/40">
                         {conversation.created_at 
                           ? new Date(conversation.created_at).toLocaleDateString('zh-CN')
                           : '未知'}
                       </span>
                     </div>
                     <div className="flex items-center justify-between py-2">
-                      <span className="text-sm text-slate-500">消息数量</span>
-                      <span className="text-xs text-slate-400">{conversation.messages?.length || 0} 条</span>
+                      <span className="text-sm text-white/50">消息数量</span>
+                      <span className="text-xs text-white/40">{conversation.messages?.length || 0} 条</span>
                     </div>
                   </div>
 
@@ -238,7 +238,7 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
               {activeTab === 'members' && (
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="text-sm font-medium text-slate-800">成员列表 ({members.length})</h4>
+                    <h4 className="text-sm font-medium text-white">成员列表 ({members.length})</h4>
                     {isCreator && (
                       <button
                         onClick={() => setShowAddMember(!showAddMember)}
@@ -258,8 +258,8 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden mb-4"
                       >
-                        <div className="bg-slate-50 rounded-xl p-3">
-                          <p className="text-xs text-slate-500 mb-2">选择要添加的成员</p>
+                        <div className="bg-white/5 rounded-xl p-3">
+                          <p className="text-xs text-white/50 mb-2">选择要添加的成员</p>
                           <div className="max-h-40 overflow-y-auto space-y-2">
                             {users
                               .filter((u: any) => !conversation.participants.includes(u.id) && u.id !== currentUser?.id)
@@ -267,10 +267,10 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                                 <button
                                   key={user.id}
                                   onClick={() => handleAddMember(user.id)}
-                                  className="w-full flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-slate-100 transition-colors"
+                                  className="w-full flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-white/5 transition-colors"
                                 >
                                   <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
-                                  <span className="text-sm text-slate-700">{user.name}</span>
+                                  <span className="text-sm text-white/80">{user.name}</span>
                                 </button>
                               ))}
                           </div>
@@ -288,7 +288,7 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                       return (
                         <div
                           key={member.id}
-                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors"
+                          className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors"
                         >
                           <div className="relative">
                             <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-full object-cover" />
@@ -303,7 +303,7 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-sm font-medium text-slate-800">{member.name}</span>
+                              <span className="text-sm font-medium text-white">{member.name}</span>
                               {isGroupCreator && (
                                 <span className="px-1.5 py-0.5 bg-amber-100 text-amber-600 text-[9px] font-medium rounded">
                                   群主
@@ -315,7 +315,7 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-slate-500">{member.bio?.slice(0, 30) || member.city || '暂无介绍'}</p>
+                            <p className="text-xs text-white/50">{member.bio?.slice(0, 30) || member.city || '暂无介绍'}</p>
                           </div>
                           {isCreator && !isGroupCreator && !isAI && (
                             <button 
@@ -335,28 +335,28 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
               {/* Settings Tab (Creator Only) */}
               {activeTab === 'settings' && isCreator && (
                 <div className="p-5">
-                  <h4 className="text-sm font-medium text-slate-800 mb-4">群聊设置</h4>
+                  <h4 className="text-sm font-medium text-white mb-4">群聊设置</h4>
                   
                   <div className="space-y-4">
                     {/* Permissions */}
-                    <div className="bg-slate-50 rounded-xl p-4">
-                      <h5 className="text-xs font-medium text-slate-500 mb-3">权限设置</h5>
+                    <div className="bg-white/5 rounded-xl p-4">
+                      <h5 className="text-xs font-medium text-white/50 mb-3">权限设置</h5>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-slate-700">仅群主可发消息</span>
-                          <button className="w-10 h-6 bg-slate-200 rounded-full relative">
+                          <span className="text-sm text-white/80">仅群主可发消息</span>
+                          <button className="w-10 h-6 bg-white/8 rounded-full relative">
                             <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow" />
                           </button>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-slate-700">允许成员邀请</span>
+                          <span className="text-sm text-white/80">允许成员邀请</span>
                           <button className="w-10 h-6 bg-rose-500 rounded-full relative">
                             <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow" />
                           </button>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-slate-700">AI 自动回复</span>
-                          <button className="w-10 h-6 bg-slate-200 rounded-full relative">
+                          <span className="text-sm text-white/80">AI 自动回复</span>
+                          <button className="w-10 h-6 bg-white/8 rounded-full relative">
                             <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow" />
                           </button>
                         </div>
@@ -364,17 +364,17 @@ export default function GroupSettingsModal({ isOpen, onClose, conversationId }: 
                     </div>
 
                     {/* Notifications */}
-                    <div className="bg-slate-50 rounded-xl p-4">
-                      <h5 className="text-xs font-medium text-slate-500 mb-3">通知设置</h5>
+                    <div className="bg-white/5 rounded-xl p-4">
+                      <h5 className="text-xs font-medium text-white/50 mb-3">通知设置</h5>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-slate-700">消息免打扰</span>
-                          <button className="w-10 h-6 bg-slate-200 rounded-full relative">
+                          <span className="text-sm text-white/80">消息免打扰</span>
+                          <button className="w-10 h-6 bg-white/8 rounded-full relative">
                             <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow" />
                           </button>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-slate-700">@提醒通知</span>
+                          <span className="text-sm text-white/80">@提醒通知</span>
                           <button className="w-10 h-6 bg-rose-500 rounded-full relative">
                             <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow" />
                           </button>

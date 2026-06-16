@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
         <Navbar />
         <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
-            <p className="text-sm text-bronze-500">加载中...</p>
+            <p className="text-sm text-white/50">加载中...</p>
           </div>
         </main>
       </div>
@@ -136,7 +136,7 @@ export default function AdminUsersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen bg-transparent">
       <Navbar />
       
       <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
@@ -149,14 +149,14 @@ export default function AdminUsersPage() {
             <div>
               <button
                 onClick={() => router.push('/admin')}
-                className="text-sm text-bronze-500 hover:text-bronze-600 mb-2"
+                className="text-sm text-white/50 hover:text-white/60 mb-2"
               >
                 ← 返回管理后台
               </button>
-              <h1 className="text-2xl font-display font-semibold text-brown-800">
+              <h1 className="text-2xl font-display font-semibold text-white">
                 用户管理
               </h1>
-              <p className="text-sm text-bronze-500 mt-1">
+              <p className="text-sm text-white/50 mt-1">
                 共 {users.length} 位用户
               </p>
             </div>
@@ -175,25 +175,25 @@ export default function AdminUsersPage() {
               <table className="w-full">
                 <thead className="bg-white/5">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">用户</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">邀请码</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">邮箱</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-white/60">用户</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-white/60">邀请码</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-white/60">邮箱</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-white/60">
                       <div className="flex items-center gap-2">
                         密码
                         <button
                           onClick={() => setShowPasswords(!showPasswords)}
-                          className="text-brown-400 hover:text-brown-600"
+                          className="text-white/40 hover:text-white/60"
                           title={showPasswords ? '隐藏密码' : '显示密码'}
                         >
                           {showPasswords ? '👁️' : '👁️‍🗨️'}
                         </button>
                       </div>
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">城市</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">注册时间</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">状态</th>
-                    <th className="px-4 py-3 text-right text-xs font-medium text-brown-600">操作</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-white/60">城市</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-white/60">注册时间</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-white/60">状态</th>
+                    <th className="px-4 py-3 text-right text-xs font-medium text-white/60">操作</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-cream-100">
@@ -203,18 +203,18 @@ export default function AdminUsersPage() {
                         <div className="flex items-center gap-3">
                           <Avatar src={user.avatar} alt={user.name} size="sm" />
                           <div>
-                            <p className="text-sm font-medium text-brown-800">{user.name}</p>
-                            <p className="text-xs text-bronze-500">{user.age}岁</p>
+                            <p className="text-sm font-medium text-white">{user.name}</p>
+                            <p className="text-xs text-white/50">{user.age}岁</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-brown-600 font-mono">{user.user_code || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-brown-600">{user.email}</td>
-                      <td className="px-4 py-3 text-sm text-brown-400 font-mono text-xs break-all max-w-[120px]">
+                      <td className="px-4 py-3 text-sm text-white/60 font-mono">{user.user_code || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-white/60">{user.email}</td>
+                      <td className="px-4 py-3 text-sm text-white/40 font-mono text-xs break-all max-w-[120px]">
                         {showPasswords ? (user.plain_password || user.password || '-') : '••••••••'}
                       </td>
-                      <td className="px-4 py-3 text-sm text-brown-600">{user.city || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-brown-600">{formatDate(user.created_at)}</td>
+                      <td className="px-4 py-3 text-sm text-white/60">{user.city || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-white/60">{formatDate(user.created_at)}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs ${
                           user.is_online
@@ -228,7 +228,7 @@ export default function AdminUsersPage() {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => setEditingUser(user)}
-                            className="text-xs text-bronze-500 hover:text-bronze-600"
+                            className="text-xs text-white/50 hover:text-white/60"
                           >
                             编辑
                           </button>
@@ -254,7 +254,7 @@ export default function AdminUsersPage() {
 
             {filteredUsers.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-sm text-bronze-500">没有找到匹配的用户</p>
+                <p className="text-sm text-white/50">没有找到匹配的用户</p>
               </div>
             )}
           </div>
@@ -278,7 +278,7 @@ export default function AdminUsersPage() {
               className="rounded-card p-6 w-full max-w-md shadow-xl"
               style={{ background: 'rgba(20, 20, 24, 0.97)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
-              <h3 className="text-lg font-semibold text-brown-800 mb-4">编辑用户</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">编辑用户</h3>
               
               <div className="space-y-4">
                 <Input
@@ -336,7 +336,7 @@ export default function AdminUsersPage() {
               className="rounded-card p-6 w-full max-w-sm shadow-xl"
               style={{ background: 'rgba(20, 20, 24, 0.97)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
-              <h3 className="text-lg font-semibold text-brown-800 mb-4">修改密码</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">修改密码</h3>
               
               <div className="space-y-4">
                 <Input
@@ -346,7 +346,7 @@ export default function AdminUsersPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
-                <p className="text-xs text-bronze-500">
+                <p className="text-xs text-white/50">
                   修改后用户将使用新密码登录
                 </p>
               </div>
@@ -389,8 +389,8 @@ export default function AdminUsersPage() {
               className="rounded-card p-6 w-full max-w-sm shadow-xl"
               style={{ background: 'rgba(20, 20, 24, 0.97)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
-              <h3 className="text-lg font-semibold text-brown-800 mb-2">确认删除</h3>
-              <p className="text-sm text-brown-600 mb-6">
+              <h3 className="text-lg font-semibold text-white mb-2">确认删除</h3>
+              <p className="text-sm text-white/60 mb-6">
                 确定要删除这个用户吗？此操作不可撤销。
               </p>
 

@@ -65,7 +65,7 @@ const MobileChatBubble = memo(function MobileChatBubble({
           {showSender && !isMe && senderAvatar && (
             <div className="flex items-center gap-2 mb-1">
               <img src={senderAvatar} alt="" className="w-5 h-5 rounded-full object-cover" />
-              <span className="text-[10px] text-slate-500">{senderName}</span>
+              <span className="text-[10px] text-white/50">{senderName}</span>
             </div>
           )}
           <motion.div
@@ -80,9 +80,9 @@ const MobileChatBubble = memo(function MobileChatBubble({
             {sticker}
           </motion.div>
           <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
-            <p className="text-[10px] text-slate-400">{time}</p>
+            <p className="text-[10px] text-white/40">{time}</p>
             {isMe && (
-              <span className={`text-[10px] ${isRead ? 'text-rose-500' : 'text-slate-400'}`}>
+              <span className={`text-[10px] ${isRead ? 'text-rose-500' : 'text-white/40'}`}>
                 {isRead ? '✓✓' : '✓'}
               </span>
             )}
@@ -95,11 +95,11 @@ const MobileChatBubble = memo(function MobileChatBubble({
                   key={emoji}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-slate-100 border border-slate-200/60 text-xs"
+                  className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white/5 border border-white/10/60 text-xs"
                   onClick={() => onReact && onReact(emoji)}
                 >
                   <span>{emoji}</span>
-                  {userIds.length > 1 && <span className="text-[10px] text-slate-500">{userIds.length}</span>}
+                  {userIds.length > 1 && <span className="text-[10px] text-white/50">{userIds.length}</span>}
                 </motion.button>
               ))}
             </div>
@@ -119,7 +119,7 @@ const MobileChatBubble = memo(function MobileChatBubble({
         {showSender && !isMe && senderAvatar && (
           <div className="flex items-center gap-2 mb-1">
             <img src={senderAvatar} alt="" className="w-5 h-5 rounded-full object-cover" />
-            <span className="text-[10px] text-slate-500">{senderName}</span>
+            <span className="text-[10px] text-white/50">{senderName}</span>
           </div>
         )}
         
@@ -132,7 +132,7 @@ const MobileChatBubble = memo(function MobileChatBubble({
           className={`relative rounded-2xl px-3.5 py-2.5 shadow-sm ${
             isMe
               ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-br-md'
-              : 'bg-white text-slate-800 rounded-bl-md border border-slate-100'
+              : 'bg-white text-white rounded-bl-md border border-white/8'
           }`}
         >
           {image && (
@@ -144,7 +144,7 @@ const MobileChatBubble = memo(function MobileChatBubble({
           {audio && (
             <div className="flex items-center gap-2 mb-1">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                isMe ? 'bg-white/20' : 'bg-slate-100'
+                isMe ? 'bg-white/20' : 'bg-white/5'
               }`}>
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                   <polygon points="5 3 19 12 5 21 5 3" />
@@ -169,7 +169,7 @@ const MobileChatBubble = memo(function MobileChatBubble({
           )}
           
           <div className={`flex items-center justify-end gap-1 mt-1`}>
-            <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-slate-400'}`}>
+            <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-white/40'}`}>
               {time}
             </p>
             {isMe && (
@@ -187,11 +187,11 @@ const MobileChatBubble = memo(function MobileChatBubble({
                 key={emoji}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white border border-slate-200 shadow-sm text-xs"
+                className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white border border-white/10 shadow-sm text-xs"
                 onClick={() => onReact && onReact(emoji)}
               >
                 <span>{emoji}</span>
-                {userIds.length > 1 && <span className="text-[10px] text-slate-500">{userIds.length}</span>}
+                {userIds.length > 1 && <span className="text-[10px] text-white/50">{userIds.length}</span>}
               </motion.button>
             ))}
           </div>
@@ -203,7 +203,7 @@ const MobileChatBubble = memo(function MobileChatBubble({
               initial={{ opacity: 0, scale: 0.8, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: -10 }}
-              className={`absolute ${isMe ? 'right-0' : 'left-0'} -top-12 z-10 flex gap-1 bg-white rounded-2xl px-2 py-1.5 shadow-lg border border-slate-200`}
+              className={`absolute ${isMe ? 'right-0' : 'left-0'} -top-12 z-10 flex gap-1 bg-white rounded-2xl px-2 py-1.5 shadow-lg border border-white/10`}
             >
               {QUICK_REACTIONS.map((emoji) => (
                 <motion.button

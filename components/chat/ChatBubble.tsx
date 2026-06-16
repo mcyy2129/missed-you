@@ -91,7 +91,7 @@ const ChatBubble = memo(function ChatBubble({
           {showSender && !isMe && senderAvatar && (
             <div className="flex items-center gap-2 mb-1">
               <img src={senderAvatar} alt="" className="w-5 h-5 rounded-full object-cover" />
-              <span className="text-[10px] text-slate-500">{senderName}</span>
+              <span className="text-[10px] text-white/50">{senderName}</span>
             </div>
           )}
           <motion.div
@@ -102,9 +102,9 @@ const ChatBubble = memo(function ChatBubble({
             {sticker}
           </motion.div>
           <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
-            <p className="text-[10px] text-slate-400">{time}</p>
+            <p className="text-[10px] text-white/40">{time}</p>
             {isMe && (
-              <span className={`text-[10px] flex items-center ${isRead ? 'text-rose-500' : 'text-slate-400'}`}>
+              <span className={`text-[10px] flex items-center ${isRead ? 'text-rose-500' : 'text-white/40'}`}>
                 {isRead ? (
                   <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="2 12 7 17 17 7" />
@@ -126,11 +126,11 @@ const ChatBubble = memo(function ChatBubble({
                   key={emoji}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-slate-100 border border-slate-200/60 text-xs hover:bg-slate-200/60 transition-colors"
+                  className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white/5 border border-white/10/60 text-xs hover:bg-white/8/60 transition-colors"
                   onClick={() => onReact && onReact(emoji)}
                 >
                   <span>{emoji}</span>
-                  {userIds.length > 1 && <span className="text-[10px] text-slate-500">{userIds.length}</span>}
+                  {userIds.length > 1 && <span className="text-[10px] text-white/50">{userIds.length}</span>}
                 </motion.button>
               ))}
             </div>
@@ -151,7 +151,7 @@ const ChatBubble = memo(function ChatBubble({
         {showSender && !isMe && senderAvatar && (
           <div className="flex items-center gap-2 mb-1">
             <img src={senderAvatar} alt="" className="w-5 h-5 rounded-full object-cover" />
-            <span className="text-[10px] text-slate-500">{senderName}</span>
+            <span className="text-[10px] text-white/50">{senderName}</span>
           </div>
         )}
         <div
@@ -166,8 +166,8 @@ const ChatBubble = memo(function ChatBubble({
             <div
               className={`px-4 py-3 ${
                 isMe
-                  ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white'
-                  : 'bg-slate-100 text-slate-800 border border-slate-200/60'
+                  ? 'bg-gradient-to-r from-lime-600/30 to-emerald-600/30 text-white border border-lime-500/20'
+                  : 'bg-white/5 text-white border border-white/10/60'
               }`}
             >
               <audio
@@ -184,7 +184,7 @@ const ChatBubble = memo(function ChatBubble({
                   className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
                     isMe
                       ? 'bg-white/20 hover:bg-white/30'
-                      : 'bg-slate-200/50 hover:bg-slate-200/70'
+                      : 'bg-white/8/50 hover:bg-white/8/70'
                   } transition-colors`}
                 >
                   {isPlaying ? (
@@ -208,13 +208,13 @@ const ChatBubble = memo(function ChatBubble({
                         } : {}}
                         transition={{ duration: 0.3, repeat: Infinity, delay: i * 0.05 }}
                         className={`w-[3px] rounded-full ${
-                          isMe ? 'bg-white/70' : 'bg-slate-400/50'
+                          isMe ? 'bg-white/40' : 'bg-white/20'
                         }`}
                         style={{ height: `${height}px` }}
                       />
                     ))}
                   </div>
-                  <p className={`text-[10px] mt-1.5 ${isMe ? 'text-white/80' : 'text-slate-500'}`}>
+                  <p className={`text-[10px] mt-1.5 ${isMe ? 'text-white/80' : 'text-white/50'}`}>
                     {audioDuration > 0 ? formatDuration(audioDuration) : '语音消息'}
                   </p>
                 </div>
@@ -223,7 +223,7 @@ const ChatBubble = memo(function ChatBubble({
           )}
 
           {image && !audio && (
-            <div className="bg-slate-100">
+            <div className="bg-white/5">
               <img
                 src={image}
                 alt="照片"
@@ -236,13 +236,13 @@ const ChatBubble = memo(function ChatBubble({
             <div
               className={`px-4 py-2.5 ${
                 isMe
-                  ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white'
-                  : 'bg-slate-100 text-slate-800 border border-slate-200/60'
+                  ? 'bg-gradient-to-r from-lime-600/30 to-emerald-600/30 text-white border border-lime-500/20'
+                  : 'bg-white/5 text-white border border-white/10/60'
               } ${(image || audio) ? (isMe ? 'rounded-t-none' : 'rounded-t-none border-t-0') : ''}`}
             >
               <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{text}</p>
               <div className="flex items-center justify-end gap-1 mt-1">
-                <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-slate-400'}`}>
+                <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-white/40'}`}>
                   {time}
                 </p>
                 {isMe && (
@@ -265,7 +265,7 @@ const ChatBubble = memo(function ChatBubble({
 
           {!text && (image || audio) && (
             <div className="flex items-center justify-end gap-1 px-4 py-1.5">
-              <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-slate-400'}`}>
+              <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-white/40'}`}>
                 {time}
               </p>
               {isMe && (
@@ -293,11 +293,11 @@ const ChatBubble = memo(function ChatBubble({
                 key={emoji}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white border border-slate-200 shadow-sm text-xs hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-xs hover:bg-white/10 transition-colors"
                 onClick={() => onReact && onReact(emoji)}
               >
                 <span>{emoji}</span>
-                {userIds.length > 1 && <span className="text-[10px] text-slate-500">{userIds.length}</span>}
+                {userIds.length > 1 && <span className="text-[10px] text-white/50">{userIds.length}</span>}
               </motion.button>
             ))}
           </div>
@@ -307,7 +307,7 @@ const ChatBubble = memo(function ChatBubble({
           <div className={`absolute top-0 ${isMe ? '-left-8' : '-right-8'} opacity-0 group-hover:opacity-100 transition-opacity`}>
             <button
               onClick={() => setShowReactionPicker(!showReactionPicker)}
-              className="w-7 h-7 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-xs hover:bg-slate-50 transition-colors"
+              className="w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs hover:bg-white/10 transition-colors"
             >
               😊
             </button>
@@ -320,7 +320,8 @@ const ChatBubble = memo(function ChatBubble({
               initial={{ opacity: 0, scale: 0.8, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: -10 }}
-              className={`absolute ${isMe ? 'right-0' : 'left-0'} -top-12 z-10 flex gap-1 bg-white rounded-2xl px-2.5 py-1.5 shadow-lg border border-slate-200`}
+              className={`absolute ${isMe ? 'right-0' : 'left-0'} -top-12 z-10 flex gap-1 rounded-2xl px-2.5 py-1.5 shadow-lg border border-white/10`}
+              style={{ background: 'rgba(20, 20, 24, 0.95)', backdropFilter: 'blur(16px)' }}
             >
               {QUICK_REACTIONS.map((emoji) => (
                 <motion.button

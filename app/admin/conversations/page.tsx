@@ -103,11 +103,11 @@ export default function AdminConversationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen bg-transparent">
         <Navbar />
         <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
-            <p className="text-sm text-bronze-500">加载中...</p>
+            <p className="text-sm text-white/50">加载中...</p>
           </div>
         </main>
       </div>
@@ -115,7 +115,7 @@ export default function AdminConversationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen bg-transparent">
       <Navbar />
       
       <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
@@ -127,31 +127,31 @@ export default function AdminConversationsPage() {
           <div className="mb-6">
             <button
               onClick={() => router.push('/admin')}
-              className="text-sm text-bronze-500 hover:text-bronze-600 mb-2"
+              className="text-sm text-white/50 hover:text-white/60 mb-2"
             >
               ← 返回管理后台
             </button>
-            <h1 className="text-2xl font-display font-semibold text-brown-800">
+            <h1 className="text-2xl font-display font-semibold text-white">
               对话管理
             </h1>
-            <p className="text-sm text-bronze-500 mt-1">
+            <p className="text-sm text-white/50 mt-1">
               共 {conversations.length} 个对话
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Conversations List */}
-            <div className="lg:col-span-1 bg-cream-50 rounded-card shadow-md overflow-hidden">
-              <div className="p-4 border-b border-cream-100">
-                <h3 className="font-medium text-brown-800">对话列表</h3>
+            <div className="lg:col-span-1 bg-transparent rounded-card shadow-md overflow-hidden">
+              <div className="p-4 border-b border-white/8">
+                <h3 className="font-medium text-white">对话列表</h3>
               </div>
               <div className="divide-y divide-cream-100 max-h-[600px] overflow-y-auto">
                 {conversations.map((conv) => (
                   <button
                     key={conv.id}
                     onClick={() => handleConversationClick(conv.id)}
-                    className={`w-full p-4 text-left hover:bg-cream-100/50 transition-colors ${
-                      selectedConversation === conv.id ? 'bg-cream-100/70' : ''
+                    className={`w-full p-4 text-left hover:bg-white/5/50 transition-colors ${
+                      selectedConversation === conv.id ? 'bg-white/5/70' : ''
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -163,16 +163,16 @@ export default function AdminConversationsPage() {
                         ))}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-brown-800 truncate">
+                        <p className="text-sm font-medium text-white truncate">
                           {conv.participants.map(id => getUserName(id)).join(' & ')}
                         </p>
-                        <p className="text-xs text-bronze-500 truncate">
+                        <p className="text-xs text-white/50 truncate">
                           {conv.lastMessage?.text || '暂无消息'}
                         </p>
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="text-[10px] text-bronze-400">{conv.messageCount}条</p>
-                        <p className="text-[10px] text-bronze-400">{formatDate(conv.updated_at)}</p>
+                        <p className="text-[10px] text-white/40">{conv.messageCount}条</p>
+                        <p className="text-[10px] text-white/40">{formatDate(conv.updated_at)}</p>
                       </div>
                     </div>
                   </button>
@@ -180,23 +180,23 @@ export default function AdminConversationsPage() {
 
                 {conversations.length === 0 && (
                   <div className="p-8 text-center">
-                    <p className="text-sm text-bronze-500">暂无对话</p>
+                    <p className="text-sm text-white/50">暂无对话</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Messages Panel */}
-            <div className="lg:col-span-2 bg-cream-50 rounded-card shadow-md overflow-hidden">
+            <div className="lg:col-span-2 bg-transparent rounded-card shadow-md overflow-hidden">
               {selectedConversation ? (
                 <>
-                  <div className="p-4 border-b border-cream-100">
-                    <h3 className="font-medium text-brown-800">消息记录</h3>
+                  <div className="p-4 border-b border-white/8">
+                    <h3 className="font-medium text-white">消息记录</h3>
                   </div>
                   <div className="p-4 max-h-[600px] overflow-y-auto">
                     {loadingMessages ? (
                       <div className="flex items-center justify-center py-12">
-                        <p className="text-sm text-bronze-500">加载消息中...</p>
+                        <p className="text-sm text-white/50">加载消息中...</p>
                       </div>
                     ) : messages.length > 0 ? (
                       <div className="space-y-4">
@@ -209,21 +209,21 @@ export default function AdminConversationsPage() {
                           >
                             <Avatar src={msg.sender_avatar} alt={msg.sender_name} size="sm" />
                             <div className={`max-w-[70%] ${msg.sender_id === 'ai' ? 'text-right' : ''}`}>
-                              <p className="text-xs text-bronze-500 mb-1">{msg.sender_name}</p>
+                              <p className="text-xs text-white/50 mb-1">{msg.sender_name}</p>
                               <div className={`inline-block px-3 py-2 rounded-2xl ${
                                 msg.sender_id === 'ai'
-                                  ? 'bg-bronze-300 text-brown-800'
-                                  : 'bg-cream-100 text-brown-800 border border-cream-200/60'
+                                  ? 'bg-bronze-300 text-white'
+                                  : 'bg-white/5 text-white border border-white/10/60'
                               }`}>
                                 {msg.text && <p className="text-sm">{msg.text}</p>}
                                 {msg.image && (
                                   <img src={msg.image} alt="图片" className="mt-2 max-w-[200px] rounded-lg" />
                                 )}
                                 {msg.audio && (
-                                  <p className="text-xs text-bronze-500 mt-1">[语音消息]</p>
+                                  <p className="text-xs text-white/50 mt-1">[语音消息]</p>
                                 )}
                               </div>
-                              <p className="text-[10px] text-bronze-400 mt-1">
+                              <p className="text-[10px] text-white/40 mt-1">
                                 {formatDate(msg.created_at)}
                               </p>
                             </div>
@@ -232,7 +232,7 @@ export default function AdminConversationsPage() {
                       </div>
                     ) : (
                       <div className="flex items-center justify-center py-12">
-                        <p className="text-sm text-bronze-500">暂无消息</p>
+                        <p className="text-sm text-white/50">暂无消息</p>
                       </div>
                     )}
                   </div>
@@ -241,7 +241,7 @@ export default function AdminConversationsPage() {
                 <div className="flex items-center justify-center h-[600px]">
                   <div className="text-center">
                     <span className="text-4xl mb-4 block">💬</span>
-                    <p className="text-sm text-bronze-500">选择一个对话查看详情</p>
+                    <p className="text-sm text-white/50">选择一个对话查看详情</p>
                   </div>
                 </div>
               )}

@@ -88,7 +88,7 @@ export default function EditProfilePage() {
   if (!currentUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-sm text-bronze-500">加载中...</p>
+        <p className="text-sm text-white/50">加载中...</p>
       </div>
     );
   }
@@ -104,19 +104,19 @@ export default function EditProfilePage() {
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-display font-semibold text-brown-800">
+            <h1 className="text-2xl font-display font-semibold text-white">
               编辑资料
             </h1>
             <button
               onClick={() => router.back()}
-              className="text-sm text-bronze-500 hover:text-bronze-600"
+              className="text-sm text-white/50 hover:text-white/60"
             >
               取消
             </button>
           </div>
 
           <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
-            <h3 className="text-sm font-medium text-brown-800 mb-3">头像</h3>
+            <h3 className="text-sm font-medium text-white mb-3">头像</h3>
             <div className="flex items-center gap-4">
               <div 
                 className="relative cursor-pointer"
@@ -128,8 +128,8 @@ export default function EditProfilePage() {
                 </div>
               </div>
               <div>
-                <p className="text-sm text-brown-700">点击头像更换</p>
-                <p className="text-xs text-bronze-400 mt-1">选择或上传你喜欢的头像</p>
+                <p className="text-sm text-white/80">点击头像更换</p>
+                <p className="text-xs text-white/40 mt-1">选择或上传你喜欢的头像</p>
               </div>
             </div>
 
@@ -157,10 +157,10 @@ export default function EditProfilePage() {
                     }}
                   />
                   <span className="text-lg">📷</span>
-                  <span className="text-sm text-brown-700">上传本地图片</span>
+                  <span className="text-sm text-white/80">上传本地图片</span>
                 </label>
 
-                <p className="text-xs text-bronze-400 mb-2">或选择预设头像</p>
+                <p className="text-xs text-white/40 mb-2">或选择预设头像</p>
                 <div className="grid grid-cols-5 gap-3">
                   {AVATARS.map((avatarUrl) => (
                     <button
@@ -172,7 +172,7 @@ export default function EditProfilePage() {
                       className={`p-1 rounded-full border-2 transition-colors ${
                         avatar === avatarUrl
                           ? 'border-lime-500/40 bg-lime-500/10'
-                          : 'border-transparent hover:border-cream-200'
+                          : 'border-transparent hover:border-white/10'
                       }`}
                     >
                       <img src={avatarUrl} alt="avatar" className="w-full rounded-full" />
@@ -184,7 +184,7 @@ export default function EditProfilePage() {
           </div>
 
           <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
-            <h3 className="text-sm font-medium text-brown-800 mb-3">基本信息</h3>
+            <h3 className="text-sm font-medium text-white mb-3">基本信息</h3>
             <div className="flex flex-col gap-4">
               <Input
                 label="昵称"
@@ -211,21 +211,21 @@ export default function EditProfilePage() {
           </div>
 
           <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
-            <h3 className="text-sm font-medium text-brown-800 mb-3">个人简介</h3>
+            <h3 className="text-sm font-medium text-white mb-3">个人简介</h3>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="介绍一下你自己..."
               className="w-full h-24 p-3 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-lime-500/30 resize-none"
             />
-            <p className="text-[10px] text-bronze-400 mt-1 text-right">
+            <p className="text-[10px] text-white/40 mt-1 text-right">
               {bio.length}/200
             </p>
           </div>
 
           <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
-            <h3 className="text-sm font-medium text-brown-800 mb-3">兴趣爱好</h3>
-            <p className="text-xs text-bronze-500 mb-3">选择你的兴趣（最多6个）</p>
+            <h3 className="text-sm font-medium text-white mb-3">兴趣爱好</h3>
+            <p className="text-xs text-white/50 mb-3">选择你的兴趣（最多6个）</p>
             <div className="flex flex-wrap gap-2">
               {INTERESTS.map((interest) => {
                 const isSelected = selectedInterests.includes(interest);
@@ -248,7 +248,7 @@ export default function EditProfilePage() {
                 );
               })}
             </div>
-            <p className="text-[10px] text-bronze-400 mt-2">
+            <p className="text-[10px] text-white/40 mt-2">
               已选择 {selectedInterests.length}/6 个
             </p>
           </div>

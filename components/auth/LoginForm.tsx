@@ -29,7 +29,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="flex gap-1 bg-cream-100 rounded-card p-1">
+      <div className="flex gap-1 bg-white/5 rounded-card p-1">
         {(['phone', 'email'] as const).map((tab) => (
           <button
             key={tab}
@@ -37,8 +37,8 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-2 text-sm font-sans font-medium rounded-card transition-colors cursor-pointer ${
               activeTab === tab
-                ? 'bg-white text-brown-800 shadow-sm'
-                : 'text-brown-600 hover:text-brown-700'
+                ? 'bg-white text-white shadow-sm'
+                : 'text-white/60 hover:text-white/80'
             }`}
           >
             {tab === 'phone' ? '手机号' : '邮箱'}
@@ -75,7 +75,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
                 type="button"
                 onClick={handleSendCode}
                 disabled={codeSent}
-                className="text-sm text-bronze-400 hover:text-bronze-500 whitespace-nowrap pb-2.5 font-sans cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-sm text-white/40 hover:text-white/50 whitespace-nowrap pb-2.5 font-sans cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {codeSent ? '已发送' : '发送验证码'}
               </button>
@@ -110,7 +110,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
                 type="button"
                 onClick={handleSendCode}
                 disabled={codeSent}
-                className="text-sm text-bronze-400 hover:text-bronze-500 whitespace-nowrap pb-2.5 font-sans cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-sm text-white/40 hover:text-white/50 whitespace-nowrap pb-2.5 font-sans cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {codeSent ? '已发送' : '发送验证码'}
               </button>

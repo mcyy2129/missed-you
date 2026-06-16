@@ -107,16 +107,16 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-lg bg-white rounded-t-3xl"
           >
-            <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mt-3" />
+            <div className="w-10 h-1 bg-white/8 rounded-full mx-auto mt-3" />
 
             <div className="p-5">
               <div className="flex items-center justify-between mb-5">
-                <h3 className="text-lg font-semibold text-slate-800">
+                <h3 className="text-lg font-semibold text-white">
                   {step === 'select' ? '选择成员' : '群聊名称'}
                 </h3>
                 <button
                   onClick={handleClose}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/50 hover:bg-white/8 transition-colors"
                 >
                   ✕
                 </button>
@@ -127,7 +127,7 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                   {/* Selected Count */}
                   {selectedUsers.length > 0 && (
                     <div className="flex items-center gap-2 mb-4">
-                      <span className="text-xs text-slate-500">已选 {selectedUsers.length} 人</span>
+                      <span className="text-xs text-white/50">已选 {selectedUsers.length} 人</span>
                       <div className="flex -space-x-2">
                         {selectedUsers.slice(0, 5).map(id => {
                           const user = users.find(u => u.id === id);
@@ -162,7 +162,7 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                       className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
                         activeTab === 'users'
                           ? 'bg-slate-800 text-white'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          : 'bg-white/5 text-white/60 hover:bg-white/8'
                       }`}
                     >
                       👥 真实用户
@@ -172,7 +172,7 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                       className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
                         activeTab === 'ai'
                           ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          : 'bg-white/5 text-white/60 hover:bg-white/8'
                       }`}
                     >
                       🤖 AI 伙伴
@@ -189,7 +189,7 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                           whileTap={{ scale: 0.98 }}
                           onClick={() => toggleUser(user.id)}
                           className={`w-full flex items-center gap-3 p-3 rounded-xl transition-colors ${
-                            isSelected ? 'bg-rose-50' : 'hover:bg-slate-50'
+                            isSelected ? 'bg-rose-50' : 'hover:bg-white/5'
                           }`}
                         >
                           <div className="relative">
@@ -199,8 +199,8 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                             )}
                           </div>
                           <div className="flex-1 text-left">
-                            <p className="text-sm font-medium text-slate-800">{user.name}</p>
-                            <p className="text-xs text-slate-500">{user.city}</p>
+                            <p className="text-sm font-medium text-white">{user.name}</p>
+                            <p className="text-xs text-white/50">{user.city}</p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                             isSelected ? 'bg-rose-500 border-rose-500' : 'border-slate-300'
@@ -223,7 +223,7 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                           whileTap={{ scale: 0.98 }}
                           onClick={() => toggleUser(persona.id)}
                           className={`w-full flex items-center gap-3 p-3 rounded-xl transition-colors ${
-                            isSelected ? 'bg-violet-50' : 'hover:bg-slate-50'
+                            isSelected ? 'bg-violet-50' : 'hover:bg-white/5'
                           }`}
                         >
                           <div className="relative">
@@ -233,8 +233,8 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                             </div>
                           </div>
                           <div className="flex-1 text-left">
-                            <p className="text-sm font-medium text-slate-800">{persona.name}</p>
-                            <p className="text-xs text-slate-500 line-clamp-1">{persona.bio}</p>
+                            <p className="text-sm font-medium text-white">{persona.name}</p>
+                            <p className="text-xs text-white/50 line-clamp-1">{persona.bio}</p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                             isSelected ? 'bg-violet-500 border-violet-500' : 'border-slate-300'
@@ -264,7 +264,7 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                 <>
                   {/* Group Name Input */}
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       群聊名称
                     </label>
                     <input
@@ -272,17 +272,17 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                       value={groupName}
                       onChange={(e) => setGroupName(e.target.value)}
                       placeholder="输入群聊名称（可选）"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/30"
+                      className="w-full px-4 py-3 rounded-xl border border-white/10 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-500/30"
                       maxLength={20}
                     />
-                    <p className="text-xs text-slate-400 mt-1">
+                    <p className="text-xs text-white/40 mt-1">
                       不填则自动使用成员昵称
                     </p>
                   </div>
 
                   {/* Selected Members Preview */}
                   <div className="mb-6">
-                    <p className="text-xs text-slate-500 mb-2">群成员 ({selectedUsers.length})</p>
+                    <p className="text-xs text-white/50 mb-2">群成员 ({selectedUsers.length})</p>
                     <div className="flex flex-wrap gap-2">
                       {selectedUsers.map(id => {
                         const user = users.find(u => u.id === id);
@@ -291,9 +291,9 @@ export default function CreateGroupModal({ isOpen, onClose, onCreateGroup }: Cre
                         const isAI = id.startsWith('ai-');
                         return name ? (
                           <div key={id} className={`flex items-center gap-1.5 px-2 py-1 rounded-full ${
-                            isAI ? 'bg-violet-100' : 'bg-slate-100'
+                            isAI ? 'bg-violet-100' : 'bg-white/5'
                           }`}>
-                            <span className="text-xs text-slate-700">{name}</span>
+                            <span className="text-xs text-white/80">{name}</span>
                             {isAI && <span className="text-[8px] text-violet-600 font-medium">AI</span>}
                           </div>
                         ) : null;

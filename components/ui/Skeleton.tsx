@@ -15,7 +15,7 @@ export default function Skeleton({
   width,
   height 
 }: SkeletonProps) {
-  const baseClasses = 'bg-slate-200 animate-pulse';
+  const baseClasses = 'bg-white/8 animate-pulse';
   
   const variantClasses = {
     text: 'rounded',
@@ -36,7 +36,7 @@ export default function Skeleton({
 
 export function ProfileCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+    <div className="bg-white rounded-2xl p-4 shadow-sm border border-white/8">
       <div className="flex items-center gap-3">
         <Skeleton variant="circular" width={56} height={56} />
         <div className="flex-1">

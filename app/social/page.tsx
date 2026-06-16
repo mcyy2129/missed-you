@@ -292,19 +292,19 @@ export default function SocialPage() {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-semibold text-slate-800">{post.author_name}</h3>
+            <h3 className="text-sm font-semibold text-white">{post.author_name}</h3>
             {post.user_id.startsWith('ai-') && (
               <span className="px-1.5 py-0.5 bg-violet-100 text-violet-600 text-[10px] font-medium rounded">
                 AI 伙伴
               </span>
             )}
           </div>
-          <span className="text-[11px] text-slate-400">{formatTime(post.created_at)}</span>
+          <span className="text-[11px] text-white/40">{formatTime(post.created_at)}</span>
         </div>
         {currentUser?.id === post.user_id && (
           <button
             onClick={() => handleDeletePost(post.id)}
-            className="text-slate-400 hover:text-rose-500 transition-colors p-1"
+            className="text-white/40 hover:text-rose-500 transition-colors p-1"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -313,7 +313,7 @@ export default function SocialPage() {
         )}
       </div>
       
-      <p className="text-sm text-slate-700 leading-relaxed mb-4 whitespace-pre-wrap">
+      <p className="text-sm text-white/80 leading-relaxed mb-4 whitespace-pre-wrap">
         {post.content}
       </p>
       
@@ -332,12 +332,12 @@ export default function SocialPage() {
         </motion.div>
       )}
       
-      <div className="flex items-center gap-4 pt-3 border-t border-slate-100">
+      <div className="flex items-center gap-4 pt-3 border-t border-white/8">
         <motion.button
           whileTap={{ scale: 0.85 }}
           onClick={() => handleLike(post.id)}
           className={`flex items-center gap-1.5 text-sm transition-colors ${
-            post.isLiked ? 'text-rose-500' : 'text-slate-500 hover:text-rose-500'
+            post.isLiked ? 'text-rose-500' : 'text-white/50 hover:text-rose-500'
           }`}
         >
           <motion.span
@@ -351,7 +351,7 @@ export default function SocialPage() {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => router.push(`/social/${post.id}`)}
-          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+          className="flex items-center gap-1.5 text-sm text-white/50 hover:text-white/80 transition-colors"
         >
           <span>💬</span>
           <span className="text-xs">{post.comments_count}</span>
@@ -360,7 +360,7 @@ export default function SocialPage() {
           whileTap={{ scale: 0.85 }}
           onClick={() => handleBookmark(post.id)}
           className={`flex items-center gap-1.5 text-sm transition-colors ml-auto ${
-            post.isBookmarked ? 'text-amber-500' : 'text-slate-400 hover:text-amber-500'
+            post.isBookmarked ? 'text-amber-500' : 'text-white/40 hover:text-amber-500'
           }`}
         >
           <motion.span
@@ -386,10 +386,10 @@ export default function SocialPage() {
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-xl font-display font-semibold text-slate-800">
+              <h1 className="text-xl font-display font-semibold text-white">
                 社交广场
               </h1>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-white/50 mt-1">
                 分享生活，遇见有趣的人
               </p>
             </div>
@@ -421,7 +421,7 @@ export default function SocialPage() {
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'bg-slate-800 text-white shadow-md'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    : 'bg-white/5 text-white/60 hover:bg-white/8'
                 }`}
               >
                 <span>{tab.icon}</span>
@@ -437,7 +437,7 @@ export default function SocialPage() {
                   whileTap={{ scale: 0.95 }}
                   onClick={handleRefresh}
                   disabled={refreshing}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-full text-xs text-slate-600 hover:bg-slate-200 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-full text-xs text-white/60 hover:bg-white/8 transition-colors"
                 >
                   <motion.span
                     animate={refreshing ? { rotate: 360 } : {}}
@@ -461,7 +461,7 @@ export default function SocialPage() {
                 <div className="flex items-center justify-center py-20">
                   <div className="text-center">
                     <div className="w-10 h-10 border-4 border-rose-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                    <p className="text-sm text-slate-500">加载中...</p>
+                    <p className="text-sm text-white/50">加载中...</p>
                   </div>
                 </div>
               ) : posts.length === 0 ? (
@@ -473,8 +473,8 @@ export default function SocialPage() {
                   <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mb-4">
                     <span className="text-4xl">📝</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-800 mb-2">还没有动态</h3>
-                  <p className="text-sm text-slate-500 mb-6">快来发第一条动态吧！</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">还没有动态</h3>
+                  <p className="text-sm text-white/50 mb-6">快来发第一条动态吧！</p>
                   <div className="flex gap-3">
                     {isLoggedIn && (
                       <Button onClick={() => setShowCreateModal(true)}>
@@ -529,16 +529,16 @@ export default function SocialPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-semibold text-slate-800">{person.name}</h3>
+                      <h3 className="text-sm font-semibold text-white">{person.name}</h3>
                       {person.isAI && (
                         <span className="px-1.5 py-0.5 bg-violet-100 text-violet-600 text-[10px] font-medium rounded">
                           AI 伙伴
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-500 line-clamp-1">{person.bio || person.city}</p>
+                    <p className="text-xs text-white/50 line-clamp-1">{person.bio || person.city}</p>
                   </div>
-                  <div className="text-slate-400">
+                  <div className="text-white/40">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -555,8 +555,8 @@ export default function SocialPage() {
                   <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-4">
                     <span className="text-4xl">⭐</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-800 mb-2">登录查看收藏</h3>
-                  <p className="text-sm text-slate-500 mb-6">登录后可以收藏喜欢的动态</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">登录查看收藏</h3>
+                  <p className="text-sm text-white/50 mb-6">登录后可以收藏喜欢的动态</p>
                   <Button onClick={() => router.push('/auth')}>
                     去登录
                   </Button>
@@ -566,8 +566,8 @@ export default function SocialPage() {
                   <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-4">
                     <span className="text-4xl">⭐</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-800 mb-2">还没有收藏</h3>
-                  <p className="text-sm text-slate-500">浏览动态时点击 ⭐ 即可收藏</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">还没有收藏</h3>
+                  <p className="text-sm text-white/50">浏览动态时点击 ⭐ 即可收藏</p>
                 </div>
               ) : (
                 <div className="flex flex-col gap-4">
@@ -601,13 +601,13 @@ export default function SocialPage() {
               className="w-full max-w-lg rounded-t-3xl p-6 shadow-2xl"
               style={{ background: 'rgba(20, 20, 24, 0.97)', borderTop: '1px solid rgba(255,255,255,0.1)' }}
             >
-              <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4" />
+              <div className="w-10 h-1 bg-white/8 rounded-full mx-auto mb-4" />
               
               <div className="flex items-center justify-between mb-5">
-                <h3 className="text-lg font-semibold text-slate-800">发布动态</h3>
+                <h3 className="text-lg font-semibold text-white">发布动态</h3>
                 <button
                   onClick={() => setShowCreateModal(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/50 hover:bg-white/8 transition-colors"
                 >
                   ✕
                 </button>
@@ -634,7 +634,7 @@ export default function SocialPage() {
               )}
               
               <div className="flex items-center justify-between mt-5">
-                <label className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 cursor-pointer transition-colors">
+                <label className="flex items-center gap-2 text-sm text-white/50 hover:text-white/80 cursor-pointer transition-colors">
                   <input
                     type="file"
                     accept="image/*"

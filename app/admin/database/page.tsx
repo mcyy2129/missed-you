@@ -46,13 +46,13 @@ export default function AdminDatabasePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-white/5">
         <Navbar />
         <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
               <div className="w-12 h-12 border-4 border-rose-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-sm text-slate-500">加载数据库信息...</p>
+              <p className="text-sm text-white/50">加载数据库信息...</p>
             </div>
           </div>
         </main>
@@ -70,7 +70,7 @@ export default function AdminDatabasePage() {
   ] : [];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-white/5">
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
@@ -83,14 +83,14 @@ export default function AdminDatabasePage() {
           <div className="mb-6">
             <button
               onClick={() => router.push('/admin')}
-              className="text-sm text-slate-500 hover:text-slate-700 mb-2"
+              className="text-sm text-white/50 hover:text-white/80 mb-2"
             >
               ← 返回管理后台
             </button>
-            <h1 className="text-2xl font-display font-semibold text-slate-800">
+            <h1 className="text-2xl font-display font-semibold text-white">
               数据库管理
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-white/50 mt-1">
               数据库状态监控与管理
             </p>
           </div>
@@ -126,8 +126,8 @@ export default function AdminDatabasePage() {
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Bar Chart - Table Counts */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-              <h3 className="font-semibold text-slate-800 mb-4">各表数据量</h3>
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+              <h3 className="font-semibold text-white mb-4">各表数据量</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={stats?.tableStats || []}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -142,8 +142,8 @@ export default function AdminDatabasePage() {
             </div>
 
             {/* Pie Chart - Distribution */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-              <h3 className="font-semibold text-slate-800 mb-4">数据分布</h3>
+            <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+              <h3 className="font-semibold text-white mb-4">数据分布</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -169,8 +169,8 @@ export default function AdminDatabasePage() {
           </div>
 
           {/* Table Statistics Grid */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100 mb-6">
-            <h3 className="font-semibold text-slate-800 mb-4">数据表详情</h3>
+          <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8 mb-6">
+            <h3 className="font-semibold text-white mb-4">数据表详情</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {stats?.tableStats.map((table, index) => (
                 <motion.div
@@ -178,22 +178,22 @@ export default function AdminDatabasePage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="p-4 bg-slate-50 rounded-xl"
+                  className="p-4 bg-white/5 rounded-xl"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-slate-800">{table.name}</span>
-                    <span className="text-xs text-slate-500">{table.size}</span>
+                    <span className="text-sm font-medium text-white">{table.name}</span>
+                    <span className="text-xs text-white/50">{table.size}</span>
                   </div>
-                  <p className="text-2xl font-bold text-slate-800">{table.count.toLocaleString()}</p>
-                  <p className="text-xs text-slate-500 mt-1">条记录</p>
+                  <p className="text-2xl font-bold text-white">{table.count.toLocaleString()}</p>
+                  <p className="text-xs text-white/50 mt-1">条记录</p>
                 </motion.div>
               ))}
             </div>
           </div>
 
           {/* Schema Info */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100 mb-6">
-            <h3 className="font-semibold text-slate-800 mb-4">数据表结构</h3>
+          <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8 mb-6">
+            <h3 className="font-semibold text-white mb-4">数据表结构</h3>
             <div className="space-y-4">
               {[
                 {
@@ -221,14 +221,14 @@ export default function AdminDatabasePage() {
                   columns: ['id (TEXT, PK)', 'post_id (TEXT, FK)', 'user_id (TEXT, FK)', 'content (TEXT)', 'created_at (INTEGER)']
                 },
               ].map((table) => (
-                <div key={table.name} className="border border-slate-200 rounded-xl overflow-hidden">
-                  <div className="px-4 py-2 bg-slate-50 border-b border-slate-200">
-                    <span className="text-sm font-medium text-slate-800">{table.name}</span>
+                <div key={table.name} className="border border-white/10 rounded-xl overflow-hidden">
+                  <div className="px-4 py-2 bg-white/5 border-b border-white/10">
+                    <span className="text-sm font-medium text-white">{table.name}</span>
                   </div>
                   <div className="p-4">
                     <div className="flex flex-wrap gap-2">
                       {table.columns.map((col) => (
-                        <span key={col} className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-600 font-mono">
+                        <span key={col} className="px-2 py-1 bg-white/5 rounded text-xs text-white/60 font-mono">
                           {col}
                         </span>
                       ))}
@@ -240,11 +240,11 @@ export default function AdminDatabasePage() {
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
-            <h3 className="font-semibold text-slate-800 mb-4">最近活动</h3>
+          <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+            <h3 className="font-semibold text-white mb-4">最近活动</h3>
             <div className="space-y-3">
               {stats?.recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center">
                       <span className="text-lg">
@@ -255,11 +255,11 @@ export default function AdminDatabasePage() {
                       </span>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-slate-800">{activity.action}</p>
-                      <p className="text-xs text-slate-500">{activity.time}</p>
+                      <p className="text-sm font-medium text-white">{activity.action}</p>
+                      <p className="text-xs text-white/50">{activity.time}</p>
                     </div>
                   </div>
-                  <span className="text-lg font-bold text-slate-800">+{activity.count}</span>
+                  <span className="text-lg font-bold text-white">+{activity.count}</span>
                 </div>
               ))}
             </div>

@@ -72,14 +72,14 @@ export default function ChatInput({ onSend }: ChatInputProps) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-slate-200/60 safe-area-bottom">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-white/10/60 safe-area-bottom">
       <AnimatePresence>
         {imagePreview && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-b border-slate-100"
+            className="overflow-hidden border-b border-white/8"
           >
             <div className="px-4 py-2 flex items-center gap-3">
               <div className="relative">
@@ -98,7 +98,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
                   </svg>
                 </motion.button>
               </div>
-              <p className="text-xs text-slate-500">点击发送按钮发送图片</p>
+              <p className="text-xs text-white/50">点击发送按钮发送图片</p>
             </div>
           </motion.div>
         )}
@@ -113,7 +113,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-4 py-3 border-b border-slate-100">
+            <div className="px-4 py-3 border-b border-white/8">
               <div className="flex gap-2 mb-2">
                 {EMOJI_PAGES.map((_, idx) => (
                   <button
@@ -122,7 +122,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
                     className={`w-6 h-6 rounded-full text-xs font-medium transition-colors ${
                       emojiPage === idx
                         ? 'bg-rose-500 text-white'
-                        : 'bg-slate-200 text-slate-600 hover:bg-slate-300'
+                        : 'bg-white/5 text-white/40 hover:bg-white/8'
                     }`}
                   >
                     {idx + 1}
@@ -135,7 +135,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
                     key={emoji}
                     whileTap={{ scale: 0.8 }}
                     onClick={() => insertEmoji(emoji)}
-                    className="text-xl p-1 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="text-xl p-1 hover:bg-white/5 rounded-lg transition-colors"
                   >
                     {emoji}
                   </motion.button>
@@ -155,7 +155,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="flex flex-wrap gap-3 px-4 py-3 border-b border-slate-100">
+            <div className="flex flex-wrap gap-3 px-4 py-3 border-b border-white/8">
               {STICKERS.map((sticker) => (
                 <motion.button
                   key={sticker}
@@ -180,7 +180,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
             setShowStickers(false);
           }}
           className={`p-2 rounded-full transition-colors ${
-            showEmojis ? 'bg-rose-100 text-rose-500' : 'text-slate-400 hover:text-slate-600'
+            showEmojis ? 'bg-rose-100 text-rose-500' : 'text-white/40 hover:text-white/60'
           }`}
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -195,7 +195,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
             setShowEmojis(false);
           }}
           className={`p-2 rounded-full transition-colors ${
-            showStickers ? 'bg-rose-100 text-rose-500' : 'text-slate-400 hover:text-slate-600'
+            showStickers ? 'bg-rose-100 text-rose-500' : 'text-white/40 hover:text-white/60'
           }`}
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -206,7 +206,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => fileInputRef.current?.click()}
-          className="p-2 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
+          className="p-2 rounded-full text-white/40 hover:text-white/60 transition-colors"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -221,7 +221,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="输入消息..."
-            className="w-full px-4 py-2.5 bg-slate-100 rounded-full text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:bg-white transition-all"
+            className="w-full px-4 py-2.5 bg-white/5 rounded-full text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-lime-500/20 focus:bg-white/8 transition-all border border-white/8"
           />
         </div>
 
@@ -231,8 +231,8 @@ export default function ChatInput({ onSend }: ChatInputProps) {
           disabled={!text.trim() && !imagePreview}
           className={`p-2.5 rounded-full transition-all ${
             text.trim() || imagePreview
-              ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-md shadow-rose-200'
-              : 'bg-slate-100 text-slate-400'
+              ? 'bg-gradient-to-r from-lime-500/30 to-emerald-500/30 text-lime-400 border border-lime-500/30 shadow-md shadow-lime-500/10'
+              : 'bg-white/5 text-white/40'
           }`}
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -79,10 +79,10 @@ export default function HeartBurst({ show, onComplete }: HeartBurstProps) {
               transition={{ delay: 0.15, duration: 0.5, type: 'spring', stiffness: 200 }}
               className="relative z-10 text-center"
             >
-              <p className="text-3xl font-display font-bold text-brown-800 drop-shadow-lg">
+              <p className="text-3xl font-display font-bold text-white drop-shadow-lg">
                 It&apos;s a Match!
               </p>
-              <p className="text-sm text-bronze-500 mt-1">你们互相喜欢</p>
+              <p className="text-sm text-white/50 mt-1">你们互相喜欢</p>
             </motion.div>
           </div>
         </motion.div>

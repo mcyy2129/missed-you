@@ -141,13 +141,13 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-white/5">
         <Navbar />
         <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
               <div className="w-12 h-12 border-4 border-rose-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-sm text-slate-500">加载设置...</p>
+              <p className="text-sm text-white/50">加载设置...</p>
             </div>
           </div>
         </main>
@@ -156,7 +156,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-white/5">
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
@@ -170,14 +170,14 @@ export default function SettingsPage() {
             <div>
               <button
                 onClick={() => router.push('/admin')}
-                className="text-sm text-slate-500 hover:text-slate-700 mb-2"
+                className="text-sm text-white/50 hover:text-white/80 mb-2"
               >
                 ← 返回管理后台
               </button>
-              <h1 className="text-2xl font-display font-semibold text-slate-800">
+              <h1 className="text-2xl font-display font-semibold text-white">
                 站点设置
               </h1>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-white/50 mt-1">
                 配置平台参数，设置将实时生效
               </p>
             </div>
@@ -204,7 +204,7 @@ export default function SettingsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Sidebar Tabs */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-2 sticky top-24">
+              <div className="bg-white rounded-2xl shadow-md border border-white/8 p-2 sticky top-24">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
@@ -212,7 +212,7 @@ export default function SettingsPage() {
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors ${
                       activeTab === tab.id
                         ? 'bg-rose-50 text-rose-600'
-                        : 'text-slate-600 hover:bg-slate-50'
+                        : 'text-white/60 hover:bg-white/5'
                     }`}
                   >
                     <span className="text-lg">{tab.icon}</span>
@@ -224,7 +224,7 @@ export default function SettingsPage() {
 
             {/* Settings Content */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
+              <div className="bg-white rounded-2xl shadow-md border border-white/8 p-6">
                 {/* General Settings */}
                 {activeTab === 'general' && (
                   <motion.div
@@ -232,7 +232,7 @@ export default function SettingsPage() {
                     animate={{ opacity: 1, x: 0 }}
                     className="space-y-6"
                   >
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4">基本设置</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">基本设置</h3>
 
                     <Input
                       label="站点名称"
@@ -241,13 +241,13 @@ export default function SettingsPage() {
                     />
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         站点描述
                       </label>
                       <textarea
                         value={settings.general.siteDescription}
                         onChange={(e) => updateSetting('general', 'siteDescription', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent resize-none"
+                        className="w-full px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent resize-none"
                         rows={3}
                       />
                     </div>
@@ -266,10 +266,10 @@ export default function SettingsPage() {
                       placeholder="https://example.com/favicon.ico"
                     />
 
-                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
-                        <p className="text-sm font-medium text-slate-800">维护模式</p>
-                        <p className="text-xs text-slate-500">开启后普通用户无法访问</p>
+                        <p className="text-sm font-medium text-white">维护模式</p>
+                        <p className="text-xs text-white/50">开启后普通用户无法访问</p>
                       </div>
                       <button
                         onClick={() => updateSetting('general', 'maintenanceMode', !settings.general.maintenanceMode)}
@@ -294,16 +294,16 @@ export default function SettingsPage() {
                     animate={{ opacity: 1, x: 0 }}
                     className="space-y-6"
                   >
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4">匹配算法配置</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">匹配算法配置</h3>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         匹配算法
                       </label>
                       <select
                         value={settings.matching.algorithm}
                         onChange={(e) => updateSetting('matching', 'algorithm', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent"
                       >
                         <option value="interest">兴趣匹配</option>
                         <option value="location">地理位置</option>
@@ -313,7 +313,7 @@ export default function SettingsPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         最大距离 (公里): {settings.matching.maxDistance}
                       </label>
                       <input
@@ -322,7 +322,7 @@ export default function SettingsPage() {
                         max="500"
                         value={settings.matching.maxDistance}
                         onChange={(e) => updateSetting('matching', 'maxDistance', parseInt(e.target.value))}
-                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-500"
+                        className="w-full h-2 bg-white/8 rounded-lg appearance-none cursor-pointer accent-rose-500"
                       />
                     </div>
 
@@ -348,7 +348,7 @@ export default function SettingsPage() {
                         value={settings.matching.matchCooldown.toString()}
                         onChange={(e) => updateSetting('matching', 'matchCooldown', parseInt(e.target.value) || 24)}
                       />
-                      <p className="text-xs text-slate-500 mt-1">用户再次看到同一人的最短间隔</p>
+                      <p className="text-xs text-white/50 mt-1">用户再次看到同一人的最短间隔</p>
                     </div>
                   </motion.div>
                 )}
@@ -360,12 +360,12 @@ export default function SettingsPage() {
                     animate={{ opacity: 1, x: 0 }}
                     className="space-y-6"
                   >
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4">AI 设置</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">AI 设置</h3>
 
-                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                       <div>
-                        <p className="text-sm font-medium text-slate-800">启用 AI 聊天</p>
-                        <p className="text-xs text-slate-500">允许用户与 AI 角色对话</p>
+                        <p className="text-sm font-medium text-white">启用 AI 聊天</p>
+                        <p className="text-xs text-white/50">允许用户与 AI 角色对话</p>
                       </div>
                       <button
                         onClick={() => updateSetting('ai', 'enabled', !settings.ai.enabled)}
@@ -388,17 +388,17 @@ export default function SettingsPage() {
                         value={settings.ai.responseDelay.toString()}
                         onChange={(e) => updateSetting('ai', 'responseDelay', parseInt(e.target.value) || 1)}
                       />
-                      <p className="text-xs text-slate-500 mt-1">模拟真人打字的延迟时间</p>
+                      <p className="text-xs text-white/50 mt-1">模拟真人打字的延迟时间</p>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         AI 性格类型
                       </label>
                       <select
                         value={settings.ai.personality}
                         onChange={(e) => updateSetting('ai', 'personality', e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent"
                       >
                         <option value="friendly">友好亲切</option>
                         <option value="witty">幽默风趣</option>
@@ -415,7 +415,7 @@ export default function SettingsPage() {
                         value={settings.ai.maxDailyMessages.toString()}
                         onChange={(e) => updateSetting('ai', 'maxDailyMessages', parseInt(e.target.value) || 50)}
                       />
-                      <p className="text-xs text-slate-500 mt-1">每个 AI 角色每天最多发送的消息数</p>
+                      <p className="text-xs text-white/50 mt-1">每个 AI 角色每天最多发送的消息数</p>
                     </div>
                   </motion.div>
                 )}
@@ -427,7 +427,7 @@ export default function SettingsPage() {
                     animate={{ opacity: 1, x: 0 }}
                     className="space-y-6"
                   >
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4">通知设置</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">通知设置</h3>
 
                     {[
                       { key: 'emailEnabled', label: '邮件通知', desc: '通过邮件发送重要通知' },
@@ -435,10 +435,10 @@ export default function SettingsPage() {
                       { key: 'matchNotification', label: '匹配通知', desc: '当有新的匹配时通知' },
                       { key: 'messageNotification', label: '消息通知', desc: '收到新消息时通知' },
                     ].map((item) => (
-                      <div key={item.key} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div key={item.key} className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                         <div>
-                          <p className="text-sm font-medium text-slate-800">{item.label}</p>
-                          <p className="text-xs text-slate-500">{item.desc}</p>
+                          <p className="text-sm font-medium text-white">{item.label}</p>
+                          <p className="text-xs text-white/50">{item.desc}</p>
                         </div>
                         <button
                           onClick={() => updateSetting('notifications', item.key, !(settings.notifications as any)[item.key])}
@@ -464,17 +464,17 @@ export default function SettingsPage() {
                     animate={{ opacity: 1, x: 0 }}
                     className="space-y-6"
                   >
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4">隐私设置</h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">隐私设置</h3>
 
                     {[
                       { key: 'showOnlineStatus', label: '显示在线状态', desc: '允许其他用户看到你是否在线' },
                       { key: 'showLastSeen', label: '显示最后在线时间', desc: '允许其他用户看到你最后活跃时间' },
                       { key: 'allowProfileIndexing', label: '允许搜索引擎索引', desc: '允许搜索引擎收录用户资料页' },
                     ].map((item) => (
-                      <div key={item.key} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                      <div key={item.key} className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                         <div>
-                          <p className="text-sm font-medium text-slate-800">{item.label}</p>
-                          <p className="text-xs text-slate-500">{item.desc}</p>
+                          <p className="text-sm font-medium text-white">{item.label}</p>
+                          <p className="text-xs text-white/50">{item.desc}</p>
                         </div>
                         <button
                           onClick={() => updateSetting('privacy', item.key, !(settings.privacy as any)[item.key])}
@@ -498,7 +498,7 @@ export default function SettingsPage() {
                         value={settings.privacy.dataRetentionDays.toString()}
                         onChange={(e) => updateSetting('privacy', 'dataRetentionDays', parseInt(e.target.value) || 365)}
                       />
-                      <p className="text-xs text-slate-500 mt-1">用户数据自动清理的保留期限</p>
+                      <p className="text-xs text-white/50 mt-1">用户数据自动清理的保留期限</p>
                     </div>
                   </motion.div>
                 )}

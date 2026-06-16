@@ -75,7 +75,7 @@ export default function SettingsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-2xl font-display font-semibold text-brown-800 mb-6">
+          <h1 className="text-2xl font-display font-semibold text-white mb-6">
             设置
           </h1>
 
@@ -89,14 +89,14 @@ export default function SettingsPage() {
             >
               <Avatar src={currentUser.avatar} alt={currentUser.name} size="lg" />
               <div className="flex-1">
-                <h3 className="text-base font-semibold text-brown-800">
+                <h3 className="text-base font-semibold text-white">
                   {currentUser.name}
                 </h3>
-                <p className="text-xs text-brown-600">
+                <p className="text-xs text-white/60">
                   {currentUser.age}岁 · {currentUser.city}
                 </p>
               </div>
-              <span className="text-brown-600 text-lg">›</span>
+              <span className="text-white/60 text-lg">›</span>
             </motion.div>
           )}
 
@@ -113,21 +113,21 @@ export default function SettingsPage() {
                 variants={item}
                 className="glass-card border border-white/10 rounded-card overflow-hidden"
               >
-                <h4 className="px-5 pt-4 pb-2 text-xs font-medium text-bronze-500 uppercase tracking-wide">
+                <h4 className="px-5 pt-4 pb-2 text-xs font-medium text-white/50 uppercase tracking-wide">
                   {group.title}
                 </h4>
                 {group.items.map((settingItem, idx) => (
                   <div
                     key={settingItem.label}
                     className={`flex items-center justify-between px-5 py-3.5 cursor-pointer hover:bg-white/5 transition-colors ${
-                      idx < group.items.length - 1 ? 'border-b border-cream-100' : ''
+                      idx < group.items.length - 1 ? 'border-b border-white/8' : ''
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-base">{settingItem.icon}</span>
-                      <span className="text-sm text-brown-700">{settingItem.label}</span>
+                      <span className="text-sm text-white/80">{settingItem.label}</span>
                     </div>
-                    <span className="text-brown-600/50 text-sm">›</span>
+                    <span className="text-white/60/50 text-sm">›</span>
                   </div>
                 ))}
               </motion.div>
@@ -138,7 +138,7 @@ export default function SettingsPage() {
           <div className="mt-8 text-center">
             <button 
               onClick={handleLogout}
-              className="text-sm text-bronze-500 hover:text-bronze-400 transition-colors"
+              className="text-sm text-white/50 hover:text-white/40 transition-colors"
             >
               退出登录
             </button>

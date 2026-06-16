@@ -25,7 +25,7 @@ export default function QuickReplies({ replies, onSelect }: QuickRepliesProps) {
           transition={{ delay: index * 0.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onSelect(reply)}
-          className="shrink-0 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200/50 text-xs text-slate-700 hover:bg-slate-200/60 transition-colors"
+          className="shrink-0 px-3 py-1.5 rounded-full bg-white/5 border border-white/10/50 text-xs text-white/80 hover:bg-white/8/60 transition-colors"
         >
           {reply}
         </motion.button>

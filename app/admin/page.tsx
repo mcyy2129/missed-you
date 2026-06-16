@@ -78,7 +78,7 @@ export default function AdminPage() {
 
   if (!isAuthed) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-white/5 flex items-center justify-center p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -349,20 +349,20 @@ export default function AdminPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-100">
+                <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
                   <h3 className="font-semibold text-white mb-4">最近注册用户</h3>
                   {stats?.recentUsers && stats.recentUsers.length > 0 ? (
                     <div className="space-y-3">
                       {stats.recentUsers.map((user: any) => (
-                        <div key={user.id} className="flex items-center gap-3 p-2 rounded-lg bg-slate-50">
-                          <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm">
+                        <div key={user.id} className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
+                          <div className="w-8 h-8 rounded-full bg-white/8 flex items-center justify-center text-sm">
                             {user.name?.[0] || '?'}
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-white truncate">{user.name}</p>
                             <p className="text-xs text-white/50 truncate">{user.email}</p>
                           </div>
-                          <span className="text-[10px] text-slate-400">
+                          <span className="text-[10px] text-white/40">
                             {new Date(user.created_at).toLocaleDateString('zh-CN')}
                           </span>
                         </div>
@@ -373,20 +373,20 @@ export default function AdminPage() {
                   )}
                 </div>
 
-                <div className="bg-white rounded-2xl p-5 shadow-md border border-slate-100">
+                <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
                   <h3 className="font-semibold text-white mb-4">最近消息</h3>
                   {stats?.recentMessages && stats.recentMessages.length > 0 ? (
                     <div className="space-y-3">
                       {stats.recentMessages.slice(0, 5).map((msg: any) => (
-                        <div key={msg.id} className="flex items-start gap-3 p-2 rounded-lg bg-slate-50">
-                          <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm shrink-0">
+                        <div key={msg.id} className="flex items-start gap-3 p-2 rounded-lg bg-white/5">
+                          <div className="w-8 h-8 rounded-full bg-white/8 flex items-center justify-center text-sm shrink-0">
                             {msg.sender_name?.[0] || '?'}
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-xs text-white/50">{msg.sender_name}</p>
                             <p className="text-sm text-white/70 truncate">{msg.text || '[图片/语音]'}</p>
                           </div>
-                          <span className="text-[10px] text-slate-400 shrink-0">
+                          <span className="text-[10px] text-white/40 shrink-0">
                             {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>

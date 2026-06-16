@@ -97,7 +97,7 @@ export default function OnboardingPage() {
             >
               {step === 0 && (
                 <div className="flex flex-col gap-4">
-                  <h2 className="font-display text-2xl text-brown-800 text-center">
+                  <h2 className="font-display text-2xl text-white text-center">
                     你的名字？
                   </h2>
                   <Input
@@ -111,7 +111,7 @@ export default function OnboardingPage() {
 
               {step === 1 && (
                 <div className="flex flex-col gap-4">
-                  <h2 className="font-display text-2xl text-brown-800 text-center">
+                  <h2 className="font-display text-2xl text-white text-center">
                     基本信息
                   </h2>
                   <Input
@@ -132,10 +132,10 @@ export default function OnboardingPage() {
 
               {step === 2 && (
                 <div className="flex flex-col gap-4">
-                  <h2 className="font-display text-2xl text-brown-800 text-center">
+                  <h2 className="font-display text-2xl text-white text-center">
                     兴趣标签
                   </h2>
-                  <p className="text-sm text-brown-600 text-center">
+                  <p className="text-sm text-white/60 text-center">
                     选择你的兴趣，帮助我们为你匹配
                   </p>
                   <div className="flex flex-wrap gap-2 justify-center mt-2">

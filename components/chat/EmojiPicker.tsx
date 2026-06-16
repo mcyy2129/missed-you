@@ -98,7 +98,7 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="overflow-hidden bg-white border-t border-slate-200/50"
+      className="overflow-hidden bg-white border-t border-white/10/50"
     >
       <input
         ref={fileInputRef}
@@ -109,11 +109,11 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
       />
 
       {/* Tab Switcher */}
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-slate-100">
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-white/8">
         <button
           onClick={() => setShowStickers(false)}
           className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-            !showStickers ? 'bg-rose-100 text-rose-600' : 'text-slate-500 hover:bg-slate-100'
+            !showStickers ? 'bg-rose-100 text-rose-600' : 'text-white/50 hover:bg-white/5'
           }`}
         >
           😊 表情
@@ -121,7 +121,7 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
         <button
           onClick={() => setShowStickers(true)}
           className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-            showStickers ? 'bg-rose-100 text-rose-600' : 'text-slate-500 hover:bg-slate-100'
+            showStickers ? 'bg-rose-100 text-rose-600' : 'text-white/50 hover:bg-white/5'
           }`}
         >
           🎨 贴纸
@@ -129,7 +129,7 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
         <div className="flex-1" />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-500 hover:bg-slate-100 transition-colors"
+          className="px-3 py-1.5 rounded-full text-xs font-medium text-white/50 hover:bg-white/5 transition-colors"
         >
           ➕ 上传
         </button>
@@ -145,7 +145,7 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => onStickerSelect?.(sticker)}
-                className="text-3xl p-2 rounded-xl hover:bg-slate-100 transition-colors"
+                className="text-3xl p-2 rounded-xl hover:bg-white/5 transition-colors"
               >
                 {sticker}
               </motion.button>
@@ -155,8 +155,8 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
           {/* Custom Emojis */}
           {customEmojis.length > 0 && (
             <>
-              <div className="mt-3 pt-3 border-t border-slate-100">
-                <p className="text-xs text-slate-500 mb-2">我的表情包</p>
+              <div className="mt-3 pt-3 border-t border-white/8">
+                <p className="text-xs text-white/50 mb-2">我的表情包</p>
                 <div className="grid grid-cols-6 gap-2">
                   {customEmojis.map((emoji) => (
                     <motion.button
@@ -164,7 +164,7 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={() => onSelect(emoji.url)}
-                      className="w-12 h-12 rounded-xl overflow-hidden hover:bg-slate-100 transition-colors"
+                      className="w-12 h-12 rounded-xl overflow-hidden hover:bg-white/5 transition-colors"
                     >
                       <img src={emoji.url} alt={emoji.name} className="w-full h-full object-cover" />
                     </motion.button>
@@ -186,7 +186,7 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
                 className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium shrink-0 transition-colors ${
                   activeCategory === index
                     ? 'bg-rose-100 text-rose-600'
-                    : 'text-slate-500 hover:bg-slate-100'
+                    : 'text-white/50 hover:bg-white/5'
                 }`}
               >
                 <span>{category.icon}</span>
@@ -204,7 +204,7 @@ export default function EmojiPicker({ onSelect, onStickerSelect, onClose }: Emoj
                   whileHover={{ scale: 1.3 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => onSelect(emoji)}
-                  className="text-2xl p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                  className="text-2xl p-1.5 rounded-lg hover:bg-white/5 transition-colors"
                 >
                   {emoji}
                 </motion.button>

@@ -32,7 +32,7 @@ function ProfileContent() {
       <div className="min-h-screen">
         <Navbar />
         <main className="mx-auto max-w-lg px-4 pt-20 pb-28 flex flex-col items-center justify-center">
-          <p className="text-sm text-bronze-500">用户不存在</p>
+          <p className="text-sm text-white/50">用户不存在</p>
         </main>
         <BottomNav />
       </div>
@@ -52,7 +52,7 @@ function ProfileContent() {
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-display font-semibold text-brown-800">
+            <h1 className="text-2xl font-display font-semibold text-white">
               {isOwn ? '我的主页' : '个人资料'}
             </h1>
           </div>
@@ -61,15 +61,15 @@ function ProfileContent() {
             <div className="flex items-center gap-5 mb-4">
               <Avatar src={user.avatar} alt={user.name} size="xl" />
               <div>
-                <h2 className="text-xl font-semibold text-brown-800">
+                <h2 className="text-xl font-semibold text-white">
                   {user.name}
-                  <span className="text-sm font-normal text-bronze-500 ml-2">{user.age}岁</span>
+                  <span className="text-sm font-normal text-white/50 ml-2">{user.age}岁</span>
                 </h2>
-                <p className="text-sm text-brown-600 mt-0.5">{user.city}</p>
+                <p className="text-sm text-white/60 mt-0.5">{user.city}</p>
               </div>
             </div>
 
-            <p className="text-sm text-brown-600 leading-relaxed mb-4">
+            <p className="text-sm text-white/60 leading-relaxed mb-4">
               {user.bio}
             </p>
 
@@ -77,8 +77,8 @@ function ProfileContent() {
 
             {isOwn && user.userCode && (
               <div className="mt-4 p-3 bg-white/5 rounded-lg">
-                <p className="text-xs text-bronze-400 mb-1">我的邀请码</p>
-                <p className="text-lg font-mono font-semibold text-brown-800 tracking-wider">{user.userCode}</p>
+                <p className="text-xs text-white/40 mb-1">我的邀请码</p>
+                <p className="text-lg font-mono font-semibold text-white tracking-wider">{user.userCode}</p>
               </div>
             )}
 
@@ -115,7 +115,7 @@ function ProfileContent() {
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-brown-800 mb-3">相册</h3>
+            <h3 className="text-lg font-semibold text-white mb-3">相册</h3>
             <PhotoGrid 
               photos={photos} 
               editable={isOwn} 
@@ -134,8 +134,8 @@ export default function ProfilePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-cream-50 flex items-center justify-center">
-          <p className="text-sm text-bronze-500">加载中...</p>
+        <div className="min-h-screen bg-transparent flex items-center justify-center">
+          <p className="text-sm text-white/50">加载中...</p>
         </div>
       }
     >

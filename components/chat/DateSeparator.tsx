@@ -15,11 +15,11 @@ export default function DateSeparator({ timestamp }: DateSeparatorProps) {
       className="flex items-center justify-center py-4"
     >
       <div className="flex items-center gap-3">
-        <div className="h-px w-12 bg-slate-200/60" />
-        <span className="text-[11px] text-slate-400/70 font-medium">
+        <div className="h-px w-12 bg-white/8/60" />
+        <span className="text-[11px] text-white/40/70 font-medium">
           {formatDateSeparator(timestamp)}
         </span>
-        <div className="h-px w-12 bg-slate-200/60" />
+        <div className="h-px w-12 bg-white/8/60" />
       </div>
     </motion.div>
   );
