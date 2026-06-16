@@ -87,14 +87,14 @@ export default function EditProfilePage() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-cream-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-sm text-bronze-500">加载中...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen">
       <Navbar />
 
       <main className="mx-auto max-w-lg px-4 pt-20 pb-24">
@@ -115,7 +115,7 @@ export default function EditProfilePage() {
             </button>
           </div>
 
-          <div className="bg-cream-50 rounded-card p-5 shadow-md mb-6">
+          <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
             <h3 className="text-sm font-medium text-brown-800 mb-3">头像</h3>
             <div className="flex items-center gap-4">
               <div 
@@ -139,7 +139,7 @@ export default function EditProfilePage() {
                 animate={{ height: 'auto', opacity: 1 }}
                 className="mt-4 overflow-hidden"
               >
-                <label className="flex items-center justify-center gap-2 w-full py-3 mb-3 bg-cream-100 border border-dashed border-bronze-300 rounded-lg cursor-pointer hover:bg-cream-200 transition-colors">
+                <label className="flex items-center justify-center gap-2 w-full py-3 mb-3 bg-white/5 border border-dashed border-white/20 rounded-lg cursor-pointer hover:bg-white/10 transition-colors">
                   <input
                     type="file"
                     accept="image/*"
@@ -171,7 +171,7 @@ export default function EditProfilePage() {
                       }}
                       className={`p-1 rounded-full border-2 transition-colors ${
                         avatar === avatarUrl
-                          ? 'border-bronze-300 bg-cream-100'
+                          ? 'border-lime-500/40 bg-lime-500/10'
                           : 'border-transparent hover:border-cream-200'
                       }`}
                     >
@@ -183,7 +183,7 @@ export default function EditProfilePage() {
             )}
           </div>
 
-          <div className="bg-cream-50 rounded-card p-5 shadow-md mb-6">
+          <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
             <h3 className="text-sm font-medium text-brown-800 mb-3">基本信息</h3>
             <div className="flex flex-col gap-4">
               <Input
@@ -210,20 +210,20 @@ export default function EditProfilePage() {
             </div>
           </div>
 
-          <div className="bg-cream-50 rounded-card p-5 shadow-md mb-6">
+          <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
             <h3 className="text-sm font-medium text-brown-800 mb-3">个人简介</h3>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="介绍一下你自己..."
-              className="w-full h-24 p-3 bg-cream-100 border border-cream-200 rounded-lg text-sm text-brown-800 placeholder:text-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-300/30 resize-none"
+              className="w-full h-24 p-3 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-lime-500/30 resize-none"
             />
             <p className="text-[10px] text-bronze-400 mt-1 text-right">
               {bio.length}/200
             </p>
           </div>
 
-          <div className="bg-cream-50 rounded-card p-5 shadow-md mb-6">
+          <div className="glass-card rounded-card p-5 shadow-md mb-6 border border-white/10">
             <h3 className="text-sm font-medium text-brown-800 mb-3">兴趣爱好</h3>
             <p className="text-xs text-bronze-500 mb-3">选择你的兴趣（最多6个）</p>
             <div className="flex flex-wrap gap-2">
@@ -239,8 +239,8 @@ export default function EditProfilePage() {
                       isSelected
                         ? 'bg-bronze-300 text-white'
                         : isDisabled
-                          ? 'bg-cream-100 text-brown-400 cursor-not-allowed'
-                          : 'bg-cream-100 text-brown-600 hover:bg-cream-200'
+                          ? 'bg-white/5 text-white/30 cursor-not-allowed'
+                          : 'bg-white/5 text-white/60 hover:bg-white/10'
                     }`}
                   >
                     {interest}

@@ -62,7 +62,7 @@ export default function OnboardingPage() {
       <div className="w-full max-w-sm flex flex-col gap-8">
         {/* Progress dots */}
         <div className="flex flex-col items-center gap-3">
-          <div className="w-full h-1 rounded-full bg-cream-200">
+          <div className="w-full h-1 rounded-full bg-white/10">
             <motion.div
               className="h-full rounded-full bg-bronze-300"
               initial={false}
@@ -75,7 +75,7 @@ export default function OnboardingPage() {
               <div
                 key={i}
                 className={`w-2 h-2 rounded-full transition-colors ${
-                  i <= step ? 'bg-bronze-300' : 'bg-cream-200'
+                  i <= step ? 'bg-lime-500' : 'bg-white/10'
                 }`}
               />
             ))}
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
                           className={`px-4 py-2 rounded-full text-sm font-sans transition-colors cursor-pointer select-none ${
                             isSelected
                               ? 'bg-bronze-300 text-white'
-                              : 'bg-cream-100 text-brown-600 hover:bg-cream-200'
+                              : 'bg-white/5 text-white/60 hover:bg-white/10'
                           }`}
                         >
                           {interest}

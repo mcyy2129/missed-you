@@ -132,7 +132,7 @@ export default function UserProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen">
         <div className="w-8 h-8 border-2 border-rose-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -140,7 +140,7 @@ export default function UserProfilePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen">
         <p className="text-slate-500">用户不存在</p>
       </div>
     );
@@ -149,12 +149,12 @@ export default function UserProfilePage() {
   const isOwnProfile = currentUser?.id === user.id;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       {/* Header */}
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-100"
+        className="fixed top-0 left-0 right-0 z-50 glass-nav"
       >
         <div className="mx-auto max-w-lg flex items-center justify-between px-4 h-12">
           <button

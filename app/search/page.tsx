@@ -47,12 +47,12 @@ export default function SearchUserPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen">
       {/* Header */}
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-200/60"
+        className="fixed top-0 left-0 right-0 z-50 glass-nav"
       >
         <div className="mx-auto max-w-lg flex items-center gap-3 px-4 h-12">
           <button
@@ -72,7 +72,7 @@ export default function SearchUserPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-4"
+          className="glass-card rounded-2xl p-4 shadow-sm border border-white/10 mb-4"
         >
           <p className="text-sm text-slate-600 mb-3">输入对方的邀请码添加好友</p>
           <div className="flex gap-2">
@@ -82,7 +82,7 @@ export default function SearchUserPage() {
               onChange={(e) => setSearchCode(e.target.value.toUpperCase())}
               placeholder="输入8位邀请码"
               maxLength={8}
-              className="flex-1 px-4 py-3 bg-slate-50 rounded-xl text-center font-mono text-lg tracking-widest text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:bg-white transition-all uppercase"
+              className="flex-1 px-4 py-3 bg-white/5 rounded-xl text-center font-mono text-lg tracking-widest text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-lime-500/20 focus:bg-white/10 transition-all uppercase"
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
             <motion.button
@@ -121,7 +121,7 @@ export default function SearchUserPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100"
+              className="glass-card rounded-2xl p-4 shadow-sm border border-white/10"
             >
               <div className="flex items-center gap-4">
                 <div className="relative">

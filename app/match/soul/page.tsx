@@ -110,7 +110,7 @@ export default function SoulMatchPage() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-cream-50 flex items-center justify-center">
+      <div className="min-h-screen">
         <div className="text-center">
           <h2 className="text-xl font-display font-semibold text-brown-800 mb-4">
             请先登录
@@ -122,7 +122,7 @@ export default function SoulMatchPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-cream-50">
+    <div className="relative min-h-screen">
       <Navbar />
       
       <main className="mx-auto max-w-lg px-4 pt-20 pb-28">
@@ -269,7 +269,7 @@ export default function SoulMatchPage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
-                className="bg-white rounded-3xl p-6 shadow-xl w-full max-w-sm mb-6"
+                className="rounded-3xl p-6 shadow-xl w-full max-w-sm mb-6 glass-card border border-white/10"
               >
                 <div className="flex items-center gap-4 mb-4">
                   <div className="relative">

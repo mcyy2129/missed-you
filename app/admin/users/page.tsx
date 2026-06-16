@@ -124,7 +124,7 @@ export default function AdminUsersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen">
         <Navbar />
         <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
@@ -170,10 +170,10 @@ export default function AdminUsersPage() {
             />
           </div>
 
-          <div className="bg-cream-50 rounded-card shadow-md overflow-hidden">
+          <div className="rounded-card shadow-md overflow-hidden glass-card">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-cream-100/50">
+                <thead className="bg-white/5">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">用户</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-brown-600">邀请码</th>
@@ -198,7 +198,7 @@ export default function AdminUsersPage() {
                 </thead>
                 <tbody className="divide-y divide-cream-100">
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-cream-100/30">
+                    <tr key={user.id} className="hover:bg-white/5">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <Avatar src={user.avatar} alt={user.name} size="sm" />
@@ -275,7 +275,8 @@ export default function AdminUsersPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-cream-50 rounded-card p-6 w-full max-w-md shadow-xl"
+              className="rounded-card p-6 w-full max-w-md shadow-xl"
+              style={{ background: 'rgba(20, 20, 24, 0.97)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
               <h3 className="text-lg font-semibold text-brown-800 mb-4">编辑用户</h3>
               
@@ -332,7 +333,8 @@ export default function AdminUsersPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-cream-50 rounded-card p-6 w-full max-w-sm shadow-xl"
+              className="rounded-card p-6 w-full max-w-sm shadow-xl"
+              style={{ background: 'rgba(20, 20, 24, 0.97)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
               <h3 className="text-lg font-semibold text-brown-800 mb-4">修改密码</h3>
               
@@ -384,7 +386,8 @@ export default function AdminUsersPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-cream-50 rounded-card p-6 w-full max-w-sm shadow-xl"
+              className="rounded-card p-6 w-full max-w-sm shadow-xl"
+              style={{ background: 'rgba(20, 20, 24, 0.97)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
               <h3 className="text-lg font-semibold text-brown-800 mb-2">确认删除</h3>
               <p className="text-sm text-brown-600 mb-6">

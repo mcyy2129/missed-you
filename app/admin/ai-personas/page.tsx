@@ -123,7 +123,7 @@ export default function AIPersonasAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen">
       <Navbar />
       
       <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">

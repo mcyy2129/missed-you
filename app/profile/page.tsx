@@ -29,7 +29,7 @@ function ProfileContent() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-cream-50">
+      <div className="min-h-screen">
         <Navbar />
         <main className="mx-auto max-w-lg px-4 pt-20 pb-28 flex flex-col items-center justify-center">
           <p className="text-sm text-bronze-500">用户不存在</p>
@@ -42,7 +42,7 @@ function ProfileContent() {
   const isMatched = matchedUsers.has(user.id);
 
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen">
       <Navbar />
 
       <main className="mx-auto max-w-lg px-4 pt-20 pb-28">
@@ -57,7 +57,7 @@ function ProfileContent() {
             </h1>
           </div>
 
-          <div className="bg-cream-50 rounded-card p-6 shadow-md mb-6">
+          <div className="glass-card rounded-card p-6 shadow-md mb-6 border border-white/10">
             <div className="flex items-center gap-5 mb-4">
               <Avatar src={user.avatar} alt={user.name} size="xl" />
               <div>
@@ -76,7 +76,7 @@ function ProfileContent() {
             <InterestTags interests={user.interests} />
 
             {isOwn && user.userCode && (
-              <div className="mt-4 p-3 bg-cream-100 rounded-lg">
+              <div className="mt-4 p-3 bg-white/5 rounded-lg">
                 <p className="text-xs text-bronze-400 mb-1">我的邀请码</p>
                 <p className="text-lg font-mono font-semibold text-brown-800 tracking-wider">{user.userCode}</p>
               </div>

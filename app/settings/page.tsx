@@ -66,7 +66,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream-50">
+    <div className="min-h-screen">
       <Navbar />
 
       <main className="mx-auto max-w-lg px-4 pt-20 pb-28">
@@ -82,7 +82,7 @@ export default function SettingsPage() {
           {/* Profile Summary Card */}
           {currentUser && (
             <motion.div
-              className="bg-cream-50 rounded-card p-5 shadow-md mb-6 flex items-center gap-4 cursor-pointer"
+              className="glass-card rounded-card p-5 shadow-md mb-6 flex items-center gap-4 cursor-pointer border border-white/10"
               whileHover={{ y: -2 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={() => (window.location.href = '/profile')}
@@ -111,7 +111,7 @@ export default function SettingsPage() {
               <motion.div
                 key={group.title}
                 variants={item}
-                className="bg-cream-50 border border-cream-200 rounded-card overflow-hidden"
+                className="glass-card border border-white/10 rounded-card overflow-hidden"
               >
                 <h4 className="px-5 pt-4 pb-2 text-xs font-medium text-bronze-500 uppercase tracking-wide">
                   {group.title}
@@ -119,7 +119,7 @@ export default function SettingsPage() {
                 {group.items.map((settingItem, idx) => (
                   <div
                     key={settingItem.label}
-                    className={`flex items-center justify-between px-5 py-3.5 cursor-pointer hover:bg-cream-100/50 transition-colors ${
+                    className={`flex items-center justify-between px-5 py-3.5 cursor-pointer hover:bg-white/5 transition-colors ${
                       idx < group.items.length - 1 ? 'border-b border-cream-100' : ''
                     }`}
                   >

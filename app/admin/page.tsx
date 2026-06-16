@@ -95,7 +95,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-100">
+          <div            className="rounded-2xl p-6 shadow-md glass-card border border-white/10">
             <form onSubmit={handleLogin} className="flex flex-col gap-4">
               <Input
                 label="管理员邮箱"
@@ -138,7 +138,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen">
       <Navbar />
       
       <main className="mx-auto max-w-6xl px-4 pt-20 pb-8">
@@ -245,7 +245,7 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/users'}
-                  className="bg-white rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow border border-slate-100"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">👥</span>
                   <h3 className="font-semibold text-slate-800 mb-1">用户管理</h3>
@@ -256,7 +256,7 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/ai-personas'}
-                  className="bg-white rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow border border-slate-100"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">🤖</span>
                   <h3 className="font-semibold text-slate-800 mb-1">AI 角色管理</h3>
@@ -278,7 +278,7 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/model-config'}
-                  className="bg-white rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow border border-slate-100"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">⚙️</span>
                   <h3 className="font-semibold text-slate-800 mb-1">模型配置</h3>
@@ -313,7 +313,7 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/conversations'}
-                  className="bg-white rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow border border-slate-100"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">💬</span>
                   <h3 className="font-semibold text-slate-800 mb-1">对话管理</h3>
@@ -326,7 +326,7 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/database'}
-                  className="bg-white rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow border border-slate-100"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">🗄️</span>
                   <h3 className="font-semibold text-slate-800 mb-1">数据库</h3>
@@ -337,7 +337,7 @@ export default function AdminPage() {
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/ai-personas'}
-                  className="bg-white rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow border border-slate-100"
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
                   <span className="text-2xl mb-2 block">🤖</span>
                   <h3 className="font-semibold text-slate-800 mb-1">AI 角色管理</h3>

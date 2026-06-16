@@ -411,7 +411,7 @@ export default function ChatWindowPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="fixed top-14 left-0 right-0 z-40 bg-white border-b border-slate-200 shadow-lg"
+            className="fixed top-14 left-0 right-0 z-40 glass-nav shadow-lg"
           >
             <div className="max-w-lg mx-auto p-4">
               <h4 className="text-sm font-medium text-slate-800 mb-3">群成员</h4>
@@ -532,7 +532,7 @@ export default function ChatWindowPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl"
+              className="rounded-2xl p-6 w-full max-w-sm shadow-xl glass-card border border-white/10"
             >
               <div className="text-center mb-5">
                 <div className="text-5xl mb-3">🌟</div>

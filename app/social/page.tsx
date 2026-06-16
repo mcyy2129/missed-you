@@ -279,7 +279,7 @@ export default function SocialPage() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, type: 'spring', stiffness: 200 }}
-      className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md transition-all"
+      className="rounded-2xl p-5 shadow-sm border border-white/10 hover:border-white/15 transition-all glass-card"
     >
       <div className="flex items-start gap-3 mb-3">
         <div className="relative">
@@ -375,7 +375,7 @@ export default function SocialPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen">
       <Navbar />
       
       <main className="mx-auto max-w-lg px-4 pt-20 pb-28">
@@ -514,7 +514,7 @@ export default function SocialPage() {
                       else router.push(`/profile?id=${person.id}`);
                     }
                   }}
-                  className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-sm border border-slate-100 cursor-pointer hover:shadow-md transition-all"
+                  className="flex items-center gap-4 p-4 rounded-2xl shadow-sm border border-white/10 cursor-pointer hover:border-white/15 transition-all glass-card"
                 >
                   <div className="relative">
                     <Avatar src={person.avatar} alt={person.name} size="md" />
@@ -598,7 +598,8 @@ export default function SocialPage() {
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg bg-white rounded-t-3xl p-6 shadow-2xl"
+              className="w-full max-w-lg rounded-t-3xl p-6 shadow-2xl"
+              style={{ background: 'rgba(20, 20, 24, 0.97)', borderTop: '1px solid rgba(255,255,255,0.1)' }}
             >
               <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mb-4" />
               
@@ -616,7 +617,8 @@ export default function SocialPage() {
                 value={newPostContent}
                 onChange={(e) => setNewPostContent(e.target.value)}
                 placeholder="分享你的想法..."
-                className="w-full h-32 p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-300 resize-none"
+                className="w-full h-32 p-4 rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-lime-500/30 focus:border-lime-500/30 resize-none"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
               />
 
               {newPostImage && (

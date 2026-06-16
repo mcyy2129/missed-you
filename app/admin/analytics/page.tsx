@@ -36,7 +36,7 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen">
         <Navbar />
         <main className="mx-auto max-w-7xl px-4 pt-20 pb-8">
           <div className="flex items-center justify-center py-20">
@@ -51,7 +51,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen">
       <Navbar />
 
       <main className="mx-auto max-w-7xl px-4 pt-20 pb-8">
