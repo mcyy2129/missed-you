@@ -173,7 +173,7 @@ const ConversationList = memo(function ConversationList({ searchQuery = '' }: Co
                           <motion.span
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
-                            className="shrink-0 min-w-[18px] h-[18px] rounded-full bg-lime-500 text-black text-[10px] font-medium flex items-center justify-center px-1"
+                            className="shrink-0 min-w-[18px] h-[18px] rounded-full bg-rose-500 text-white text-[10px] font-medium flex items-center justify-center px-1"
                           >
                             {conv.unreadCount > 99 ? '99+' : conv.unreadCount}
                           </motion.span>
@@ -241,7 +241,7 @@ const ConversationList = memo(function ConversationList({ searchQuery = '' }: Co
                         <motion.span
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="shrink-0 min-w-[18px] h-[18px] rounded-full bg-lime-500 text-black text-[10px] font-medium flex items-center justify-center px-1"
+                          className="shrink-0 min-w-[18px] h-[18px] rounded-full bg-rose-500 text-white text-[10px] font-medium flex items-center justify-center px-1"
                         >
                           {unreadCount > 99 ? '99+' : unreadCount}
                         </motion.span>

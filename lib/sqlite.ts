@@ -344,8 +344,10 @@ export async function getStats() {
   `);
 
   const { rows: recentMessages } = await pool.query(`
-    SELECT m.*, u.name as sender_name FROM messages m
-    JOIN users u ON m.sender_id = u.id
+    SELECT m.*,
+      CASE WHEN u.id IS NOT NULL THEN u.name ELSE m.sender_id END as sender_name
+    FROM messages m
+    LEFT JOIN users u ON m.sender_id = u.id
     ORDER BY m.created_at DESC LIMIT 10
   `);
 
@@ -424,23 +426,44 @@ export async function createPost(userId: string, content: string, image?: string
 
 export async function getPosts(limit: number = 20, offset: number = 0): Promise<any[]> {
   const { rows } = await pool.query(`
-    SELECT p.*, u.name as author_name, u.avatar as author_avatar
+    SELECT p.*,
+      CASE WHEN u.id IS NOT NULL THEN u.name ELSE p.user_id END as author_name,
+      CASE WHEN u.id IS NOT NULL THEN u.avatar ELSE '' END as author_avatar
     FROM posts p
-    JOIN users u ON p.user_id = u.id
+    LEFT JOIN users u ON p.user_id = u.id
     ORDER BY p.created_at DESC
     LIMIT $1 OFFSET $2
   `, [limit, offset]);
-  return rows;
+
+  const { AI_PERSONAS } = await import('./ai-personas');
+  return rows.map(row => {
+    if (row.user_id.startsWith('ai-')) {
+      const persona = AI_PERSONAS.find(p => p.id === row.user_id);
+      if (persona) {
+        return { ...row, author_name: persona.name, author_avatar: persona.avatar };
+      }
+    }
+    return row;
+  });
 }
 
 export async function getPostById(id: string): Promise<any | null> {
   const { rows } = await pool.query(`
-    SELECT p.*, u.name as author_name, u.avatar as author_avatar
+    SELECT p.*,
+      CASE WHEN u.id IS NOT NULL THEN u.name ELSE p.user_id END as author_name,
+      CASE WHEN u.id IS NOT NULL THEN u.avatar ELSE '' END as author_avatar
     FROM posts p
-    JOIN users u ON p.user_id = u.id
+    LEFT JOIN users u ON p.user_id = u.id
     WHERE p.id = $1
   `, [id]);
-  return rows[0] || null;
+  if (!rows[0]) return null;
+  const row = rows[0];
+  if (row.user_id.startsWith('ai-')) {
+    const { AI_PERSONAS } = await import('./ai-personas');
+    const persona = AI_PERSONAS.find(p => p.id === row.user_id);
+    if (persona) return { ...row, author_name: persona.name, author_avatar: persona.avatar };
+  }
+  return row;
 }
 
 export async function deletePost(id: string): Promise<void> {
@@ -466,13 +489,23 @@ export async function createComment(postId: string, userId: string, content: str
 
 export async function getPostComments(postId: string): Promise<any[]> {
   const { rows } = await pool.query(`
-    SELECT c.*, u.name as author_name, u.avatar as author_avatar
+    SELECT c.*,
+      CASE WHEN u.id IS NOT NULL THEN u.name ELSE c.user_id END as author_name,
+      CASE WHEN u.id IS NOT NULL THEN u.avatar ELSE '' END as author_avatar
     FROM comments c
-    JOIN users u ON c.user_id = u.id
+    LEFT JOIN users u ON c.user_id = u.id
     WHERE c.post_id = $1
     ORDER BY c.created_at ASC
   `, [postId]);
-  return rows;
+
+  const { AI_PERSONAS } = await import('./ai-personas');
+  return rows.map(row => {
+    if (row.user_id.startsWith('ai-')) {
+      const persona = AI_PERSONAS.find(p => p.id === row.user_id);
+      if (persona) return { ...row, author_name: persona.name, author_avatar: persona.avatar };
+    }
+    return row;
+  });
 }
 
 export async function deleteComment(id: string): Promise<void> {
@@ -505,13 +538,20 @@ export async function isPostLiked(postId: string, userId: string): Promise<boole
 
 export async function getUserPosts(userId: string): Promise<any[]> {
   const { rows } = await pool.query(`
-    SELECT p.*, u.name as author_name, u.avatar as author_avatar
+    SELECT p.*,
+      CASE WHEN u.id IS NOT NULL THEN u.name ELSE p.user_id END as author_name,
+      CASE WHEN u.id IS NOT NULL THEN u.avatar ELSE '' END as author_avatar
     FROM posts p
-    JOIN users u ON p.user_id = u.id
+    LEFT JOIN users u ON p.user_id = u.id
     WHERE p.user_id = $1
     ORDER BY p.created_at DESC
   `, [userId]);
-  return rows;
+
+  if (!userId.startsWith('ai-')) return rows;
+  const { AI_PERSONAS } = await import('./ai-personas');
+  const persona = AI_PERSONAS.find(p => p.id === userId);
+  if (!persona) return rows;
+  return rows.map(row => ({ ...row, author_name: persona.name, author_avatar: persona.avatar }));
 }
 
 export async function togglePostBookmark(postId: string, userId: string): Promise<boolean> {

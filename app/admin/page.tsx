@@ -78,7 +78,7 @@ export default function AdminPage() {
 
   if (!isAuthed) {
     return (
-      <div className="min-h-screen bg-white/5 flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -175,7 +175,7 @@ export default function AdminPage() {
           ) : (
             <>
               {/* Quick Actions */}
-              <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl p-5 mb-8 border border-rose-100">
+              <div className="glass-card rounded-2xl p-5 mb-8 border border-white/10">
                 <h3 className="font-semibold text-white mb-3">快捷操作</h3>
                 <div className="flex flex-wrap gap-3">
                   <button
@@ -208,26 +208,45 @@ export default function AdminPage() {
                   </button>
                   <button
                     onClick={fetchStats}
-                    className="px-4 py-2 bg-rose-500 text-white rounded-xl text-sm hover:bg-rose-600 transition-colors"
+                    className="px-4 py-2 bg-rose-500/80 text-white rounded-xl text-sm hover:bg-rose-500 transition-colors"
                   >
                     🔄 刷新数据
+                  </button>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const res = await fetch('/api/admin/ai-autopost/batch', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ count: 3 }),
+                        });
+                        const data = await res.json();
+                        alert(`成功生成 ${data.created} 条AI动态！`);
+                        fetchStats();
+                      } catch (e) {
+                        alert('AI发帖失败');
+                      }
+                    }}
+                    className="px-4 py-2 bg-violet-500/80 text-white rounded-xl text-sm hover:bg-violet-500 transition-colors"
+                  >
+                    🤖 AI自动发帖
                   </button>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 {[
-                  { label: '总用户数', value: stats?.userCount || 0, icon: '👥', color: 'bg-blue-50' },
-                  { label: '总对话数', value: stats?.conversationCount || 0, icon: '💬', color: 'bg-green-50' },
-                  { label: '总消息数', value: stats?.messageCount || 0, icon: '✉️', color: 'bg-yellow-50' },
-                  { label: '总匹配数', value: stats?.matchCount || 0, icon: '💕', color: 'bg-pink-50' },
+                  { label: '总用户数', value: stats?.userCount || 0, icon: '👥', accent: 'from-blue-500/20 to-blue-600/10' },
+                  { label: '总对话数', value: stats?.conversationCount || 0, icon: '💬', accent: 'from-emerald-500/20 to-emerald-600/10' },
+                  { label: '总消息数', value: stats?.messageCount || 0, icon: '✉️', accent: 'from-amber-500/20 to-amber-600/10' },
+                  { label: '总匹配数', value: stats?.matchCount || 0, icon: '💕', accent: 'from-rose-500/20 to-rose-600/10' },
                 ].map((stat, index) => (
                   <motion.div
                     key={stat.label}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`${stat.color} rounded-2xl p-5 shadow-sm`}
+                    className={`bg-gradient-to-br ${stat.accent} glass-card rounded-2xl p-5 border border-white/10`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{stat.icon}</span>
@@ -328,6 +347,17 @@ export default function AdminPage() {
                 <motion.button
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() => window.location.href = '/admin/douyin-videos'}
+                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
+                >
+                  <span className="text-2xl mb-2 block">🎬</span>
+                  <h3 className="font-semibold text-white mb-1">抖音视频管理</h3>
+                  <p className="text-xs text-white/50">管理抖音页面的视频内容</p>
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => window.location.href = '/admin/database'}
                   className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
                 >
@@ -349,7 +379,7 @@ export default function AdminPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
+                <div className="glass-card rounded-2xl p-5 border border-white/10">
                   <h3 className="font-semibold text-white mb-4">最近注册用户</h3>
                   {stats?.recentUsers && stats.recentUsers.length > 0 ? (
                     <div className="space-y-3">
@@ -373,7 +403,7 @@ export default function AdminPage() {
                   )}
                 </div>
 
-                <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
+                <div className="glass-card rounded-2xl p-5 border border-white/10">
                   <h3 className="font-semibold text-white mb-4">最近消息</h3>
                   {stats?.recentMessages && stats.recentMessages.length > 0 ? (
                     <div className="space-y-3">

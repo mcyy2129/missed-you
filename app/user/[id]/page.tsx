@@ -52,7 +52,8 @@ export default function UserProfilePage() {
           }
         } else {
           const res = await fetch('/api/admin/users');
-          const users = await res.json();
+          const data = await res.json();
+          const users = Array.isArray(data) ? data : [];
           const found = users.find((u: any) => u.id === id);
           if (found) {
             setUser(found);
@@ -93,7 +94,10 @@ export default function UserProfilePage() {
     try {
       const res = await fetch('/api/users/follow', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-user-id': currentUser.id,
+        },
         body: JSON.stringify({ 
           targetUserId: user.id, 
           action: isFollowing ? 'unfollow' : 'follow' 
@@ -116,17 +120,23 @@ export default function UserProfilePage() {
   const handleSendMessage = async () => {
     if (!currentUser || !user) return;
 
-    const existingConv = conversations.find(c => 
-      !c.isGroup && 
-      c.participants.includes(currentUser.id) && 
-      c.participants.includes(user.id)
-    );
+    try {
+      const existingConv = conversations.find(c => 
+        !c.isGroup && 
+        c.participants.includes(currentUser.id) && 
+        c.participants.includes(user.id)
+      );
 
-    if (existingConv) {
-      router.push(`/chat/${existingConv.id}`);
-    } else {
-      const newConv = await createConversation(user.id);
-      router.push(`/chat/${newConv.id}`);
+      if (existingConv) {
+        router.push(`/chat/${existingConv.id}`);
+      } else {
+        const newConv = await createConversation(user.id);
+        if (newConv && newConv.id) {
+          router.push(`/chat/${newConv.id}`);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to start conversation:', error);
     }
   };
 
@@ -179,7 +189,7 @@ export default function UserProfilePage() {
           className="relative px-6 pt-8 pb-6"
         >
           {/* Background Pattern */}
-          <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 opacity-50" />
+          <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-pink-500/10 to-purple-500/10" />
           
           <div className="relative flex flex-col items-center">
             {/* Avatar */}
@@ -328,7 +338,7 @@ export default function UserProfilePage() {
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-medium text-white/50">开场白</span>
             </div>
-            <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-xl p-3">
+            <div className="glass-card rounded-xl p-3 border border-white/10">
               <p className="text-sm text-white/80 leading-relaxed italic">"{user.greeting}"</p>
             </div>
           </motion.div>
@@ -351,10 +361,10 @@ export default function UserProfilePage() {
                   key={skillId}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium ${
                     skillId === 'skill-web-search'
-                      ? 'bg-emerald-100 text-emerald-700'
+                      ? 'bg-emerald-500/20 text-emerald-400'
                       : skillId.startsWith('codex-')
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'bg-violet-100 text-violet-700'
+                        ? 'bg-blue-500/20 text-blue-400'
+                        : 'bg-violet-500/20 text-violet-400'
                   }`}
                 >
                   {skillId === 'skill-web-search' ? '🔍 联网搜索' : skillId.startsWith('codex-') ? '⚡ ' : ''}{skillId.replace('skill-', '').replace('codex-', '')}

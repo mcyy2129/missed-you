@@ -166,7 +166,7 @@ export default function AIPersonasAdminPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-white rounded-2xl p-5 shadow-md border border-white/8 hover:shadow-lg transition-shadow"
+                  className="glass-card rounded-2xl p-5 border border-white/10 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div className="relative">
@@ -188,10 +188,10 @@ export default function AIPersonasAdminPage() {
                             return skill ? (
                               <span key={skillId} className={`text-[8px] px-1.5 py-0.5 rounded ${
                                 skillId === 'skill-web-search'
-                                  ? 'bg-emerald-100 text-emerald-600'
+                                  ? 'bg-emerald-500/20 text-emerald-400'
                                   : skillId.startsWith('codex-')
-                                    ? 'bg-blue-100 text-blue-600'
-                                    : 'bg-violet-100 text-violet-600'
+                                    ? 'bg-blue-500/20 text-blue-400'
+                                    : 'bg-violet-500/20 text-violet-400'
                               }`}>
                                 {skillId === 'skill-web-search' ? '🔍' : skillId.startsWith('codex-') ? '⚡' : '🎨'} {skill.name}
                               </span>
@@ -210,7 +210,7 @@ export default function AIPersonasAdminPage() {
                     {persona.interests.slice(0, 4).map(interest => (
                       <span
                         key={interest}
-                        className="px-2 py-0.5 bg-white/5 text-white/60 rounded-full text-[10px]"
+                        className="px-2 py-0.5 bg-white/10 text-white/60 rounded-full text-[10px]"
                       >
                         {interest}
                       </span>
@@ -261,7 +261,7 @@ export default function AIPersonasAdminPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl"
+              className="glass-card rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl border border-white/10"
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-white">

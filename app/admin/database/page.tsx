@@ -126,7 +126,7 @@ export default function AdminDatabasePage() {
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* Bar Chart - Table Counts */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+            <div className="glass-card rounded-2xl p-6 border border-white/10">
               <h3 className="font-semibold text-white mb-4">各表数据量</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={stats?.tableStats || []}>
@@ -142,7 +142,7 @@ export default function AdminDatabasePage() {
             </div>
 
             {/* Pie Chart - Distribution */}
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+            <div className="glass-card rounded-2xl p-6 border border-white/10">
               <h3 className="font-semibold text-white mb-4">数据分布</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
@@ -169,7 +169,7 @@ export default function AdminDatabasePage() {
           </div>
 
           {/* Table Statistics Grid */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8 mb-6">
+          <div className="glass-card rounded-2xl p-6 border border-white/10 mb-6">
             <h3 className="font-semibold text-white mb-4">数据表详情</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {stats?.tableStats.map((table, index) => (
@@ -192,7 +192,7 @@ export default function AdminDatabasePage() {
           </div>
 
           {/* Schema Info */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8 mb-6">
+          <div className="glass-card rounded-2xl p-6 border border-white/10 mb-6">
             <h3 className="font-semibold text-white mb-4">数据表结构</h3>
             <div className="space-y-4">
               {[
@@ -240,13 +240,13 @@ export default function AdminDatabasePage() {
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white rounded-2xl p-6 shadow-md border border-white/8">
+          <div className="glass-card rounded-2xl p-6 border border-white/10">
             <h3 className="font-semibold text-white mb-4">最近活动</h3>
             <div className="space-y-3">
               {stats?.recentActivity.map((activity, index) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-rose-500/15 flex items-center justify-center">
                       <span className="text-lg">
                         {activity.action === '用户注册' ? '👤' :
                          activity.action === '新消息' ? '💬' :

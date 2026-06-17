@@ -111,11 +111,9 @@ export default function ChatWindowPage() {
 
         setConversations((prev) => {
           const conv = prev.find(c => c.id === id);
-          if (!conv) return prev;
           
-          const existingIds = new Set(conv.messages.map(m => m.id));
           const newMessages = serverMessages
-            .filter((m: any) => !existingIds.has(m.id))
+            .filter((m: any) => !conv || !conv.messages.some(msg => msg.id === m.id))
             .map((m: any) => ({
               id: m.id,
               senderId: m.senderId,
@@ -126,7 +124,20 @@ export default function ChatWindowPage() {
               isRead: m.isRead,
             }));
 
-          if (newMessages.length === 0) return prev;
+          if (newMessages.length === 0 && conv) return prev;
+
+          if (!conv) {
+            const newConv = {
+              id,
+              participants: [currentUser?.id || '', ...serverMessages.map((m: any) => m.senderId).filter((s: string) => s !== currentUser?.id)],
+              messages: newMessages,
+              lastMessage: newMessages[newMessages.length - 1],
+              unreadCount: 0,
+            };
+            const updated = [...prev, newConv];
+            localStorage.setItem('conversations', JSON.stringify(updated));
+            return updated;
+          }
 
           const updated = prev.map(c =>
             c.id === id
@@ -173,8 +184,20 @@ export default function ChatWindowPage() {
   const getAIReply = useCallback(async (userText: string, userImage?: string, aiId?: string) => {
     if (!currentUser) return;
     
-    const targetAI = aiId ? getUser(aiId) : otherUser;
-    if (!targetAI) return;
+    let targetAI = aiId ? getUser(aiId) : otherUser;
+    if (!targetAI) {
+      targetAI = {
+        id: aiId || 'ai',
+        name: '助手',
+        age: 25,
+        city: '北京',
+        avatar: '',
+        bio: '',
+        interests: [],
+        photos: [],
+        isOnline: true,
+      };
+    }
     
     setIsAIReplying(true);
     setReplyingAI(aiId || null);
@@ -420,7 +443,7 @@ export default function ChatWindowPage() {
                   const isAI = m.id?.startsWith('ai-');
                   return (
                     <div key={m.id} className={`flex items-center gap-2 px-3 py-2 rounded-xl ${
-                      isAI ? 'bg-violet-50' : 'bg-white/5'
+                      isAI ? 'bg-violet-500/15' : 'bg-white/5'
                     }`}>
                       <div className="relative">
                         <img src={m.avatar} alt={m.name} className="w-6 h-6 rounded-full object-cover" />

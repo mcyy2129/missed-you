@@ -40,6 +40,7 @@ export default function PostDetailPage() {
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
+  const [aiReplying, setAiReplying] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -105,14 +106,22 @@ export default function PostDetailPage() {
           content: newComment.trim(),
         }),
       });
-      const comment = await res.json();
+      const data = await res.json();
       setComments([...comments, {
-        ...comment,
+        ...data,
         author_name: currentUser.name,
         author_avatar: currentUser.avatar,
       }]);
       setPost(post ? { ...post, comments_count: post.comments_count + 1 } : null);
       setNewComment('');
+
+      if (data.aiReply) {
+        setAiReplying(true);
+        setTimeout(async () => {
+          await fetchComments();
+          setAiReplying(false);
+        }, 2500);
+      }
     } catch (error) {
       console.error('Failed to comment:', error);
     } finally {
@@ -261,6 +270,15 @@ export default function PostDetailPage() {
           </div>
         </motion.div>
       </main>
+
+      {aiReplying && (
+        <div className="fixed bottom-20 left-0 right-0 z-40 flex justify-center pointer-events-none">
+          <div className="glass-card rounded-full px-4 py-2 border border-violet-500/30 flex items-center gap-2">
+            <div className="w-4 h-4 border-2 border-violet-400 border-t-transparent rounded-full animate-spin" />
+            <span className="text-xs text-violet-400">AI 正在回复...</span>
+          </div>
+        </div>
+      )}
 
       {/* Comment Input */}
       {isLoggedIn && (

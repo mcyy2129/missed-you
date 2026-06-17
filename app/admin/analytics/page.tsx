@@ -84,7 +84,7 @@ export default function AnalyticsPage() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     timeRange === range
                       ? 'bg-rose-500 text-white'
-                      : 'bg-white text-white/60 hover:bg-white/5 border border-white/10'
+                      : 'bg-white/10 text-white/60 hover:bg-white/15 border border-white/10'
                   }`}
                 >
                   {range === '7d' ? '7天' : range === '30d' ? '30天' : '90天'}
@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
+              className="glass-card rounded-2xl p-6 border border-white/10"
             >
               <h3 className="font-semibold text-white mb-4">用户增长趋势</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -156,7 +156,7 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
+              className="glass-card rounded-2xl p-6 border border-white/10"
             >
               <h3 className="font-semibold text-white mb-4">每日活跃度</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -178,7 +178,7 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
+              className="glass-card rounded-2xl p-6 border border-white/10"
             >
               <h3 className="font-semibold text-white mb-4">24小时消息分布</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -204,7 +204,7 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-white/8"
+              className="glass-card rounded-2xl p-6 border border-white/10"
             >
               <h3 className="font-semibold text-white mb-4">用户城市分布</h3>
               <ResponsiveContainer width="100%" height={300}>
@@ -237,14 +237,14 @@ export default function AnalyticsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="bg-white rounded-2xl p-6 shadow-md border border-white/8 mb-8"
+              className="glass-card rounded-2xl p-6 border border-white/10 mb-8"
             >
               <h3 className="font-semibold text-white mb-4">最活跃用户</h3>
               <div className="space-y-3">
                 {data.summary.topActiveUsers.map((user: any, index: number) => (
                   <div key={index} className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                      index === 0 ? 'bg-amber-500' : index === 1 ? 'bg-slate-400' : index === 2 ? 'bg-amber-700' : 'bg-slate-300'
+                      index === 0 ? 'bg-amber-500' : index === 1 ? 'bg-slate-400' : index === 2 ? 'bg-amber-700' : 'bg-white/20'
                     }`}>
                       {index + 1}
                     </div>
@@ -268,9 +268,9 @@ export default function AnalyticsPage() {
             transition={{ delay: 0.9 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-4"
           >
-            <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
+            <div className="glass-card rounded-2xl p-5 border border-white/10">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">💬</span>
                 </div>
                 <div>
@@ -280,9 +280,9 @@ export default function AnalyticsPage() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
+            <div className="glass-card rounded-2xl p-5 border border-white/10">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">📈</span>
                 </div>
                 <div>
@@ -292,9 +292,9 @@ export default function AnalyticsPage() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-5 shadow-md border border-white/8">
+            <div className="glass-card rounded-2xl p-5 border border-white/10">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-rose-500/20 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">💕</span>
                 </div>
                 <div>

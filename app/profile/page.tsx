@@ -59,7 +59,14 @@ function ProfileContent() {
 
           <div className="glass-card rounded-card p-6 shadow-md mb-6 border border-white/10">
             <div className="flex items-center gap-5 mb-4">
-              <Avatar src={user.avatar} alt={user.name} size="xl" />
+              <motion.div
+                whileHover={isOwn ? { scale: 1.05 } : {}}
+                whileTap={isOwn ? { scale: 0.95 } : {}}
+                onClick={isOwn ? () => router.push('/douyin') : undefined}
+                className={isOwn ? 'cursor-pointer' : ''}
+              >
+                <Avatar src={user.avatar} alt={user.name} size="xl" />
+              </motion.div>
               <div>
                 <h2 className="text-xl font-semibold text-white">
                   {user.name}

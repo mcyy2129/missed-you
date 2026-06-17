@@ -204,14 +204,14 @@ export default function SettingsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Sidebar Tabs */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl shadow-md border border-white/8 p-2 sticky top-24">
+              <div className="glass-card rounded-2xl border border-white/10 p-2 sticky top-24">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-rose-50 text-rose-600'
+                        ? 'bg-rose-500/20 text-rose-400'
                         : 'text-white/60 hover:bg-white/5'
                     }`}
                   >
@@ -224,7 +224,7 @@ export default function SettingsPage() {
 
             {/* Settings Content */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-2xl shadow-md border border-white/8 p-6">
+              <div className="glass-card rounded-2xl border border-white/10 p-6">
                 {/* General Settings */}
                 {activeTab === 'general' && (
                   <motion.div

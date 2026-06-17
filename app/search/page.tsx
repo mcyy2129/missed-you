@@ -158,7 +158,7 @@ export default function SearchUserPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mt-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-5 border border-rose-100"
+            className="glass-card rounded-2xl p-5 border border-white/10"
           >
             <p className="text-sm text-white/60 mb-2">我的邀请码</p>
             <div className="flex items-center justify-between">
@@ -174,7 +174,7 @@ export default function SearchUserPage() {
                     alert('邀请码已复制');
                   }
                 }}
-                className="px-4 py-2 bg-white text-rose-500 rounded-xl text-sm font-medium border border-rose-200 hover:bg-rose-50 transition-colors"
+                className="px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-medium border border-white/10 hover:bg-white/15 transition-colors"
               >
                 复制
               </motion.button>

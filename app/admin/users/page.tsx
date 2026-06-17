@@ -218,8 +218,8 @@ export default function AdminUsersPage() {
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs ${
                           user.is_online
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-gray-100 text-gray-600'
+                            ? 'bg-emerald-500/20 text-emerald-400'
+                            : 'bg-white/10 text-white/40'
                         }`}>
                           {user.is_online ? '在线' : '离线'}
                         </span>
@@ -234,13 +234,13 @@ export default function AdminUsersPage() {
                           </button>
                           <button
                             onClick={() => { setPasswordChangeUser(user.id); setNewPassword(''); }}
-                            className="text-xs text-blue-500 hover:text-blue-600"
+                            className="text-xs text-blue-400 hover:text-blue-300"
                           >
                             改密
                           </button>
                           <button
                             onClick={() => setShowDeleteConfirm(user.id)}
-                            className="text-xs text-red-500 hover:text-red-600"
+                            className="text-xs text-red-400 hover:text-red-300"
                           >
                             删除
                           </button>
@@ -403,7 +403,7 @@ export default function AdminUsersPage() {
                   取消
                 </Button>
                 <Button
-                  className="flex-1 bg-red-500 hover:bg-red-600"
+                  className="flex-1 bg-red-500/80 hover:bg-red-500"
                   onClick={() => handleDelete(showDeleteConfirm)}
                 >
                   删除

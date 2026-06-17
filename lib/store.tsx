@@ -115,11 +115,9 @@ export default function AppProvider({ children }: { children: ReactNode }) {
 
       setConversations((prev) => {
         const conv = prev.find(c => c.id === conversationId);
-        if (!conv) return prev;
 
-        const existingIds = new Set(conv.messages.map((m: Message) => m.id));
         const newMessages = serverMessages
-          .filter((m: any) => !existingIds.has(m.id))
+          .filter((m: any) => !conv || !conv.messages.some(msg => msg.id === m.id))
           .map((m: any) => ({
             id: m.id,
             senderId: m.senderId,
@@ -130,7 +128,19 @@ export default function AppProvider({ children }: { children: ReactNode }) {
             isRead: m.isRead,
           }));
 
-        if (newMessages.length === 0) return prev;
+        if (newMessages.length === 0 && conv) return prev;
+
+        if (!conv) {
+          const newConv: Conversation = {
+            id: conversationId,
+            participants: [...new Set(newMessages.map((m: any) => m.senderId))] as string[],
+            messages: newMessages.sort((a: any, b: any) => a.timestamp - b.timestamp),
+            lastMessage: newMessages[newMessages.length - 1],
+          };
+          const updated = [...prev, newConv];
+          persistConversations(updated);
+          return updated;
+        }
 
         const updated = prev.map(c => {
           if (c.id !== conversationId) return c;
@@ -151,10 +161,12 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const fetchUserData = useCallback(async (userId: string) => {
     try {
       const usersRes = await fetch('/api/admin/users');
-      const allUsers = await usersRes.json();
+      const usersData = await usersRes.json();
+      const allUsers = Array.isArray(usersData) ? usersData : [];
       
       const aiPersonasRes = await fetch('/api/admin/ai-personas');
-      const aiPersonas = await aiPersonasRes.json();
+      const aiData = await aiPersonasRes.json();
+      const aiPersonas = Array.isArray(aiData) ? aiData : [];
       
       const mappedUsers: User[] = allUsers.map((u: any) => ({
         id: u.id,
@@ -370,12 +382,13 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       document.cookie = 'isLoggedIn=true; path=/; max-age=86400';
       document.cookie = 'userRole=user; path=/; max-age=86400';
       
+      await fetchUserData(data.id);
       return true;
     } catch (error) {
       console.error('Register error:', error);
       return false;
     }
-  }, []);
+  }, [fetchUserData]);
 
   const logout = useCallback(() => {
     setCurrentUser(null);
@@ -657,7 +670,22 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const getUser = useCallback(
     (userId: string) => {
       if (userId === currentUser?.id) return currentUser ?? undefined;
-      return users.find((u) => u.id === userId);
+      const found = users.find((u) => u.id === userId);
+      if (found) return found;
+      if (userId.startsWith('ai-')) {
+        return {
+          id: userId,
+          name: userId.replace('ai-', ''),
+          age: 25,
+          city: '北京',
+          avatar: `https://i.pravatar.cc/300?u=${userId}`,
+          bio: '',
+          interests: [],
+          photos: [],
+          isOnline: true,
+        };
+      }
+      return undefined;
     },
     [currentUser, users]
   );

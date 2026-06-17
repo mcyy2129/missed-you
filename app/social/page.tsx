@@ -24,53 +24,6 @@ interface Post {
   isBookmarked?: boolean;
 }
 
-const AI_POST_TEMPLATES = [
-  { personaId: 'ai-xiaomei', contents: [
-    '今天奶茶店来了好多客人呀！忙了一整天，但是很开心～🧋 你们今天喝了什么呀？',
-    '刚学会了一首新歌，有没有人想听我唱呀？嘻嘻～',
-    '追剧追到凌晨3点，现在好困但是好满足！有人也在追《xxx》吗？',
-    '今天试了一家新的甜品店，蛋糕超好吃的！强烈推荐！🍰',
-  ]},
-  { personaId: 'ai-zhihui', contents: [
-    '今天解决了一个超难的 bug，成就感满满！程序员的快乐就是这么简单。',
-    '推荐一本最近在看的书《思考，快与慢》，很有启发。你们最近在看什么书？',
-    '健身第100天打卡！坚持真的很重要，分享一下我的变化。',
-    '周末去了一个技术沙龙，认识了很多有趣的人。学习永无止境！',
-  ]},
-  { personaId: 'ai-wanwan', contents: [
-    '今天画了一幅水彩画，是窗外的风景。阳光透过树叶的感觉真好～🎨',
-    '去了一个超棒的插画展！被很多作品感动到了，艺术真的能治愈人心。',
-    '团子（我的猫）今天特别粘人，一直在我画画的时候蹭我，哈哈～',
-    '分享一张今天拍的照片，秋天的落叶真的太美了！📸',
-  ]},
-  { personaId: 'ai-tiantian', contents: [
-    '今天发现了一家超好吃的火锅店！毛肚和鸭肠绝了！🍲 有谁要一起去？',
-    '尝试做了一次提拉米苏，虽然卖相一般但是味道还不错！下次会更好的～',
-    '成都的天气终于凉快了，最适合吃串串的季节到了！你们喜欢吃串串吗？',
-    '今天吃到了一家隐藏在小巷里的面馆，味道太正宗了！这种宝藏店真的好难找～',
-  ]},
-  { personaId: 'ai-qingqing', contents: [
-    '今天晨练的时候看到了超美的日出，分享给大家～🧘‍♀️ 早起的鸟儿有虫吃！',
-    '推荐一个简单的冥想方法：闭上眼睛，深呼吸5次，感受当下的平静。',
-    '做了一顿健康的午餐，全谷物+蔬菜+蛋白质，营养均衡才是王道！',
-    '今天教了一个新学员，看到她从做不到到做到的过程，真的很有成就感。',
-  ]},
-  { personaId: 'ai-yoyo', contents: [
-    '刚从日本回来！京都的红叶真的太美了，分享几张照片给大家～✈️',
-    '旅行小tip：去一个新的城市，一定要去当地的菜市场逛逛，最能感受当地生活！',
-    '整理了一下今年的旅行足迹，已经去了8个国家了！下一个目标是冰岛！',
-    '在清迈遇到了一家超棒的咖啡店，老板人超好，还教我做泰式奶茶～',
-  ]},
-];
-
-const AI_POST_IMAGES = [
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&h=400&fit=crop',
-];
-
 export default function SocialPage() {
   const router = useRouter();
   const { currentUser, isLoggedIn, users, conversations } = useApp();
@@ -86,6 +39,7 @@ export default function SocialPage() {
 
   useEffect(() => {
     fetchPosts();
+    fetch('/api/admin/ai-autopost/schedule?auto=1').catch(() => {});
   }, []);
 
   const fetchPosts = async () => {
@@ -207,31 +161,6 @@ export default function SocialPage() {
       setPosts(posts.filter(p => p.id !== postId));
     } catch (error) {
       console.error('Failed to delete post:', error);
-    }
-  };
-
-  const handleGenerateAIPost = async () => {
-    const template = AI_POST_TEMPLATES[Math.floor(Math.random() * AI_POST_TEMPLATES.length)];
-    const persona = AI_PERSONAS.find(p => p.id === template.personaId);
-    if (!persona) return;
-
-    const content = template.contents[Math.floor(Math.random() * template.contents.length)];
-    const hasImage = Math.random() > 0.5;
-
-    try {
-      const res = await fetch('/api/social/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: persona.id,
-          content,
-          image: hasImage ? AI_POST_IMAGES[Math.floor(Math.random() * AI_POST_IMAGES.length)] : null,
-        }),
-      });
-      const post = await res.json();
-      setPosts([{ ...post, author_name: persona.name, author_avatar: persona.avatar }, ...posts]);
-    } catch (error) {
-      console.error('Failed to generate AI post:', error);
     }
   };
 
@@ -447,14 +376,6 @@ export default function SocialPage() {
                   </motion.span>
                   <span>{refreshing ? '刷新中...' : '刷新'}</span>
                 </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleGenerateAIPost}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-100 rounded-full text-xs text-violet-600 hover:bg-violet-200 transition-colors"
-                >
-                  <span>🤖</span>
-                  <span>AI 发帖</span>
-                </motion.button>
               </div>
 
               {loading ? (
@@ -481,9 +402,6 @@ export default function SocialPage() {
                         发布动态
                       </Button>
                     )}
-                    <Button variant="secondary" onClick={handleGenerateAIPost}>
-                      AI 生成
-                    </Button>
                   </div>
                 </motion.div>
               ) : (
