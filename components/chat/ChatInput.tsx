@@ -72,7 +72,7 @@ export default function ChatInput({ onSend }: ChatInputProps) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-white/10/60 safe-area-bottom">
+    <div className="fixed bottom-0 left-0 right-0 z-50 glass-nav border-t border-white/6 safe-area-bottom">
       <AnimatePresence>
         {imagePreview && (
           <motion.div

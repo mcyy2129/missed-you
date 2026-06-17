@@ -29,7 +29,7 @@ export default function MobileChatInput({ onSend }: MobileChatInputProps) {
   const quickEmojis = ['😊', '❤️', '👍', '😄', '🥰', '✨', '🎉', '💪'];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-white/10/60 safe-area-bottom">
+    <div className="fixed bottom-0 left-0 right-0 z-40 glass-nav border-t border-white/6 safe-area-bottom">
       <AnimatePresence>
         {showEmoji && (
           <motion.div
@@ -78,7 +78,7 @@ export default function MobileChatInput({ onSend }: MobileChatInputProps) {
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="输入消息..."
-            className="w-full px-4 py-2.5 bg-white/5 rounded-full text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:bg-white transition-all"
+            className="w-full px-4 py-2.5 bg-white/5 rounded-full text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:bg-white/8 transition-all border border-white/8"
           />
         </div>
 
