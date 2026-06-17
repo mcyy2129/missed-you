@@ -7,20 +7,22 @@ export async function GET(req: NextRequest) {
     const offset = parseInt(req.nextUrl.searchParams.get('offset') || '0');
     const category = req.nextUrl.searchParams.get('category');
     const userId = req.nextUrl.searchParams.get('userId');
-    
-    let posts = getPosts(limit, offset);
-    
+
+    let posts = await getPosts(limit, offset);
+
     if (category && category !== 'all') {
       posts = posts.filter((p: any) => p.category === category);
     }
-    
+
     if (userId) {
-      posts = posts.map((p: any) => ({
-        ...p,
-        isLiked: isPostLiked(p.id, userId),
-      }));
+      const postsWithLike = [];
+      for (const p of posts) {
+        const liked = await isPostLiked(p.id, userId);
+        postsWithLike.push({ ...p, isLiked: liked });
+      }
+      posts = postsWithLike;
     }
-    
+
     return NextResponse.json(posts);
   } catch (error) {
     console.error('Get forum posts error:', error);
@@ -36,7 +38,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要字段' }, { status: 400 });
     }
 
-    const post = createPost(userId, content, image);
+    const post = await createPost(userId, content, image);
     return NextResponse.json({ ...post, title, category });
   } catch (error) {
     console.error('Create forum post error:', error);
@@ -52,7 +54,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要字段' }, { status: 400 });
     }
 
-    deletePost(postId);
+    await deletePost(postId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete forum post error:', error);

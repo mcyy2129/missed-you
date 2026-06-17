@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少用户ID' }, { status: 400 });
     }
 
-    const user = getUserById(userId);
+    const user = await getUserById(userId);
     if (!user) {
       return NextResponse.json({ error: '用户不存在' }, { status: 404 });
     }
@@ -40,7 +40,7 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: '缺少用户ID' }, { status: 400 });
     }
 
-    updateUser(userId, {
+    await updateUser(userId, {
       name,
       age,
       city,

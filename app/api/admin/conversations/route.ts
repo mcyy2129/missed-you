@@ -6,38 +6,41 @@ export async function GET(req: NextRequest) {
     const userId = req.nextUrl.searchParams.get('userId');
 
     if (userId) {
-      const conversations = getUserConversations(userId);
-      const enrichedConversations = conversations.map(conv => {
-        const participants = getConversationParticipants(conv.id);
-        const messages = getConversationMessages(conv.id, 1);
+      const conversations = await getUserConversations(userId);
+      const enrichedConversations = [];
+      for (const conv of conversations) {
+        const participants = await getConversationParticipants(conv.id);
+        const messages = await getConversationMessages(conv.id, 1);
         const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-        
-        return {
+        const allMessages = await getConversationMessages(conv.id, 1000);
+
+        enrichedConversations.push({
           ...conv,
           participants,
           lastMessage,
-          messageCount: getConversationMessages(conv.id, 1000).length,
-        };
-      });
+          messageCount: allMessages.length,
+        });
+      }
       return NextResponse.json(enrichedConversations);
     }
 
-    const users = getAllUsers();
+    const users = await getAllUsers();
     const allConversations: any[] = [];
 
     for (const user of users.slice(0, 50)) {
-      const userConvs = getUserConversations(user.id);
+      const userConvs = await getUserConversations(user.id);
       for (const conv of userConvs) {
         if (!allConversations.find(c => c.id === conv.id)) {
-          const participants = getConversationParticipants(conv.id);
-          const messages = getConversationMessages(conv.id, 1);
+          const participants = await getConversationParticipants(conv.id);
+          const messages = await getConversationMessages(conv.id, 1);
           const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-          
+          const allMessages = await getConversationMessages(conv.id, 1000);
+
           allConversations.push({
             ...conv,
             participants,
             lastMessage,
-            messageCount: getConversationMessages(conv.id, 1000).length,
+            messageCount: allMessages.length,
           });
         }
       }

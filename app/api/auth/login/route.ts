@@ -9,12 +9,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '请输入邮箱和密码' }, { status: 400 });
     }
 
-    const user = verifyPassword(email, password);
+    const user = await verifyPassword(email, password);
     if (!user) {
       return NextResponse.json({ error: '邮箱或密码错误' }, { status: 401 });
     }
 
-    updateOnlineStatus(user.id, true);
+    await updateOnlineStatus(user.id, true);
 
     return NextResponse.json({
       id: user.id,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import getDb from '@/lib/sqlite';
+import pool from '@/lib/db';
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,22 +11,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要参数' }, { status: 400 });
     }
 
-    const database = getDb();
-
     if (action === 'follow') {
-      const existing = database.prepare(
-        'SELECT id FROM follows WHERE follower_id = ? AND following_id = ?'
-      ).get(userId, targetUserId);
+      const { rows: existing } = await pool.query(
+        'SELECT id FROM follows WHERE follower_id = $1 AND following_id = $2',
+        [userId, targetUserId]
+      );
 
-      if (!existing) {
-        database.prepare(
-          'INSERT INTO follows (id, follower_id, following_id, created_at) VALUES (?, ?, ?, ?)'
-        ).run(`${userId}-${targetUserId}-${Date.now()}`, userId, targetUserId, Date.now());
+      if (existing.length === 0) {
+        await pool.query(
+          'INSERT INTO follows (id, follower_id, following_id, created_at) VALUES ($1, $2, $3, $4)',
+          [`${userId}-${targetUserId}-${Date.now()}`, userId, targetUserId, Date.now()]
+        );
       }
     } else if (action === 'unfollow') {
-      database.prepare(
-        'DELETE FROM follows WHERE follower_id = ? AND following_id = ?'
-      ).run(userId, targetUserId);
+      await pool.query(
+        'DELETE FROM follows WHERE follower_id = $1 AND following_id = $2',
+        [userId, targetUserId]
+      );
     }
 
     return NextResponse.json({ success: true });
@@ -44,17 +45,18 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少用户ID' }, { status: 400 });
     }
 
-    const database = getDb();
-    
-    const followers = database.prepare(
-      'SELECT follower_id FROM follows WHERE following_id = ?'
-    ).all(userId).map((r: any) => r.follower_id);
+    const { rows: followers } = await pool.query(
+      'SELECT follower_id FROM follows WHERE following_id = $1', [userId]
+    );
 
-    const following = database.prepare(
-      'SELECT following_id FROM follows WHERE follower_id = ?'
-    ).all(userId).map((r: any) => r.following_id);
+    const { rows: following } = await pool.query(
+      'SELECT following_id FROM follows WHERE follower_id = $1', [userId]
+    );
 
-    return NextResponse.json({ followers, following });
+    return NextResponse.json({
+      followers: followers.map((r: any) => r.follower_id),
+      following: following.map((r: any) => r.following_id),
+    });
   } catch (error) {
     console.error('Get follows error:', error);
     return NextResponse.json({ error: '获取关注信息失败' }, { status: 500 });

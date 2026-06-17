@@ -9,13 +9,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少用户ID' }, { status: 400 });
     }
 
-    const conversations = getUserConversations(userId);
-    const enrichedConversations = conversations.map(conv => {
-      const participants = getConversationParticipants(conv.id);
-      const messages = getConversationMessages(conv.id, 1);
+    const conversations = await getUserConversations(userId);
+    const enrichedConversations = [];
+    for (const conv of conversations) {
+      const participants = await getConversationParticipants(conv.id);
+      const messages = await getConversationMessages(conv.id, 1);
       const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-      
-      return {
+
+      enrichedConversations.push({
         id: conv.id,
         participants,
         lastMessage: lastMessage ? {
@@ -26,8 +27,8 @@ export async function GET(req: NextRequest) {
         } : null,
         createdAt: conv.created_at,
         updatedAt: conv.updated_at,
-      };
-    });
+      });
+    }
 
     return NextResponse.json(enrichedConversations);
   } catch (error) {
@@ -45,9 +46,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要参数' }, { status: 400 });
     }
 
-    const existing = findConversationBetweenUsers(participantIds[0], participantIds[1]);
+    const existing = await findConversationBetweenUsers(participantIds[0], participantIds[1]);
     if (existing) {
-      const participants = getConversationParticipants(existing.id);
+      const participants = await getConversationParticipants(existing.id);
       return NextResponse.json({
         id: existing.id,
         participants,
@@ -56,8 +57,8 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const conversation = createConversation(participantIds);
-    const participants = getConversationParticipants(conversation.id);
+    const conversation = await createConversation(participantIds);
+    const participants = await getConversationParticipants(conversation.id);
 
     return NextResponse.json({
       id: conversation.id,

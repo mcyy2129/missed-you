@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要字段' }, { status: 400 });
     }
 
-    const isLiked = togglePostLike(postId, userId);
+    const isLiked = await togglePostLike(postId, userId);
     return NextResponse.json({ isLiked });
   } catch (error) {
     console.error('Toggle forum like error:', error);

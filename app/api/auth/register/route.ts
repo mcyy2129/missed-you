@@ -17,12 +17,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '密码至少需要6个字符' }, { status: 400 });
     }
 
-    const existingUser = getUserByEmail(email);
+    const existingUser = await getUserByEmail(email);
     if (existingUser) {
       return NextResponse.json({ error: '该邮箱已被注册' }, { status: 409 });
     }
 
-    const user = createUser(email, password, name);
+    const user = await createUser(email, password, name);
 
     return NextResponse.json({
       id: user.id,

@@ -9,16 +9,17 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少对话ID' }, { status: 400 });
     }
 
-    const messages = getConversationMessages(conversationId, 100);
-    
-    const enrichedMessages = messages.map(msg => {
-      const sender = getUserById(msg.sender_id);
-      return {
+    const messages = await getConversationMessages(conversationId, 100);
+
+    const enrichedMessages = [];
+    for (const msg of messages) {
+      const sender = await getUserById(msg.sender_id);
+      enrichedMessages.push({
         ...msg,
         sender_name: sender?.name || '未知用户',
         sender_avatar: sender?.avatar || '',
-      };
-    });
+      });
+    }
 
     return NextResponse.json(enrichedMessages);
   } catch (error) {

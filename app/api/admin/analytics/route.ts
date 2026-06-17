@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import getDb from '@/lib/sqlite';
+import pool from '@/lib/db';
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const range = searchParams.get('range') || '7d';
-    const database = getDb();
 
     const days = range === '7d' ? 7 : range === '30d' ? 30 : 90;
     const now = Date.now();
@@ -17,19 +16,22 @@ export async function GET(req: NextRequest) {
       const dayEnd = now - i * 24 * 60 * 60 * 1000;
       const date = new Date(dayEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 
-      const messages = (database.prepare(
-        'SELECT COUNT(*) as count FROM messages WHERE created_at >= ? AND created_at < ?'
-      ).get(dayStart, dayEnd) as any).count;
+      const { rows: messages } = await pool.query(
+        'SELECT COUNT(*) as count FROM messages WHERE created_at >= $1 AND created_at < $2',
+        [dayStart, dayEnd]
+      );
 
-      const matches = (database.prepare(
-        'SELECT COUNT(*) as count FROM matches WHERE created_at >= ? AND created_at < ?'
-      ).get(dayStart, dayEnd) as any).count;
+      const { rows: matches } = await pool.query(
+        'SELECT COUNT(*) as count FROM matches WHERE created_at >= $1 AND created_at < $2',
+        [dayStart, dayEnd]
+      );
 
-      const activeUsers = (database.prepare(
-        'SELECT COUNT(DISTINCT sender_id) as count FROM messages WHERE created_at >= ? AND created_at < ?'
-      ).get(dayStart, dayEnd) as any).count;
+      const { rows: activeUsers } = await pool.query(
+        'SELECT COUNT(DISTINCT sender_id) as count FROM messages WHERE created_at >= $1 AND created_at < $2',
+        [dayStart, dayEnd]
+      );
 
-      dailyStats.push({ date, messages, matches, activeUsers });
+      dailyStats.push({ date, messages: parseInt(messages[0].count), matches: parseInt(matches[0].count), activeUsers: parseInt(activeUsers[0].count) });
     }
 
     const hourlyActivity = [];
@@ -39,66 +41,71 @@ export async function GET(req: NextRequest) {
       const hourEnd = new Date();
       hourEnd.setHours(h + 1, 0, 0, 0);
 
-      const messages = (database.prepare(
-        'SELECT COUNT(*) as count FROM messages WHERE created_at >= ? AND created_at < ?'
-      ).get(hourStart.getTime(), hourEnd.getTime()) as any).count;
+      const { rows: messages } = await pool.query(
+        'SELECT COUNT(*) as count FROM messages WHERE created_at >= $1 AND created_at < $2',
+        [hourStart.getTime(), hourEnd.getTime()]
+      );
 
-      hourlyActivity.push({ hour: `${h}:00`, messages });
+      hourlyActivity.push({ hour: `${h}:00`, messages: parseInt(messages[0].count) });
     }
 
     const userGrowth = [];
-    let cumulativeCount = (database.prepare(
-      'SELECT COUNT(*) as count FROM users WHERE created_at < ?'
-    ).get(startTime) as any).count;
+    const { rows: initialCount } = await pool.query(
+      'SELECT COUNT(*) as count FROM users WHERE created_at < $1',
+      [startTime]
+    );
+    let cumulativeCount = parseInt(initialCount[0].count);
 
     for (let i = days - 1; i >= 0; i--) {
       const dayStart = now - (i + 1) * 24 * 60 * 60 * 1000;
       const dayEnd = now - i * 24 * 60 * 60 * 1000;
       const date = new Date(dayEnd).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 
-      const newUsers = (database.prepare(
-        'SELECT COUNT(*) as count FROM users WHERE created_at >= ? AND created_at < ?'
-      ).get(dayStart, dayEnd) as any).count;
+      const { rows: newUsers } = await pool.query(
+        'SELECT COUNT(*) as count FROM users WHERE created_at >= $1 AND created_at < $2',
+        [dayStart, dayEnd]
+      );
 
-      cumulativeCount += newUsers;
+      cumulativeCount += parseInt(newUsers[0].count);
       userGrowth.push({ date, count: cumulativeCount });
     }
 
-    const totalLikes = (database.prepare('SELECT COUNT(*) as count FROM likes').get() as any).count;
-    const totalMatches = (database.prepare('SELECT COUNT(*) as count FROM matches').get() as any).count;
+    const { rows: totalLikes } = await pool.query('SELECT COUNT(*) as count FROM likes');
+    const { rows: totalMatches } = await pool.query('SELECT COUNT(*) as count FROM matches');
 
-    const topCities = database.prepare(`
-      SELECT city as name, COUNT(*) as value FROM users 
+    const { rows: topCities } = await pool.query(`
+      SELECT city as name, COUNT(*) as value FROM users
       WHERE city != '' GROUP BY city ORDER BY value DESC LIMIT 5
-    `).all();
+    `);
 
-    const totalConversations = (database.prepare('SELECT COUNT(*) as count FROM conversations').get() as any).count;
-    const activeConversations = (database.prepare(
-      'SELECT COUNT(DISTINCT conversation_id) as count FROM messages WHERE created_at >= ?'
-    ).get(startTime) as any).count;
+    const { rows: totalConversations } = await pool.query('SELECT COUNT(*) as count FROM conversations');
+    const { rows: activeConversations } = await pool.query(
+      'SELECT COUNT(DISTINCT conversation_id) as count FROM messages WHERE created_at >= $1',
+      [startTime]
+    );
 
     const avgMessagesPerDay = Math.round(dailyStats.reduce((sum, d) => sum + d.messages, 0) / days);
     const avgActiveUsers = Math.round(dailyStats.reduce((sum, d) => sum + d.activeUsers, 0) / days);
 
-    const topActiveUsers = database.prepare(`
-      SELECT u.name, COUNT(m.id) as messageCount 
-      FROM messages m 
-      JOIN users u ON m.sender_id = u.id 
-      WHERE m.created_at >= ?
-      GROUP BY m.sender_id 
-      ORDER BY messageCount DESC 
+    const { rows: topActiveUsers } = await pool.query(`
+      SELECT u.name, COUNT(m.id) as messageCount
+      FROM messages m
+      JOIN users u ON m.sender_id = u.id
+      WHERE m.created_at >= $1
+      GROUP BY m.sender_id, u.name
+      ORDER BY messageCount DESC
       LIMIT 5
-    `).all(startTime);
+    `, [startTime]);
 
     return NextResponse.json({
       dailyStats,
       hourlyActivity,
       userGrowth,
-      matchRate: { total: totalLikes, mutual: totalMatches },
+      matchRate: { total: parseInt(totalLikes[0].count), mutual: parseInt(totalMatches[0].count) },
       topCities,
       summary: {
-        totalConversations,
-        activeConversations,
+        totalConversations: parseInt(totalConversations[0].count),
+        activeConversations: parseInt(activeConversations[0].count),
         avgMessagesPerDay,
         avgActiveUsers,
         topActiveUsers,

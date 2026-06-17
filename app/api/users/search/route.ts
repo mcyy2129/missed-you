@@ -9,8 +9,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少邀请码' }, { status: 400 });
     }
 
-    const user = getUserByUserCode(userCode.toUpperCase());
-    
+    const user = await getUserByUserCode(userCode.toUpperCase());
+
     if (!user) {
       return NextResponse.json({ error: '用户不存在' }, { status: 404 });
     }

@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   try {
     const limit = parseInt(req.nextUrl.searchParams.get('limit') || '20');
     const offset = parseInt(req.nextUrl.searchParams.get('offset') || '0');
-    const posts = getPosts(limit, offset);
+    const posts = await getPosts(limit, offset);
     return NextResponse.json(posts);
   } catch (error) {
     console.error('Get posts error:', error);
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要字段' }, { status: 400 });
     }
 
-    const post = createPost(userId, content, image);
+    const post = await createPost(userId, content, image);
     return NextResponse.json(post);
   } catch (error) {
     console.error('Create post error:', error);
@@ -37,7 +37,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要字段' }, { status: 400 });
     }
 
-    deletePost(postId);
+    await deletePost(postId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete post error:', error);

@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少帖子ID' }, { status: 400 });
     }
 
-    const comments = getPostComments(postId);
+    const comments = await getPostComments(postId);
     return NextResponse.json(comments);
   } catch (error) {
     console.error('Get forum comments error:', error);
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要字段' }, { status: 400 });
     }
 
-    const comment = createComment(postId, userId, content);
+    const comment = await createComment(postId, userId, content);
     return NextResponse.json(comment);
   } catch (error) {
     console.error('Create forum comment error:', error);
@@ -41,7 +41,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: '缺少评论ID' }, { status: 400 });
     }
 
-    deleteComment(commentId);
+    await deleteComment(commentId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete forum comment error:', error);

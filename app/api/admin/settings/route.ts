@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import getDb from '@/lib/sqlite';
-import fs from 'fs';
-import path from 'path';
-
-const SETTINGS_FILE = path.join(process.cwd(), 'data', 'settings.json');
+import pool from '@/lib/db';
 
 interface SiteSettings {
   general: {
@@ -75,11 +71,22 @@ const defaultSettings: SiteSettings = {
   },
 };
 
-function loadSettings(): SiteSettings {
+async function ensureSettingsTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS site_settings (
+      id TEXT PRIMARY KEY DEFAULT 'default',
+      settings JSONB NOT NULL,
+      updated_at BIGINT NOT NULL
+    )
+  `);
+}
+
+async function loadSettings(): Promise<SiteSettings> {
   try {
-    if (fs.existsSync(SETTINGS_FILE)) {
-      const data = fs.readFileSync(SETTINGS_FILE, 'utf-8');
-      return JSON.parse(data);
+    await ensureSettingsTable();
+    const { rows } = await pool.query('SELECT settings FROM site_settings WHERE id = $1', ['default']);
+    if (rows[0]) {
+      return typeof rows[0].settings === 'string' ? JSON.parse(rows[0].settings) : rows[0].settings;
     }
   } catch (error) {
     console.error('Failed to load settings:', error);
@@ -87,17 +94,18 @@ function loadSettings(): SiteSettings {
   return defaultSettings;
 }
 
-function saveSettings(settings: SiteSettings): void {
-  const dir = path.dirname(SETTINGS_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+async function saveSettings(settings: SiteSettings): Promise<void> {
+  await ensureSettingsTable();
+  const now = Date.now();
+  await pool.query(`
+    INSERT INTO site_settings (id, settings, updated_at) VALUES ($1, $2, $3)
+    ON CONFLICT (id) DO UPDATE SET settings = $2, updated_at = $3
+  `, ['default', JSON.stringify(settings), now]);
 }
 
 export async function GET(req: NextRequest) {
   try {
-    const settings = loadSettings();
+    const settings = await loadSettings();
     return NextResponse.json(settings);
   } catch (error) {
     console.error('Get settings error:', error);
@@ -108,7 +116,7 @@ export async function GET(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     const newSettings = await req.json();
-    saveSettings(newSettings);
+    await saveSettings(newSettings);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Update settings error:', error);

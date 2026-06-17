@@ -3,7 +3,7 @@ import { getStats } from '@/lib/sqlite';
 
 export async function GET(req: NextRequest) {
   try {
-    const stats = getStats();
+    const stats = await getStats();
     return NextResponse.json(stats);
   } catch (error) {
     console.error('Get stats error:', error);

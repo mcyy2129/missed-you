@@ -10,16 +10,17 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少对话ID' }, { status: 400 });
     }
 
-    let messages = getConversationMessages(conversationId, 100);
-    
+    let messages = await getConversationMessages(conversationId, 100);
+
     if (after) {
       const afterTime = parseInt(after);
       messages = messages.filter(m => m.created_at > afterTime);
     }
-    
-    const enrichedMessages = messages.map(msg => {
-      const sender = getUserById(msg.sender_id);
-      return {
+
+    const enrichedMessages = [];
+    for (const msg of messages) {
+      const sender = await getUserById(msg.sender_id);
+      enrichedMessages.push({
         id: msg.id,
         conversationId: msg.conversation_id,
         senderId: msg.sender_id,
@@ -31,8 +32,8 @@ export async function GET(req: NextRequest) {
         readAt: msg.read_at,
         senderName: sender?.name || '未知用户',
         senderAvatar: sender?.avatar || '',
-      };
-    });
+      });
+    }
 
     return NextResponse.json(enrichedMessages);
   } catch (error) {
@@ -50,8 +51,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要参数' }, { status: 400 });
     }
 
-    const message = createMessage(conversationId, senderId, text || '', image, audio);
-    
+    const message = await createMessage(conversationId, senderId, text || '', image, audio);
+
     return NextResponse.json({
       id: message.id,
       conversationId: message.conversation_id,
@@ -76,8 +77,8 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: '缺少必要参数' }, { status: 400 });
     }
 
-    markMessagesAsRead(conversationId, userId);
-    
+    await markMessagesAsRead(conversationId, userId);
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Mark messages read error:', error);
