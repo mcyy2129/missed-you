@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import AppProvider from "@/lib/store";
 import GlobalDanmaku from "@/components/entertainment/GlobalDanmaku";
 import { MusicProvider } from "@/components/blog/MusicProvider";
@@ -28,6 +29,7 @@ export default function RootLayout({
           </MusicProvider>
           <GlobalDanmaku />
         </AppProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
