@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 "use client";
 
 import { useEffect, useRef, useMemo, useState, useCallback } from 'react';
@@ -11,7 +11,7 @@ import { useMusic } from '@/components/blog/MusicProvider';
 const fmt = (t: number) => { if (!t || isNaN(t)) return '0:00'; return `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`; };
 
 export default function MusicClient() {
-  const { playlist, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading, togglePlay, nextSong, prevSong, handleSeek, playSong, playSearchResult, playMode, togglePlayMode, volume, setVolume, isMuted, toggleMute } = useMusic();
+  const { playlist, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading, togglePlay, nextSong, prevSong, handleSeek, handleSeekEnd, playSong, playSearchResult, playMode, togglePlayMode, volume, setVolume, isMuted, toggleMute } = useMusic();
 
   const lyricRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<HTMLDivElement>(null);
@@ -192,7 +192,7 @@ export default function MusicClient() {
               </div>
               <div className="px-1 pb-2 flex items-center gap-2 mt-3">
                 <span className="text-[8px] text-teal-400/40 w-7 text-right">{fmt(currentTime)}</span>
-                <input type="range" min="0" max="100" value={progress || 0} onChange={handleSeek} className="flex-1 h-1 rounded-full appearance-none cursor-pointer" style={{ background: `linear-gradient(to right, #5eead4 ${progress}%, rgba(94,234,212,0.1) 0)` }} />
+                <input type="range" min="0" max="100" value={progress || 0} onChange={handleSeek} onMouseUp={handleSeekEnd} onTouchEnd={handleSeekEnd} className="flex-1 h-1 rounded-full appearance-none cursor-pointer" style={{ background: `linear-gradient(to right, #5eead4 ${progress}%, rgba(94,234,212,0.1) 0)` }} />
                 <span className="text-[8px] text-teal-400/40 w-7">{fmt(duration)}</span>
               </div>
               <div className="flex items-center justify-center gap-5 pb-1">
@@ -232,7 +232,7 @@ export default function MusicClient() {
               </div>
               <div className="w-full mt-auto relative z-20">
                 <div className="w-full flex flex-col gap-1.5 mb-6 px-3">
-                  <input type="range" min="0" max="100" value={progress || 0} onChange={handleSeek} className="w-full h-1.5 rounded-full appearance-none cursor-pointer" style={{ background: `linear-gradient(to right, #5eead4 ${progress}%, rgba(94,234,212,0.1) 0)` }} />
+                  <input type="range" min="0" max="100" value={progress || 0} onChange={handleSeek} onMouseUp={handleSeekEnd} onTouchEnd={handleSeekEnd} className="w-full h-1.5 rounded-full appearance-none cursor-pointer" style={{ background: `linear-gradient(to right, #5eead4 ${progress}%, rgba(94,234,212,0.1) 0)` }} />
                   <div className="flex justify-between text-xs font-bold text-teal-400/40 tabular-nums"><span>{fmt(currentTime)}</span><span>{fmt(duration)}</span></div>
                 </div>
                 <div className="w-full flex items-center justify-between px-2 lg:px-4">
@@ -260,7 +260,7 @@ export default function MusicClient() {
                 {tab === 'lyrics' && (<>
                   <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#0a1a1a]/60 to-transparent z-10 pointer-events-none" />
                   <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a1a1a]/60 to-transparent z-10 pointer-events-none" />
-                  <button onClick={() => setFsLyrics(true)} className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-teal-500/10 flex items-center justify-center text-teal-400 hover:bg-teal-500/20"><Sparkles size={14} /></button>
+                  <button onClick={() => setFsLyrics(true)} className="absolute top-3 right-3 z-30 w-9 h-9 rounded-full flex items-center justify-center text-teal-400 hover:text-white transition-all hover:scale-110 active:scale-95" style={{ background: 'rgba(94,234,212,0.15)', border: '1px solid rgba(94,234,212,0.3)' }}><Sparkles size={16} /></button>
                   <div ref={lyricRef} className="h-full overflow-y-auto no-scrollbar">{lyricView}</div>
                 </>)}
                 {tab === 'playlist' && <div className="absolute inset-0 px-4 md:px-8 pb-8 pt-4 flex flex-col overflow-y-auto no-scrollbar"><div className="mb-4 shrink-0"><input type="text" placeholder="搜索歌单..." value={q} onChange={e => setQ(e.target.value)} className="w-full h-10 px-4 bg-teal-500/5 border border-teal-500/15 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-teal-500/30 text-white" /></div>{renderPlaylist()}</div>}
@@ -301,7 +301,7 @@ export default function MusicClient() {
               </div>
             </div>
             <div className="p-6 border-t border-teal-500/10">
-              <div className="flex items-center gap-3 mb-3"><span className="text-[10px] text-teal-400/40 w-10 text-right tabular-nums">{fmt(currentTime)}</span><input type="range" min="0" max="100" value={progress || 0} onChange={handleSeek} className="flex-1 h-1.5 rounded-full appearance-none cursor-pointer" style={{ background: `linear-gradient(to right, #5eead4 ${progress}%, rgba(94,234,212,0.1) 0)` }} /><span className="text-[10px] text-teal-400/40 w-10 tabular-nums">{fmt(duration)}</span></div>
+              <div className="flex items-center gap-3 mb-3"><span className="text-[10px] text-teal-400/40 w-10 text-right tabular-nums">{fmt(currentTime)}</span><input type="range" min="0" max="100" value={progress || 0} onChange={handleSeek} onMouseUp={handleSeekEnd} onTouchEnd={handleSeekEnd} className="flex-1 h-1.5 rounded-full appearance-none cursor-pointer" style={{ background: `linear-gradient(to right, #5eead4 ${progress}%, rgba(94,234,212,0.1) 0)` }} /><span className="text-[10px] text-teal-400/40 w-10 tabular-nums">{fmt(duration)}</span></div>
               <div className="flex items-center justify-center gap-6">
                 <button onClick={togglePlayMode} className="p-2">{playMode === 'single' ? <RefreshCcw size={16} className="text-emerald-400" /> : playMode === 'random' ? <Shuffle size={16} className="text-teal-400/40" /> : <Repeat size={16} className="text-teal-400/40" />}</button>
                 <button onClick={toggleMute} className="p-2 text-teal-400/40">{isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}</button>

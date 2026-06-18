@@ -75,11 +75,11 @@ export default function MouseTrail() {
           ctx.strokeStyle = p.color;
           ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * (1 - p.life) * 3, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, Math.max(0.1, p.size * (1 - p.life) * 3), 0, Math.PI * 2);
           ctx.stroke();
         } else {
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, Math.max(0.1, p.size * p.life), 0, Math.PI * 2);
           ctx.fill();
         }
       });

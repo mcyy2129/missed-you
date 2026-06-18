@@ -55,6 +55,7 @@ interface MusicContextType {
   nextSong: () => void;
   prevSong: () => void;
   handleSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSeekEnd: () => void;
   playSong: (index: number) => void;
   playSearchResult: (song: any) => void;
   setVolume: (value: number) => void;
@@ -67,6 +68,7 @@ const MusicContext = createContext<MusicContextType | null>(null);
 const STORAGE_KEY = 'blog-music-state';
 
 function loadMusicState() {
+  if (typeof window === 'undefined') return null;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
@@ -75,8 +77,8 @@ function loadMusicState() {
 }
 
 function saveMusicState(state: any) {
+  if (typeof window === 'undefined') return;
   try {
-    // Only save essential fields, not full lyrics (too large)
     const toSave = {
       playlist: state.playlist.map((s: any) => ({
         id: s.id, title: s.title, artist: s.artist, cover: s.cover,
@@ -93,23 +95,43 @@ function saveMusicState(state: any) {
 }
 
 export function MusicProvider({ children }: { children: ReactNode }) {
-  const saved = typeof window !== 'undefined' ? loadMusicState() : null;
+  const [saved, setSaved] = useState<any>(null);
+  const [ready, setReady] = useState(false);
 
-  const [playlist, setPlaylist] = useState<any[]>(saved?.playlist || []);
-  const [currentIndex, setCurrentIndex] = useState(saved?.currentIndex || 0);
+  // Load saved state after mount (client-only)
+  useEffect(() => {
+    setSaved(loadMusicState());
+    setReady(true);
+  }, []);
+
+  const [playlist, setPlaylist] = useState<any[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(saved?.currentTime || 0);
+  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [lyrics, setLyrics] = useState<{ time: number; text: string }[]>([]);
-  const [currentLyric, setCurrentLyric] = useState(saved?.playlist?.length ? "恢复上次播放..." : "正在连接高可用神经云端...");
+  const [currentLyric, setCurrentLyric] = useState("正在连接高可用神经云端...");
   const [isLoading, setIsLoading] = useState(true);
 
-  const [volume, setVolumeState] = useState(saved?.volume ?? 1);
-  const [isMuted, setIsMuted] = useState(saved?.isMuted ?? false);
-  const [playMode, setPlayMode] = useState<PlayMode>(saved?.playMode || 'loop');
+  const [volume, setVolumeState] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
+  const [playMode, setPlayMode] = useState<PlayMode>('loop');
+  const [isSeeking, setIsSeeking] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Apply saved state after it loads
+  useEffect(() => {
+    if (!saved) return;
+    if (saved.playlist?.length) setPlaylist(saved.playlist);
+    if (saved.currentIndex) setCurrentIndex(saved.currentIndex);
+    if (saved.currentTime) setCurrentTime(saved.currentTime);
+    if (saved.volume !== undefined) setVolumeState(saved.volume);
+    if (saved.isMuted !== undefined) setIsMuted(saved.isMuted);
+    if (saved.playMode) setPlayMode(saved.playMode);
+    if (saved.playlist?.length) setCurrentLyric("恢复上次播放...");
+  }, [saved]);
 
   // Save state whenever it changes
   useEffect(() => {
@@ -145,12 +167,24 @@ export function MusicProvider({ children }: { children: ReactNode }) {
               const savedIds = new Set(saved.playlist.map((s: any) => s.id));
               const newDefaultSongs = mergedPlaylist.filter((s: any) => !savedIds.has(s.id));
               setPlaylist([...saved.playlist, ...newDefaultSongs]);
-              // Restore lyrics for current song
+              // Re-fetch lyrics for current song from mergedPlaylist
               const currentSaved = saved.playlist[saved.currentIndex] || saved.playlist[0];
               if (currentSaved) {
                 const fullSong = mergedPlaylist.find((s: any) => s.id === currentSaved.id);
-                if (fullSong?.lyrics) {
+                if (fullSong?.lyrics && fullSong.lyrics.length > 0) {
                   setLyrics(fullSong.lyrics);
+                  setCurrentLyric(fullSong.lyrics[0]?.text || "♪ 纯享音乐 ♪");
+                } else {
+                  // Try fetching lyrics from API for this song
+                  try {
+                    const lrcRes = await fetch(`/blog/api/music?ids=${currentSaved.id}`);
+                    const lrcData = await lrcRes.json();
+                    if (lrcData[0]?.lrc) {
+                      const parsed = parseLrc(lrcData[0].lrc);
+                      setLyrics(parsed);
+                      if (parsed.length > 0) setCurrentLyric(parsed[0].text);
+                    }
+                  } catch {}
                 }
               }
             } else {
@@ -170,7 +204,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     else setIsLoading(false);
 
     return () => { isMounted = false; };
-  }, []);
+  }, [saved]);
 
   useEffect(() => {
     if (playlist.length === 0) return;
@@ -198,6 +232,23 @@ export function MusicProvider({ children }: { children: ReactNode }) {
           }
         })
         .catch(() => { if (isMounted) setCurrentLyric("\u266a \u7eaf\u4eab\u97f3\u4e50 \u266a"); });
+    } else if (currentSong.id && !isNaN(Number(currentSong.id))) {
+      // Fallback: fetch lyrics from API by song ID
+      fetch(`/blog/api/music?ids=${currentSong.id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (isMounted && data[0]?.lrc) {
+            const parsed = parseLrc(data[0].lrc);
+            setLyrics(parsed);
+            if (parsed.length > 0) setCurrentLyric(parsed[0].text);
+            setPlaylist(prev => {
+              const newPlaylist = [...prev];
+              newPlaylist[currentIndex].lyrics = parsed;
+              return newPlaylist;
+            });
+          }
+        })
+        .catch(() => {});
     }
 
     if (isPlaying && audioRef.current) {
@@ -264,7 +315,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   };
 
   const handleTimeUpdate = () => {
-    if (audioRef.current) {
+    if (audioRef.current && !isSeeking) {
       const { currentTime, duration } = audioRef.current;
       setCurrentTime(currentTime);
       setDuration(duration || 0);
@@ -292,9 +343,14 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newProgress = Number(e.target.value);
     setProgress(newProgress);
+    setIsSeeking(true);
     if (audioRef.current && audioRef.current.duration) {
       audioRef.current.currentTime = (newProgress / 100) * audioRef.current.duration;
     }
+  };
+
+  const handleSeekEnd = () => {
+    setIsSeeking(false);
   };
 
   const setVolume = (val: number) => {
@@ -318,7 +374,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     <MusicContext.Provider value={{
         playlist, currentIndex, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading,
         volume, isMuted, playMode, // 暴露新状态
-        togglePlay, nextSong, prevSong, handleSeek,
+        togglePlay, nextSong, prevSong, handleSeek, handleSeekEnd,
         playSong, playSearchResult, setVolume, toggleMute, togglePlayMode // 暴露新方法
     }}>
       {children}
