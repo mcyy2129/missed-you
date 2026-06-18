@@ -207,6 +207,12 @@ export default function AdminPage() {
                     📦 数据库备份
                   </button>
                   <button
+                    onClick={() => window.location.href = '/admin/blog'}
+                    className="px-4 py-2 rounded-xl text-sm text-white/70 hover:bg-white/10 transition-colors border border-white/10"
+                  >
+                    📝 博客管理
+                  </button>
+                  <button
                     onClick={fetchStats}
                     className="px-4 py-2 bg-rose-500/80 text-white rounded-xl text-sm hover:bg-rose-500 transition-colors"
                   >
@@ -344,17 +350,6 @@ export default function AdminPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <motion.button
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => window.location.href = '/admin/douyin-videos'}
-                  className="rounded-2xl p-5 shadow-md text-left hover:shadow-lg transition-shadow glass-card border border-white/10"
-                >
-                  <span className="text-2xl mb-2 block">🎬</span>
-                  <h3 className="font-semibold text-white mb-1">抖音视频管理</h3>
-                  <p className="text-xs text-white/50">管理抖音页面的视频内容</p>
-                </motion.button>
-
                 <motion.button
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.98 }}

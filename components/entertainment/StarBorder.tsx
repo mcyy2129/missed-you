@@ -3,7 +3,7 @@
 import React from 'react';
 
 interface StarBorderProps {
-  as?: React.ElementType;
+  as?: string | React.ComponentType<any>;
   className?: string;
   color?: string;
   speed?: string;

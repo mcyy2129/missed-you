@@ -64,3 +64,7 @@ test-*.js
 # douyin-app build cache
 douyin-app/dist/
 douyin-app/node_modules/
+douyin-app/.git/
+
+# douyin static output (built from douyin-app)
+public/douyin/

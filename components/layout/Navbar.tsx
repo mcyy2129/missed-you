@@ -4,7 +4,11 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useApp } from '@/lib/store';
+import { useMusic } from '@/components/blog/MusicProvider';
 import Avatar from '@/components/ui/Avatar';
+import { useState, useEffect } from 'react';
+
+const BLOG_URL = '/blog';
 
 const navLinks = [
   { href: '/', label: '发现' },
@@ -15,6 +19,10 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const { currentUser } = useApp();
+  const { isPlaying, currentSong } = useMusic();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => { setIsMounted(true); }, []);
 
   return (
     <motion.header
@@ -52,13 +60,47 @@ export default function Navbar() {
           })}
         </div>
 
-        {currentUser && (
-          <Link href="/profile">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Avatar src={currentUser.avatar} alt={currentUser.name} size="sm" />
+        <div className="flex items-center gap-3">
+          <Link href={BLOG_URL} className="relative">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              whileHover={{ scale: 1.2 }}
+              className="flex items-center justify-center w-8 h-8 rounded-full"
+              style={{ background: 'rgba(132, 204, 22, 0.15)' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#84cc16" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+              </svg>
             </motion.div>
+            {/* Playing indicator dot */}
+            {isMounted && isPlaying && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
+                style={{ background: '#84cc16', boxShadow: '0 0 8px rgba(132, 204, 22, 0.6)' }}
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="absolute inset-0 rounded-full"
+                  style={{ background: '#84cc16' }}
+                />
+              </motion.div>
+            )}
           </Link>
-        )}
+
+          {currentUser && (
+            <Link href="/profile">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Avatar src={currentUser.avatar} alt={currentUser.name} size="sm" />
+              </motion.div>
+            </Link>
+          )}
+        </div>
       </nav>
     </motion.header>
   );

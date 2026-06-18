@@ -13,22 +13,6 @@ const nextConfig: NextConfig = {
     'bmyy.bbs0.cc',
     '*.bbs0.cc',
   ],
-  async rewrites() {
-    return [
-      {
-        source: '/data/:path*',
-        destination: '/douyin/data/:path*',
-      },
-      {
-        source: '/images/:path*',
-        destination: '/douyin/images/:path*',
-      },
-      {
-        source: '/mock/:path*',
-        destination: '/douyin/cdn/mock.min.js',
-      },
-    ];
-  },
 };
 
 export default nextConfig;

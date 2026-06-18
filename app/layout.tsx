@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import AppProvider from "@/lib/store";
 import GlobalDanmaku from "@/components/entertainment/GlobalDanmaku";
+import { MusicProvider } from "@/components/blog/MusicProvider";
+import GlobalMusicPlayer from "@/components/blog/GlobalMusicPlayer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,7 +21,13 @@ export default function RootLayout({
         <link rel="preload" href="/bg.png" as="image" />
       </head>
       <body className="min-h-full flex flex-col film-grain">
-        <AppProvider>{children}<GlobalDanmaku /></AppProvider>
+        <AppProvider>
+          <MusicProvider>
+            {children}
+            <GlobalMusicPlayer />
+          </MusicProvider>
+          <GlobalDanmaku />
+        </AppProvider>
       </body>
     </html>
   );

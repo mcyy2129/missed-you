@@ -12,6 +12,8 @@ interface ChatBubbleProps {
   audio?: string;
   sticker?: string;
   isRead?: boolean;
+  readAt?: number;
+  status?: 'sending' | 'sent' | 'delivered' | 'read' | 'failed';
   reactions?: MessageReaction[];
   onReact?: (emoji: string) => void;
   senderName?: string;
@@ -26,9 +28,15 @@ function generateWaveHeights(): number[] {
 }
 
 const ChatBubble = memo(function ChatBubble({ 
-  text, isMe, timestamp, image, audio, sticker, isRead, reactions, onReact,
+  text, isMe, timestamp, image, audio, sticker, isRead, readAt, status, reactions, onReact,
   senderName, senderAvatar, showSender
 }: ChatBubbleProps) {
+  const formatReadAt = (readAtTimestamp?: number) => {
+    if (!readAtTimestamp) return '已读';
+    const d = new Date(readAtTimestamp);
+    return `已读 ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+  };
+
   const time = new Date(timestamp).toLocaleTimeString('zh-CN', {
     hour: '2-digit',
     minute: '2-digit',
@@ -79,6 +87,59 @@ const ChatBubble = memo(function ChatBubble({
     return acc;
   }, {});
 
+  const getStatusIcon = () => {
+    if (!isMe) return null;
+    
+    // Determine effective status
+    let effectiveStatus = status;
+    if (!effectiveStatus && isRead) effectiveStatus = 'read';
+    else if (!effectiveStatus) effectiveStatus = 'sent';
+
+    switch (effectiveStatus) {
+      case 'sending':
+        return (
+          <span className="text-[10px] flex items-center gap-1 text-white/30">
+            <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="inline-block">
+              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10" strokeDasharray="31.4" strokeDashoffset="10" /></svg>
+            </motion.span>
+            <span className="text-[9px]">发送中</span>
+          </span>
+        );
+      case 'failed':
+        return (
+          <span className="text-[10px] flex items-center gap-1 text-red-400">
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+            <span className="text-[9px]">发送失败</span>
+          </span>
+        );
+      case 'sent':
+        return (
+          <span className="text-[10px] flex items-center text-white/40">
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="2 12 7 17 17 7" /></svg>
+          </span>
+        );
+      case 'delivered':
+        return (
+          <span className="text-[10px] flex items-center text-white/50">
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="2 12 7 17 17 7" /><polyline points="8 12 13 17 23 7" />
+            </svg>
+          </span>
+        );
+      case 'read':
+        return (
+          <span className="text-[10px] flex items-center gap-1 text-rose-500">
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="2 12 7 17 17 7" /><polyline points="8 12 13 17 23 7" />
+            </svg>
+            <span className="text-[9px]">{formatReadAt(readAt)}</span>
+          </span>
+        );
+      default:
+        return null;
+    }
+  };
+
   if (sticker) {
     return (
       <motion.div
@@ -103,20 +164,7 @@ const ChatBubble = memo(function ChatBubble({
           </motion.div>
           <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
             <p className="text-[10px] text-white/40">{time}</p>
-            {isMe && (
-              <span className={`text-[10px] flex items-center ${isRead ? 'text-rose-500' : 'text-white/40'}`}>
-                {isRead ? (
-                  <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="2 12 7 17 17 7" />
-                    <polyline points="8 12 13 17 23 7" />
-                  </svg>
-                ) : (
-                  <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="2 12 7 17 17 7" />
-                  </svg>
-                )}
-              </span>
-            )}
+            {getStatusIcon()}
           </div>
 
           {groupedReactions && Object.keys(groupedReactions).length > 0 && (
@@ -245,20 +293,7 @@ const ChatBubble = memo(function ChatBubble({
                 <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-white/40'}`}>
                   {time}
                 </p>
-                {isMe && (
-                  <span className={`text-[10px] flex items-center ${isRead ? 'text-white/90' : 'text-white/50'}`}>
-                    {isRead ? (
-                      <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <polyline points="2 12 7 17 17 7" />
-                        <polyline points="8 12 13 17 23 7" />
-                      </svg>
-                    ) : (
-                      <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <polyline points="2 12 7 17 17 7" />
-                      </svg>
-                    )}
-                  </span>
-                )}
+                {getStatusIcon()}
               </div>
             </div>
           )}
@@ -268,20 +303,7 @@ const ChatBubble = memo(function ChatBubble({
               <p className={`text-[10px] ${isMe ? 'text-white/70' : 'text-white/40'}`}>
                 {time}
               </p>
-              {isMe && (
-                <span className={`text-[10px] flex items-center ${isRead ? 'text-white/90' : 'text-white/50'}`}>
-                  {isRead ? (
-                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <polyline points="2 12 7 17 17 7" />
-                      <polyline points="8 12 13 17 23 7" />
-                    </svg>
-                  ) : (
-                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <polyline points="2 12 7 17 17 7" />
-                    </svg>
-                  )}
-                </span>
-              )}
+              {getStatusIcon()}
             </div>
           )}
         </div>

@@ -32,7 +32,7 @@ interface AppActions {
   updatePhotos: (photos: string[]) => Promise<void>;
   updateProfile: (data: { name?: string; age?: number; city?: string; bio?: string; avatar?: string; interests?: string[] }) => Promise<void>;
   swipeUser: (userId: string, direction: SwipeDirection) => Promise<boolean>;
-  sendMessage: (conversationId: string, text: string, image?: string, audio?: string, sticker?: string) => Promise<void>;
+  sendMessage: (conversationId: string, text: string, image?: string, audio?: string, sticker?: string, skipServer?: boolean) => Promise<void>;
   addAIMessage: (conversationId: string, text: string, senderId?: string, image?: string, sticker?: string) => void;
   addReaction: (conversationId: string, messageId: string, emoji: string) => void;
   markAsRead: (conversationId: string) => void;
@@ -517,7 +517,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const sendMessage = useCallback(
-    async (conversationId: string, text: string, image?: string, audio?: string, sticker?: string) => {
+    async (conversationId: string, text: string, image?: string, audio?: string, sticker?: string, skipServer?: boolean) => {
       if (!currentUser) return;
 
       const tempId = `msg-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -529,6 +529,8 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         image,
         audio,
         sticker,
+        isRead: false,
+        status: 'sending' as const,
       };
 
       setConversations((prev) => {
@@ -540,6 +542,27 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         persistConversations(updated);
         return updated;
       });
+
+      // AI conversations skip server - mark as sent immediately
+      if (skipServer) {
+        setTimeout(() => {
+          setConversations((prev) => {
+            const updated = prev.map((c) =>
+              c.id === conversationId
+                ? {
+                    ...c,
+                    messages: c.messages.map((m) =>
+                      m.id === tempId ? { ...m, status: 'sent' as const, isRead: true } : m
+                    ),
+                  }
+                : c
+            );
+            persistConversations(updated);
+            return updated;
+          });
+        }, 300);
+        return;
+      }
 
       try {
         const res = await fetch('/api/messages', {
@@ -563,7 +586,22 @@ export default function AppProvider({ children }: { children: ReactNode }) {
                 ? {
                     ...c,
                     messages: c.messages.map((m) =>
-                      m.id === tempId ? { ...m, id: serverMsg.id } : m
+                      m.id === tempId ? { ...m, id: serverMsg.id, status: 'sent' as const } : m
+                    ),
+                  }
+                : c
+            );
+            persistConversations(updated);
+            return updated;
+          });
+        } else {
+          setConversations((prev) => {
+            const updated = prev.map((c) =>
+              c.id === conversationId
+                ? {
+                    ...c,
+                    messages: c.messages.map((m) =>
+                      m.id === tempId ? { ...m, status: 'failed' as const } : m
                     ),
                   }
                 : c
@@ -574,6 +612,20 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.error('Failed to send message to server:', error);
+        setConversations((prev) => {
+          const updated = prev.map((c) =>
+            c.id === conversationId
+              ? {
+                  ...c,
+                  messages: c.messages.map((m) =>
+                    m.id === tempId ? { ...m, status: 'failed' as const } : m
+                  ),
+                }
+              : c
+          );
+          persistConversations(updated);
+          return updated;
+        });
       }
     },
     [currentUser, persistConversations]
@@ -588,6 +640,8 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         timestamp: Date.now(),
         image,
         sticker,
+        isRead: false,
+        status: 'sent' as const,
       };
       setConversations((prev) => {
         const updated = prev.map((c) =>
@@ -640,7 +694,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
                 unreadCount: 0,
                 messages: c.messages.map((m) =>
                   m.senderId !== currentUser?.id && !m.isRead
-                    ? { ...m, isRead: true, readAt: Date.now() }
+                    ? { ...m, isRead: true, readAt: Date.now(), status: 'read' as const }
                     : m
                 ),
               }
@@ -649,6 +703,13 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         persistConversations(updated);
         return updated;
       });
+
+      // Sync read status to server
+      fetch('/api/messages', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, userId: currentUser?.id }),
+      }).catch(() => {});
     },
     [currentUser, persistConversations]
   );

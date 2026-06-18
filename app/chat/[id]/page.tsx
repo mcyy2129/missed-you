@@ -122,9 +122,26 @@ export default function ChatWindowPage() {
               image: m.image || undefined,
               audio: m.audio || undefined,
               isRead: m.isRead,
+              readAt: m.readAt || undefined,
+              status: m.isRead ? 'read' as const : 'sent' as const,
             }));
 
-          if (newMessages.length === 0 && conv) return prev;
+          if (newMessages.length === 0 && conv) {
+            // Even if no new messages, update read status of existing ones
+            let hasUpdates = false;
+            const updatedMessages = conv.messages.map(m => {
+              const serverMsg = serverMessages.find((sm: any) => sm.id === m.id);
+              if (serverMsg && serverMsg.isRead && !m.isRead) {
+                hasUpdates = true;
+                return { ...m, isRead: true, readAt: serverMsg.readAt, status: 'read' as const };
+              }
+              return m;
+            });
+            if (hasUpdates) {
+              return prev.map(c => c.id === id ? { ...c, messages: updatedMessages } : c);
+            }
+            return prev;
+          }
 
           if (!conv) {
             const newConv = {
@@ -159,7 +176,7 @@ export default function ChatWindowPage() {
     };
 
     syncMessages();
-    const interval = setInterval(syncMessages, 5000);
+    const interval = setInterval(syncMessages, 2000);
 
     return () => clearInterval(interval);
   }, [id, currentUser, setConversations]);
@@ -257,7 +274,11 @@ export default function ChatWindowPage() {
     if (!conversation) return;
     if (!text && !image && !audio && !sticker) return;
 
-    sendMessage(conversation.id, text || '', image, audio, sticker);
+    const isAIPersona = otherUser?.id.startsWith('ai-');
+    const isGroupAI = conversation.isGroup && text && getMentionedAI(text);
+
+    // Skip server for AI-only conversations
+    sendMessage(conversation.id, text || '', image, audio, sticker, !!(isAIPersona || isGroupAI));
 
     if (conversation.isGroup && text) {
       const mentionedAIId = getMentionedAI(text);
@@ -269,8 +290,6 @@ export default function ChatWindowPage() {
       }
       return;
     }
-
-    const isAIPersona = otherUser?.id.startsWith('ai-');
     
     if (isAIPersona) {
       const followedAI = JSON.parse(localStorage.getItem('followedAI') || '[]');
@@ -508,6 +527,8 @@ export default function ChatWindowPage() {
                     audio={msg.audio}
                     sticker={msg.sticker}
                     isRead={msg.isRead}
+                    readAt={msg.readAt}
+                    status={msg.status}
                     reactions={msg.reactions}
                     onReact={(emoji) => handleReact(msg.id, emoji)}
                     senderName={sender?.name}

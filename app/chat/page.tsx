@@ -66,7 +66,7 @@ export default function ChatListPage() {
     };
 
     refreshConversations();
-    const interval = setInterval(refreshConversations, 10000);
+    const interval = setInterval(refreshConversations, 5000);
     return () => clearInterval(interval);
   }, [currentUser, setConversations]);
 
