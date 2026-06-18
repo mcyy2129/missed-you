@@ -299,19 +299,37 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   };
 
   // 播放搜索结果（临时添加到播放列表）
-  const playSearchResult = (song: any) => {
+  // Pre-check if a song URL is playable (returns true if audio)
+  const checkSongPlayable = async (url: string): Promise<boolean> => {
+    try {
+      const res = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+      const ct = res.headers.get('content-type') || '';
+      return res.ok && (ct.includes('audio') || ct.includes('mpeg') || ct.includes('ogg') || ct.includes('wav'));
+    } catch { return false; }
+  };
+
+  const playSearchResult = async (song: any) => {
+    const streamUrl = `/blog/api/music/stream?url=${encodeURIComponent(song.url || `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`)}`;
+
+    // Pre-check if playable
+    const playable = await checkSongPlayable(streamUrl);
+    if (!playable) {
+      setCurrentLyric("♪ 该歌曲暂无法播放 ♪");
+      return;
+    }
+
     const proxiedSong = {
       id: song.id || Math.random().toString(),
       title: song.name || song.title || '未知歌曲',
       artist: song.artist || song.author || '未知歌手',
       cover: song.cover || song.pic || 'https://bu.dusays.com/2026/03/24/69c24230a5ff8.jpg',
-      src: `/blog/api/music/stream?url=${encodeURIComponent(song.url || `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`)}`,
+      src: streamUrl,
       lyrics: [],
     };
     setPlaylist(prev => [proxiedSong, ...prev.filter((s: any) => s.id !== proxiedSong.id)]);
     setCurrentIndex(0);
     setIsPlaying(true);
-    setCurrentLyric("♪ 正在播放搜索结果 ♪");
+    setCurrentLyric("♪ 正在播放 ♪");
   };
 
   const handleTimeUpdate = () => {
@@ -385,7 +403,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
           onTimeUpdate={handleTimeUpdate}
           onEnded={handleEnded}
           onError={() => {
-            // Remove failed song from playlist and play next
+            // Remove failed song and try next
             setPlaylist(prev => {
               const updated = prev.filter((_: any, i: number) => i !== currentIndex);
               if (updated.length === 0) {
@@ -394,7 +412,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
               }
               return updated;
             });
-            setCurrentLyric("♪ 该歌曲暂无法播放，已移除 ♪");
           }}
           onLoadedMetadata={() => {
             handleTimeUpdate();
