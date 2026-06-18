@@ -1,12 +1,18 @@
 // @ts-nocheck
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function MouseTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
+    setIsDesktop(window.innerWidth > 768);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -105,7 +111,9 @@ export default function MouseTrail() {
       window.removeEventListener('mousemove', onMouseMove);
       cancelAnimationFrame(animId);
     };
-  }, []);
+  }, [isDesktop]);
+
+  if (!isDesktop) return null;
 
   return <canvas ref={canvasRef} className="fixed inset-0 z-[60] pointer-events-none" />;
 }

@@ -1,11 +1,17 @@
 // @ts-nocheck
 "use client";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ClickEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
+    setIsDesktop(window.innerWidth > 768);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -90,7 +96,9 @@ export default function ClickEffect() {
       window.removeEventListener('resize', resize);
       window.removeEventListener('click', handleClick);
     };
-  }, []);
+  }, [isDesktop]);
+
+  if (!isDesktop) return null;
 
   return (
     <canvas
