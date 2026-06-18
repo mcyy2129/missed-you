@@ -22,11 +22,17 @@ export async function GET(request: NextRequest) {
       return new Response(`Upstream error: ${res.status}`, { status: res.status })
     }
 
-    const contentType = res.headers.get('content-type') || 'audio/mpeg'
+    const contentType = res.headers.get('content-type') || ''
+
+    // Check if response is HTML (paywall/error page) instead of audio
+    if (contentType.includes('text/html') || contentType.includes('text/plain')) {
+      return new Response('This song requires a paid subscription or is unavailable', { status: 403 })
+    }
+
     const contentLength = res.headers.get('content-length')
 
     const headers: Record<string, string> = {
-      'Content-Type': contentType,
+      'Content-Type': contentType || 'audio/mpeg',
       'Cache-Control': 'public, max-age=3600',
       'Access-Control-Allow-Origin': '*',
     }

@@ -384,6 +384,18 @@ export function MusicProvider({ children }: { children: ReactNode }) {
           src={currentSong.src}
           onTimeUpdate={handleTimeUpdate}
           onEnded={handleEnded}
+          onError={() => {
+            // Remove failed song from playlist and play next
+            setPlaylist(prev => {
+              const updated = prev.filter((_: any, i: number) => i !== currentIndex);
+              if (updated.length === 0) {
+                setCurrentLyric("♪ 所有歌曲暂无法播放 ♪");
+                setIsPlaying(false);
+              }
+              return updated;
+            });
+            setCurrentLyric("♪ 该歌曲暂无法播放，已移除 ♪");
+          }}
           onLoadedMetadata={() => {
             handleTimeUpdate();
             // Restore saved playback position on first load
