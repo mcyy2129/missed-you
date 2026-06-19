@@ -338,17 +338,26 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   };
 
   const handleTimeUpdate = () => {
-    if (audioRef.current && !isSeekingRef.current) {
-      const { currentTime, duration } = audioRef.current;
-      setCurrentTime(currentTime);
-      setDuration(duration || 0);
-      setProgress((currentTime / (duration || 1)) * 100);
+    if (!audioRef.current) return;
+    const { currentTime, duration } = audioRef.current;
 
-      if (lyrics.length > 0) {
-        const activeLyric = lyrics.slice().reverse().find(l => currentTime >= l.time);
-        if (activeLyric && activeLyric.text !== currentLyric) {
-          setCurrentLyric(activeLyric.text);
-        }
+    if (isSeekingRef.current) {
+      if (seekTargetRef.current !== null && Math.abs(currentTime - seekTargetRef.current) < 1) {
+        seekTargetRef.current = null;
+        isSeekingRef.current = false;
+        setIsSeeking(false);
+      }
+      return;
+    }
+
+    setCurrentTime(currentTime);
+    setDuration(duration || 0);
+    setProgress((currentTime / (duration || 1)) * 100);
+
+    if (lyrics.length > 0) {
+      const activeLyric = lyrics.slice().reverse().find(l => currentTime >= l.time);
+      if (activeLyric && activeLyric.text !== currentLyric) {
+        setCurrentLyric(activeLyric.text);
       }
     }
   };
@@ -373,28 +382,19 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       seekTargetRef.current = targetTime;
       audioRef.current.currentTime = targetTime;
     }
+    setTimeout(() => {
+      if (isSeekingRef.current) {
+        seekTargetRef.current = null;
+        isSeekingRef.current = false;
+        setIsSeeking(false);
+      }
+    }, 2000);
   };
 
   const handleSeekEnd = () => {
-    if (audioRef.current && seekTargetRef.current !== null) {
-      const checkSeekDone = () => {
-        if (!audioRef.current || seekTargetRef.current === null) return;
-        const actual = audioRef.current.currentTime;
-        const target = seekTargetRef.current;
-        if (Math.abs(actual - target) < 1) {
-          seekTargetRef.current = null;
-          isSeekingRef.current = false;
-          setIsSeeking(false);
-        } else {
-          setTimeout(checkSeekDone, 100);
-        }
-      };
-      checkSeekDone();
-    } else {
-      seekTargetRef.current = null;
-      isSeekingRef.current = false;
-      setTimeout(() => setIsSeeking(false), 200);
-    }
+    seekTargetRef.current = null;
+    isSeekingRef.current = false;
+    setIsSeeking(false);
   };
 
   const setVolume = (val: number) => {
