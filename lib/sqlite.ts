@@ -117,6 +117,16 @@ export async function getUserById(id: string): Promise<DBUser | null> {
   return mapUser(rows[0]);
 }
 
+export async function getUsersByIds(ids: string[]): Promise<Map<string, DBUser>> {
+  if (ids.length === 0) return new Map();
+  const { rows } = await pool.query('SELECT * FROM users WHERE id = ANY($1)', [ids]);
+  const map = new Map<string, DBUser>();
+  for (const row of rows) {
+    map.set(row.id, mapUser(row));
+  }
+  return map;
+}
+
 export async function getUserByEmail(email: string): Promise<DBUser | null> {
   const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
   if (!rows[0]) return null;
@@ -213,6 +223,37 @@ export async function getUserConversations(userId: string): Promise<DBConversati
     ORDER BY c.updated_at DESC
   `, [userId]);
   return rows;
+}
+
+export async function getUserConversationsWithDetails(userId: string): Promise<any[]> {
+  const { rows: convs } = await pool.query(`
+    SELECT c.id, c.created_at, c.updated_at,
+      ARRAY(SELECT cp2.user_id FROM conversation_participants cp2 WHERE cp2.conversation_id = c.id) as participants
+    FROM conversations c
+    JOIN conversation_participants cp ON c.id = cp.conversation_id
+    WHERE cp.user_id = $1
+    ORDER BY c.updated_at DESC
+  `, [userId]);
+
+  if (convs.length === 0) return [];
+
+  const convIds = convs.map((c: any) => c.id);
+
+  const { rows: lastMsgs } = await pool.query(`
+    SELECT DISTINCT ON (conversation_id)
+      conversation_id, id, sender_id, text, created_at
+    FROM messages
+    WHERE conversation_id = ANY($1)
+    ORDER BY conversation_id, created_at DESC
+  `, [convIds]);
+
+  return convs.map((c: any) => ({
+    id: c.id,
+    participants: c.participants,
+    lastMessage: lastMsgs.find((m: any) => m.conversation_id === c.id) || null,
+    createdAt: c.created_at,
+    updatedAt: c.updated_at,
+  }));
 }
 
 export async function getConversationParticipants(conversationId: string): Promise<string[]> {

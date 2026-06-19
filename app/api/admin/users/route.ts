@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllUsers, deleteUserCascade, updateUser, updateUserPassword, getUserById } from '@/lib/sqlite';
 
+let usersCache: any = null;
+let usersCacheTime = 0;
+const CACHE_TTL = 30000;
+
 export async function GET(req: NextRequest) {
   try {
+    const now = Date.now();
+    if (usersCache && now - usersCacheTime < CACHE_TTL) {
+      return NextResponse.json(usersCache);
+    }
     const users = await getAllUsers();
+    usersCache = users;
+    usersCacheTime = now;
     return NextResponse.json(users);
   } catch (error) {
     console.error('Get users error:', error);
@@ -25,6 +35,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     await deleteUserCascade(userId);
+    usersCache = null;
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -54,6 +65,7 @@ export async function PUT(req: NextRequest) {
       await updateUser(userId, updateData);
     }
 
+    usersCache = null;
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Update user error:', error);

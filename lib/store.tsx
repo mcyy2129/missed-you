@@ -342,21 +342,6 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     if (savedChatBg) setChatBackgroundState(savedChatBg);
   }, [fetchUserData]);
 
-  useEffect(() => {
-    if (!currentUser) return;
-
-    const syncAllConversations = async () => {
-      for (const conv of conversations) {
-        syncConversationMessages(conv.id);
-      }
-    };
-
-    syncAllConversations();
-    const interval = setInterval(syncAllConversations, 30000);
-
-    return () => clearInterval(interval);
-  }, [currentUser, conversations.length, syncConversationMessages]);
-
   const login = useCallback(async (email: string, password: string): Promise<boolean> => {
     try {
       const res = await fetchWithTimeout('/api/auth/login', {

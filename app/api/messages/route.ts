@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createMessage, getConversationMessages, markMessagesAsRead, getUserById } from '@/lib/sqlite';
+import { createMessage, getConversationMessages, markMessagesAsRead, getUsersByIds } from '@/lib/sqlite';
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,10 +17,12 @@ export async function GET(req: NextRequest) {
       messages = messages.filter(m => m.created_at > afterTime);
     }
 
-    const enrichedMessages = [];
-    for (const msg of messages) {
-      const sender = await getUserById(msg.sender_id);
-      enrichedMessages.push({
+    const senderIds = [...new Set(messages.map(m => m.sender_id).filter(id => !id.startsWith('ai-')))];
+    const userMap = await getUsersByIds(senderIds);
+
+    const enrichedMessages = messages.map(msg => {
+      const sender = userMap.get(msg.sender_id);
+      return {
         id: msg.id,
         conversationId: msg.conversation_id,
         senderId: msg.sender_id,
@@ -32,8 +34,8 @@ export async function GET(req: NextRequest) {
         readAt: msg.read_at,
         senderName: sender?.name || '未知用户',
         senderAvatar: sender?.avatar || '',
-      });
-    }
+      };
+    });
 
     return NextResponse.json(enrichedMessages);
   } catch (error) {

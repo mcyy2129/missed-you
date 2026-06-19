@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createConversation, findConversationBetweenUsers, getUserConversations, getConversationParticipants, getConversationMessages } from '@/lib/sqlite';
+import { createConversation, findConversationBetweenUsers, getUserConversationsWithDetails, getConversationParticipants } from '@/lib/sqlite';
 
 export async function GET(req: NextRequest) {
   try {
@@ -9,26 +9,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: '缺少用户ID' }, { status: 400 });
     }
 
-    const conversations = await getUserConversations(userId);
-    const enrichedConversations = [];
-    for (const conv of conversations) {
-      const participants = await getConversationParticipants(conv.id);
-      const messages = await getConversationMessages(conv.id, 1);
-      const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-
-      enrichedConversations.push({
-        id: conv.id,
-        participants,
-        lastMessage: lastMessage ? {
-          id: lastMessage.id,
-          senderId: lastMessage.sender_id,
-          text: lastMessage.text,
-          timestamp: lastMessage.created_at,
-        } : null,
-        createdAt: conv.created_at,
-        updatedAt: conv.updated_at,
-      });
-    }
+    const enrichedConversations = await getUserConversationsWithDetails(userId);
 
     return NextResponse.json(enrichedConversations);
   } catch (error) {
