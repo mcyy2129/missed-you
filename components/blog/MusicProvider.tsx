@@ -119,6 +119,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [playMode, setPlayMode] = useState<PlayMode>('loop');
   const [isSeeking, setIsSeeking] = useState(false);
   const isSeekingRef = useRef(false);
+  const seekTargetRef = useRef<number | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -368,13 +369,32 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     setIsSeeking(true);
     isSeekingRef.current = true;
     if (audioRef.current && audioRef.current.duration) {
-      audioRef.current.currentTime = (newProgress / 100) * audioRef.current.duration;
+      const targetTime = (newProgress / 100) * audioRef.current.duration;
+      seekTargetRef.current = targetTime;
+      audioRef.current.currentTime = targetTime;
     }
   };
 
   const handleSeekEnd = () => {
-    isSeekingRef.current = false;
-    setTimeout(() => setIsSeeking(false), 200);
+    if (audioRef.current && seekTargetRef.current !== null) {
+      const checkSeekDone = () => {
+        if (!audioRef.current || seekTargetRef.current === null) return;
+        const actual = audioRef.current.currentTime;
+        const target = seekTargetRef.current;
+        if (Math.abs(actual - target) < 1) {
+          seekTargetRef.current = null;
+          isSeekingRef.current = false;
+          setIsSeeking(false);
+        } else {
+          setTimeout(checkSeekDone, 100);
+        }
+      };
+      checkSeekDone();
+    } else {
+      seekTargetRef.current = null;
+      isSeekingRef.current = false;
+      setTimeout(() => setIsSeeking(false), 200);
+    }
   };
 
   const setVolume = (val: number) => {

@@ -134,9 +134,11 @@ export default function CloudPlayer() {
               onChange={safeHandleSeek}
               onInput={safeHandleSeek}
               onPointerDown={() => setIsDragging(true)}
-              onPointerUp={() => { setTimeout(() => setIsDragging(false), 150); handleSeekEnd?.(); }}
+              onPointerUp={() => { setTimeout(() => setIsDragging(false), 300); handleSeekEnd?.(); }}
               onTouchStart={() => setIsDragging(true)}
-              onTouchEnd={() => { setTimeout(() => setIsDragging(false), 150); handleSeekEnd?.(); }}
+              onTouchEnd={() => { setTimeout(() => setIsDragging(false), 300); handleSeekEnd?.(); }}
+              onMouseDown={() => setIsDragging(true)}
+              onMouseUp={() => { setTimeout(() => setIsDragging(false), 300); handleSeekEnd?.(); }}
               className="flex-1 h-1.5 bg-white/40 dark:bg-slate-700/50 rounded-full appearance-none outline-none cursor-pointer shadow-inner"
               style={{ background: `linear-gradient(to right, #818cf8 ${progress}%, rgba(148,163,184,0.4) ${progress}%)` }}
             />
