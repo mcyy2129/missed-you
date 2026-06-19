@@ -194,9 +194,8 @@ export default function CloudPlayer({ songIds }: { songIds: string[] }) {
   return (
     <>
       <style>{`
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #6366f1; cursor: pointer; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #6366f1; cursor: pointer; transition: transform 0.1s; }
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
-        input[type=range] { touch-action: none; }
         @keyframes safeWave { 0%, 100% { height: 4px; } 50% { height: 28px; } }
         .safe-wave { animation: safeWave 1s ease-in-out infinite; transform-origin: bottom; will-change: height; }
         @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -229,7 +228,7 @@ export default function CloudPlayer({ songIds }: { songIds: string[] }) {
           <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 font-bold mb-3 transition-colors duration-700">
             <span className="w-10 text-right">{formatTime(currentTime)}</span>
             <input
-              type="range" min="0" max="100" value={progress} onChange={handleSeek} onInput={handleSeek}
+              type="range" min="0" max="100" value={progress} onChange={handleSeek}
               className="flex-1 h-1.5 bg-white/40 dark:bg-slate-700/50 rounded-full appearance-none outline-none cursor-pointer shadow-inner"
               style={{ background: `linear-gradient(to right, #818cf8 ${progress}%, rgba(255,255,255,0.2) ${progress}%)` }}
             />

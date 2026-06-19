@@ -13,9 +13,9 @@ const formatTime = (time: number) => {
 };
 
 export default function CloudPlayer() {
-  const { playlist, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading, togglePlay, nextSong, prevSong, handleSeek, handleSeekEnd } = useMusic();
+  const { playlist, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading, togglePlay, nextSong, prevSong, handleSeek } = useMusic();
   const [displayedLyric, setDisplayedLyric] = useState("");
-  const [isDragging, setIsDragging] = useState(false);
+  // 🌟 初始化路由
   const router = useRouter();
 
   useEffect(() => {
@@ -77,21 +77,22 @@ export default function CloudPlayer() {
   };
 
   const safeHandleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
     handleSeek(e);
   };
 
   return (
     <>
       <style>{`
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #6366f1; cursor: pointer; transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #6366f1; cursor: pointer; transition: transform 0.1s; }
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
-        input[type=range] { touch-action: none; }
         @keyframes safeWave { 0%, 100% { height: 4px; } 50% { height: 28px; } }
         .safe-wave { animation: safeWave 1s ease-in-out infinite; transform-origin: bottom; will-change: height; }
       `}</style>
 
+      {/* 🌟 终极逻辑：在外层 Div 直接绑定 onClick 进行页面跳转 */}
       <div
-        onClick={() => { if (!isDragging) router.push('/blog/music'); }}
+        onClick={() => router.push('/blog/music')}
         className="h-full w-full rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl p-6 flex flex-col justify-between transition-all duration-700 hover:scale-[1.02] relative group overflow-hidden cursor-pointer"
       >
         <div className={`absolute -top-20 -right-20 w-48 h-48 bg-indigo-500/20 blur-[50px] rounded-full transition-opacity duration-1000 ${isPlaying ? 'opacity-100' : 'opacity-30'}`}></div>
@@ -123,22 +124,17 @@ export default function CloudPlayer() {
         </div>
 
         <div className="relative z-10 mt-auto">
+          {/* 🌟 核心拦截：把进度条的点击也拦住 */}
           <div
              className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 font-bold mb-3 transition-colors duration-700"
-             onClick={(e) => e.stopPropagation()}
+             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+             onPointerDown={(e) => { e.stopPropagation(); }}
           >
             <span className="w-10 text-right">{formatTime(currentTime)}</span>
             <input
               type="range" min="0" max="100"
               value={progress}
               onChange={safeHandleSeek}
-              onInput={safeHandleSeek}
-              onPointerDown={() => setIsDragging(true)}
-              onPointerUp={() => { setTimeout(() => setIsDragging(false), 300); handleSeekEnd?.(); }}
-              onTouchStart={() => setIsDragging(true)}
-              onTouchEnd={() => { setTimeout(() => setIsDragging(false), 300); handleSeekEnd?.(); }}
-              onMouseDown={() => setIsDragging(true)}
-              onMouseUp={() => { setTimeout(() => setIsDragging(false), 300); handleSeekEnd?.(); }}
               className="flex-1 h-1.5 bg-white/40 dark:bg-slate-700/50 rounded-full appearance-none outline-none cursor-pointer shadow-inner"
               style={{ background: `linear-gradient(to right, #818cf8 ${progress}%, rgba(148,163,184,0.4) ${progress}%)` }}
             />

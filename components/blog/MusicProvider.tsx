@@ -118,8 +118,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [isMuted, setIsMuted] = useState(false);
   const [playMode, setPlayMode] = useState<PlayMode>('loop');
   const [isSeeking, setIsSeeking] = useState(false);
-  const isSeekingRef = useRef(false);
-  const seekTargetRef = useRef<number | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -212,9 +210,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     if (playlist.length === 0) return;
     let isMounted = true;
     const currentSong = playlist[currentIndex];
-    setProgress(0);
-    setCurrentTime(0);
-    setDuration(0);
     setLyrics([]);
     setCurrentLyric("♪ 正在缓冲 ♪");
     if (currentSong.lyrics && currentSong.lyrics.length > 0) {
@@ -338,26 +333,17 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   };
 
   const handleTimeUpdate = () => {
-    if (!audioRef.current) return;
-    const { currentTime, duration } = audioRef.current;
+    if (audioRef.current && !isSeeking) {
+      const { currentTime, duration } = audioRef.current;
+      setCurrentTime(currentTime);
+      setDuration(duration || 0);
+      setProgress((currentTime / (duration || 1)) * 100);
 
-    if (isSeekingRef.current) {
-      if (seekTargetRef.current !== null && Math.abs(currentTime - seekTargetRef.current) < 1) {
-        seekTargetRef.current = null;
-        isSeekingRef.current = false;
-        setIsSeeking(false);
-      }
-      return;
-    }
-
-    setCurrentTime(currentTime);
-    setDuration(duration || 0);
-    setProgress((currentTime / (duration || 1)) * 100);
-
-    if (lyrics.length > 0) {
-      const activeLyric = lyrics.slice().reverse().find(l => currentTime >= l.time);
-      if (activeLyric && activeLyric.text !== currentLyric) {
-        setCurrentLyric(activeLyric.text);
+      if (lyrics.length > 0) {
+        const activeLyric = lyrics.slice().reverse().find(l => currentTime >= l.time);
+        if (activeLyric && activeLyric.text !== currentLyric) {
+          setCurrentLyric(activeLyric.text);
+        }
       }
     }
   };
@@ -376,24 +362,12 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     const newProgress = Number(e.target.value);
     setProgress(newProgress);
     setIsSeeking(true);
-    isSeekingRef.current = true;
     if (audioRef.current && audioRef.current.duration) {
-      const targetTime = (newProgress / 100) * audioRef.current.duration;
-      seekTargetRef.current = targetTime;
-      audioRef.current.currentTime = targetTime;
+      audioRef.current.currentTime = (newProgress / 100) * audioRef.current.duration;
     }
-    setTimeout(() => {
-      if (isSeekingRef.current) {
-        seekTargetRef.current = null;
-        isSeekingRef.current = false;
-        setIsSeeking(false);
-      }
-    }, 2000);
   };
 
   const handleSeekEnd = () => {
-    seekTargetRef.current = null;
-    isSeekingRef.current = false;
     setIsSeeking(false);
   };
 
