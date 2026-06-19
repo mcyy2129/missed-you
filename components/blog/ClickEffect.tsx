@@ -18,6 +18,7 @@ export default function ClickEffect() {
     if (!ctx) return;
 
     let ripples: any[] = [];
+    let animationId: number;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -88,11 +89,12 @@ export default function ClickEffect() {
           i--;
         }
       }
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
     animate();
 
     return () => {
+      cancelAnimationFrame(animationId);
       window.removeEventListener('resize', resize);
       window.removeEventListener('click', handleClick);
     };

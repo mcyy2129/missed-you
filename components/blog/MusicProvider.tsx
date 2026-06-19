@@ -55,6 +55,7 @@ interface MusicContextType {
   nextSong: () => void;
   prevSong: () => void;
   handleSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSeekStart: () => void;
   handleSeekEnd: () => void;
   playSong: (index: number) => void;
   playSearchResult: (song: any) => void;
@@ -361,10 +362,13 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newProgress = Number(e.target.value);
     setProgress(newProgress);
-    setIsSeeking(true);
     if (audioRef.current && audioRef.current.duration) {
       audioRef.current.currentTime = (newProgress / 100) * audioRef.current.duration;
     }
+  };
+
+  const handleSeekStart = () => {
+    setIsSeeking(true);
   };
 
   const handleSeekEnd = () => {
@@ -391,9 +395,9 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   return (
     <MusicContext.Provider value={{
         playlist, currentIndex, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading,
-        volume, isMuted, playMode, // 暴露新状态
-        togglePlay, nextSong, prevSong, handleSeek, handleSeekEnd,
-        playSong, playSearchResult, setVolume, toggleMute, togglePlayMode // 暴露新方法
+        volume, isMuted, playMode,
+        togglePlay, nextSong, prevSong, handleSeek, handleSeekStart, handleSeekEnd,
+        playSong, playSearchResult, setVolume, toggleMute, togglePlayMode
     }}>
       {children}
       {currentSong && (

@@ -1,24 +1,27 @@
 // @ts-nocheck
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useRef, useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// 定义全局可以调用的方法
 interface ToastContextType {
   showToast: (text: string, type?: 'success' | 'warning' | 'error' | 'info') => void;
 }
 
 const ToastContext = createContext<ToastContextType | null>(null);
 
-// 1. 导出 Provider 组件（注意这里是 export function，没有 default）
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toastMsg, setToastMsg] = useState<{ text: string, type: 'success' | 'warning' | 'error' | 'info' } | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const showToast = (text: string, type: 'success' | 'warning' | 'error' | 'info' = 'success') => {
+  const showToast = useCallback((text: string, type: 'success' | 'warning' | 'error' | 'info' = 'success') => {
+    if (timerRef.current) clearTimeout(timerRef.current);
     setToastMsg({ text, type });
-    setTimeout(() => setToastMsg(null), 3000);
-  };
+    timerRef.current = setTimeout(() => {
+      setToastMsg(null);
+      timerRef.current = null;
+    }, 3000);
+  }, []);
 
   return (
     <ToastContext.Provider value={{ showToast }}>
@@ -45,7 +48,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// 2. 导出魔法钩子，让 ProfileCard 可以调用
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) throw new Error("useToast 必须在 ToastProvider 内部使用");

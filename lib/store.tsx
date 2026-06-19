@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, useMemo, useRef, ReactNode } from "react";
 import { User, Conversation, Message, SwipeDirection, MessageReaction } from "./types";
 
 const FETCH_TIMEOUT = 8000;
@@ -104,7 +104,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const [isDanmakuEnabled, setIsDanmakuEnabled] = useState(true);
   const [themeBackground, setThemeBackgroundState] = useState('/bg.png');
   const [chatBackground, setChatBackgroundState] = useState('');
-  const danmakuIdRef = { current: 0 };
+  const danmakuIdRef = useRef(0);
 
   const persistConversations = useCallback((convs: Conversation[]) => {
     try {
@@ -972,50 +972,61 @@ export default function AppProvider({ children }: { children: ReactNode }) {
 
   const isLoggedIn = currentUser !== null;
 
+  const contextValue = useMemo(() => ({
+    currentUser,
+    users,
+    conversations,
+    likedUsers,
+    matchedUsers,
+    isLoggedIn,
+    isOnboarded,
+    isDataLoaded,
+    login,
+    register,
+    logout,
+    completeProfile,
+    updatePhotos,
+    updateProfile,
+    swipeUser,
+    sendMessage,
+    addAIMessage,
+    addReaction,
+    markAsRead,
+    getUnreadCount,
+    getConversation,
+    getUser,
+    createConversation,
+    createGroupChat,
+    updateGroupSettings,
+    removeGroupMember,
+    addGroupMember,
+    setUserOnline,
+    getTotalUnread,
+    setConversations,
+    danmakuMessages,
+    isDanmakuEnabled,
+    setDanmakuMessages,
+    addDanmaku,
+    toggleDanmaku,
+    themeBackground,
+    chatBackground,
+    setThemeBackground,
+    setChatBackground,
+  }), [
+    currentUser, users, conversations, likedUsers, matchedUsers,
+    isLoggedIn, isOnboarded, isDataLoaded,
+    login, register, logout, completeProfile, updatePhotos, updateProfile,
+    swipeUser, sendMessage, addAIMessage, addReaction, markAsRead,
+    getUnreadCount, getConversation, getUser, createConversation,
+    createGroupChat, updateGroupSettings, removeGroupMember, addGroupMember,
+    setUserOnline, getTotalUnread, setConversations,
+    danmakuMessages, isDanmakuEnabled, setDanmakuMessages,
+    addDanmaku, toggleDanmaku, themeBackground, chatBackground,
+    setThemeBackground, setChatBackground,
+  ]);
+
   return (
-    <AppContext.Provider
-      value={{
-        currentUser,
-        users,
-        conversations,
-        likedUsers,
-        matchedUsers,
-        isLoggedIn,
-        isOnboarded,
-        isDataLoaded,
-        login,
-        register,
-        logout,
-        completeProfile,
-        updatePhotos,
-        updateProfile,
-        swipeUser,
-        sendMessage,
-        addAIMessage,
-        addReaction,
-        markAsRead,
-        getUnreadCount,
-        getConversation,
-        getUser,
-        createConversation,
-        createGroupChat,
-        updateGroupSettings,
-        removeGroupMember,
-        addGroupMember,
-        setUserOnline,
-        getTotalUnread,
-        setConversations,
-        danmakuMessages,
-        isDanmakuEnabled,
-        setDanmakuMessages,
-        addDanmaku,
-        toggleDanmaku,
-        themeBackground,
-        chatBackground,
-        setThemeBackground,
-        setChatBackground,
-      }}
-    >
+    <AppContext.Provider value={contextValue}>
       {children}
     </AppContext.Provider>
   );

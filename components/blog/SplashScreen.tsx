@@ -1,13 +1,14 @@
 // @ts-nocheck
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig } from '@/siteConfig_blog';
 
 export default function SplashScreen() {
   const [show, setShow] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const exitTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -18,9 +19,11 @@ export default function SplashScreen() {
       const timer = setTimeout(() => {
         exitSplash();
       }, 2200);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+      };
     } else {
-      // 容错处理：确保直接访问时类名存在
       document.documentElement.classList.add('splash-seen');
     }
   }, []);
@@ -28,9 +31,8 @@ export default function SplashScreen() {
   const exitSplash = () => {
     setShow(false);
     sessionStorage.setItem('hasSeenSplash', 'true');
-
-    // 【核心解封】：动画快结束时，给 html 加上类名，CSS 会自动把内容显示出来
-    setTimeout(() => {
+    if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+    exitTimerRef.current = setTimeout(() => {
       document.documentElement.classList.add('splash-seen');
     }, 500);
   };
@@ -47,7 +49,6 @@ export default function SplashScreen() {
           className="fixed inset-0 z-[100000] flex flex-col items-center justify-center bg-white dark:bg-slate-950"
         >
           <div className="relative z-10 flex flex-col items-center">
-            {/* 头像光环 */}
             <div className="relative w-24 h-24 mb-8">
               <motion.div
                 animate={{ rotate: 360 }}
