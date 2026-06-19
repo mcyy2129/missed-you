@@ -1,7 +1,7 @@
 import 'katex/dist/katex.min.css';
 import "./globals.css";
 import { ThemeProvider } from "@/components/blog/ThemeProvider";
-import MusicPlayerBar from "@/components/blog/MusicPlayerBar";
+import FloatingPlayer from "@/components/blog/FloatingPlayer";
 import { siteConfig } from "@/siteConfig_blog";
 import ClickEffect from "@/components/blog/ClickEffect";
 import GlobalToolbox from "@/components/blog/GlobalToolbox";
@@ -42,8 +42,8 @@ export default function BlogLayout({ children }: Readonly<{ children: React.Reac
           </div>
 
           <BackToMain />
-          <div className="relative z-10 pb-16">{children}</div>
-          <MusicPlayerBar />
+          <div className="relative z-10">{children}</div>
+          <FloatingPlayer />
           <GlobalToolbox />
           <MobileBackButton />
           <ClickEffect />
