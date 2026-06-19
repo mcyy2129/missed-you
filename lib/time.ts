@@ -1,5 +1,7 @@
 export function formatSmartTime(timestamp: number): string {
+  if (!timestamp) return '';
   const date = new Date(timestamp);
+  if (isNaN(date.getTime())) return '';
   const now = new Date();
   const diff = now.getTime() - date.getTime();
   
@@ -21,7 +23,9 @@ export function formatSmartTime(timestamp: number): string {
 }
 
 export function formatChatTime(timestamp: number): string {
+  if (!timestamp) return '';
   const date = new Date(timestamp);
+  if (isNaN(date.getTime())) return '';
   const now = new Date();
   
   const isToday = date.toDateString() === now.toDateString();
@@ -46,7 +50,9 @@ export function formatChatTime(timestamp: number): string {
 }
 
 export function formatDateSeparator(timestamp: number): string {
+  if (!timestamp) return '';
   const date = new Date(timestamp);
+  if (isNaN(date.getTime())) return '';
   const now = new Date();
   
   const isToday = date.toDateString() === now.toDateString();

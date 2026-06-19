@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -35,25 +35,23 @@ function getColorForName(name: string): string {
   return fallbackColors[Math.abs(hash) % fallbackColors.length];
 }
 
-function FallbackAvatar({ alt, text, gradient }: { alt: string; text: string; gradient: string }) {
+function FallbackAvatar({ alt, text }: { alt: string; text: string }) {
   return (
-    <div className={`w-full h-full rounded-full flex items-center justify-center backdrop-blur-md`}
+    <div className="w-full h-full rounded-full flex items-center justify-center backdrop-blur-md"
       style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
       <span className={`${text} text-white/40 font-medium`}>{alt[0] || '?'}</span>
     </div>
   );
 }
 
-export default function Avatar({ src, alt = '', size = 'md', className = '' }: AvatarProps) {
+const Avatar = memo(function Avatar({ src, alt = '', size = 'md', className = '' }: AvatarProps) {
   const { dimensions, text } = sizeMap[size];
   const fallbackGradient = getColorForName(alt);
   const hasValidSrc = src && src.trim() !== '' && !src.includes('undefined');
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className={`relative inline-flex items-center justify-center rounded-full ${dimensions} ${className}`}
+    <div
+      className={`relative inline-flex items-center justify-center rounded-full ${dimensions} active:scale-95 transition-transform ${className}`}
       style={{ border: '1px solid rgba(255, 255, 255, 0.08)' }}
     >
       {hasValidSrc ? (
@@ -61,6 +59,8 @@ export default function Avatar({ src, alt = '', size = 'md', className = '' }: A
           src={src}
           alt={alt}
           className="w-full h-full rounded-full object-cover"
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             const target = e.currentTarget;
             if (!target.dataset.fallback) {
@@ -79,8 +79,10 @@ export default function Avatar({ src, alt = '', size = 'md', className = '' }: A
           }}
         />
       ) : (
-        <FallbackAvatar alt={alt} text={text} gradient={fallbackGradient} />
+        <FallbackAvatar alt={alt} text={text} />
       )}
-    </motion.div>
+    </div>
   );
-}
+});
+
+export default Avatar;

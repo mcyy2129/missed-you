@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
 import { useApp } from '@/lib/store';
+import { memo } from 'react';
 
 const navItems = [
   { 
@@ -64,7 +64,7 @@ const navItems = [
   },
 ];
 
-export default function BottomNav() {
+const BottomNav = memo(function BottomNav() {
   const pathname = usePathname();
   const { getTotalUnread } = useApp();
   const totalUnread = getTotalUnread();
@@ -81,12 +81,10 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className="relative flex flex-col items-center justify-center w-16 h-full"
+              className="relative flex flex-col items-center justify-center w-16 h-full active:scale-90 transition-transform duration-100"
             >
-              <motion.div
-                whileTap={{ scale: 0.85 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                className={`relative flex flex-col items-center gap-0.5 transition-colors duration-300 ${
+              <div
+                className={`relative flex flex-col items-center gap-0.5 transition-colors duration-200 ${
                   isActive ? 'text-lime-500' : 'text-white/40'
                 }`}
               >
@@ -94,30 +92,27 @@ export default function BottomNav() {
                 <span className="text-[10px] font-medium">{item.label}</span>
                 
                 {item.showBadge && totalUnread > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 15 }}
-                    className="absolute -top-1 -right-2 min-w-[16px] h-4 rounded-full bg-lime-500 text-black text-[10px] font-bold flex items-center justify-center px-1"
+                  <span
+                    className="absolute -top-1 -right-2 min-w-[16px] h-4 rounded-full bg-lime-500 text-black text-[10px] font-bold flex items-center justify-center px-1 badge-pop"
                     style={{ boxShadow: '0 0 10px rgba(132, 204, 22, 0.5)' }}
                   >
                     {totalUnread > 99 ? '99+' : totalUnread}
-                  </motion.span>
+                  </span>
                 )}
                 
                 {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
+                  <div
                     className="absolute -bottom-2 w-5 h-0.5 rounded-full"
                     style={{ background: '#84cc16', boxShadow: '0 0 8px rgba(132, 204, 22, 0.6)' }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 )}
-              </motion.div>
+              </div>
             </Link>
           );
         })}
       </div>
     </nav>
   );
-}
+});
+
+export default BottomNav;

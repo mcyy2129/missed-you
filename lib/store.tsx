@@ -3,6 +3,33 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { User, Conversation, Message, SwipeDirection, MessageReaction } from "./types";
 
+const FETCH_TIMEOUT = 8000;
+
+async function fetchWithTimeout(url: string, options?: RequestInit, timeout = FETCH_TIMEOUT): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timer);
+    return res;
+  } catch (e) {
+    clearTimeout(timer);
+    throw e;
+  }
+}
+
+async function fetchWithRetry(url: string, options?: RequestInit, retries = 2): Promise<Response> {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      return await fetchWithTimeout(url, options);
+    } catch (e) {
+      if (i === retries) throw e;
+      await new Promise(r => setTimeout(r, 500 * (i + 1)));
+    }
+  }
+  throw new Error('fetch failed');
+}
+
 interface DanmakuMessage {
   id: number;
   text: string;
@@ -20,8 +47,11 @@ interface AppState {
   matchedUsers: Set<string>;
   isLoggedIn: boolean;
   isOnboarded: boolean;
+  isDataLoaded: boolean;
   danmakuMessages: DanmakuMessage[];
   isDanmakuEnabled: boolean;
+  themeBackground: string;
+  chatBackground: string;
 }
 
 interface AppActions {
@@ -50,6 +80,8 @@ interface AppActions {
   setDanmakuMessages: React.Dispatch<React.SetStateAction<DanmakuMessage[]>>;
   addDanmaku: (text: string) => void;
   toggleDanmaku: () => void;
+  setThemeBackground: (url: string) => void;
+  setChatBackground: (url: string) => void;
 }
 
 const AppContext = createContext<(AppState & AppActions) | null>(null);
@@ -67,8 +99,11 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   const [likedUsers, setLikedUsers] = useState<Set<string>>(new Set());
   const [matchedUsers, setMatchedUsers] = useState<Set<string>>(new Set());
   const [isOnboarded, setIsOnboarded] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [danmakuMessages, setDanmakuMessages] = useState<DanmakuMessage[]>([]);
   const [isDanmakuEnabled, setIsDanmakuEnabled] = useState(true);
+  const [themeBackground, setThemeBackgroundState] = useState('/bg.png');
+  const [chatBackground, setChatBackgroundState] = useState('');
   const danmakuIdRef = { current: 0 };
 
   const persistConversations = useCallback((convs: Conversation[]) => {
@@ -78,6 +113,12 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       console.error('Failed to persist conversations:', e);
     }
   }, []);
+
+  let persistTimer: ReturnType<typeof setTimeout> | null = null;
+  const debouncedPersist = useCallback((convs: Conversation[]) => {
+    if (persistTimer) clearTimeout(persistTimer);
+    persistTimer = setTimeout(() => persistConversations(convs), 1000);
+  }, [persistConversations]);
 
   const fetchConversationMessages = useCallback(async (conversationId: string, after?: number) => {
     try {
@@ -107,7 +148,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
   
   const syncConversationMessages = useCallback(async (conversationId: string) => {
     try {
-      const res = await fetch(`/api/messages?conversationId=${conversationId}`);
+      const res = await fetchWithTimeout(`/api/messages?conversationId=${conversationId}`);
       if (!res.ok) return;
 
       const serverMessages = await res.json();
@@ -138,7 +179,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
             lastMessage: newMessages[newMessages.length - 1],
           };
           const updated = [...prev, newConv];
-          persistConversations(updated);
+          debouncedPersist(updated);
           return updated;
         }
 
@@ -150,22 +191,43 @@ export default function AppProvider({ children }: { children: ReactNode }) {
             lastMessage: newMessages[newMessages.length - 1],
           };
         });
-        persistConversations(updated);
+        debouncedPersist(updated);
         return updated;
       });
     } catch (error) {
       console.error('Failed to sync messages:', error);
     }
-  }, [persistConversations]);
+  }, [debouncedPersist]);
 
   const fetchUserData = useCallback(async (userId: string) => {
+    let localConvs: Conversation[] = [];
     try {
-      const usersRes = await fetch('/api/admin/users');
-      const usersData = await usersRes.json();
+      const savedConvs = localStorage.getItem('conversations');
+      if (savedConvs) {
+        localConvs = JSON.parse(savedConvs);
+        if (localConvs.length > 0) {
+          setConversations(localConvs);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load local conversations:', e);
+    }
+    setIsDataLoaded(true);
+
+    try {
+      const [usersRes, aiPersonasRes, convsRes] = await Promise.all([
+        fetchWithRetry('/api/admin/users'),
+        fetchWithRetry('/api/admin/ai-personas'),
+        fetchWithRetry(`/api/conversations?userId=${userId}`),
+      ]);
+
+      const [usersData, aiData, allConvs] = await Promise.all([
+        usersRes.json(),
+        aiPersonasRes.json(),
+        convsRes.json(),
+      ]);
+
       const allUsers = Array.isArray(usersData) ? usersData : [];
-      
-      const aiPersonasRes = await fetch('/api/admin/ai-personas');
-      const aiData = await aiPersonasRes.json();
       const aiPersonas = Array.isArray(aiData) ? aiData : [];
       
       const mappedUsers: User[] = allUsers.map((u: any) => ({
@@ -196,60 +258,22 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       
       setUsers([...mappedUsers.filter((u: User) => u.id !== userId), ...aiUsers]);
 
-      let localConvs: Conversation[] = [];
-      try {
-        const savedConvs = localStorage.getItem('conversations');
-        if (savedConvs) {
-          localConvs = JSON.parse(savedConvs);
-        }
-      } catch (e) {
-        console.error('Failed to load local conversations:', e);
-      }
-
       let apiConvs: Conversation[] = [];
       try {
-        const convsRes = await fetch(`/api/conversations?userId=${userId}`);
-        const allConvs = await convsRes.json();
-        
-        const convsWithMessages = await Promise.all(
-          allConvs.map(async (c: any) => {
-            let messages: Message[] = [];
-            try {
-              const msgRes = await fetch(`/api/messages?conversationId=${c.id}`);
-              if (msgRes.ok) {
-                const serverMessages = await msgRes.json();
-                messages = serverMessages.map((m: any) => ({
-                  id: m.id,
-                  senderId: m.senderId,
-                  text: m.text,
-                  timestamp: m.timestamp,
-                  image: m.image || undefined,
-                  audio: m.audio || undefined,
-                  isRead: m.isRead,
-                }));
-              }
-            } catch (e) {
-              console.error('Failed to fetch messages for conversation:', c.id);
-            }
-            
-            return {
-              id: c.id,
-              participants: c.participants,
-              messages,
-              lastMessage: c.lastMessage ? {
-                id: c.lastMessage.id,
-                senderId: c.lastMessage.senderId,
-                text: c.lastMessage.text,
-                timestamp: c.lastMessage.timestamp,
-              } : undefined,
-              unreadCount: 0,
-            };
-          })
-        );
-        
-        apiConvs = convsWithMessages;
+        apiConvs = allConvs.map((c: any) => ({
+          id: c.id,
+          participants: c.participants,
+          messages: [] as Message[],
+          lastMessage: c.lastMessage ? {
+            id: c.lastMessage.id,
+            senderId: c.lastMessage.senderId,
+            text: c.lastMessage.text,
+            timestamp: c.lastMessage.timestamp,
+          } : undefined,
+          unreadCount: 0,
+        }));
       } catch (e) {
-        console.error('Failed to fetch API conversations:', e);
+        console.error('Failed to process conversations:', e);
       }
 
       const localGroupChats = localConvs.filter(c => c.isGroup);
@@ -311,6 +335,11 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem('currentUser');
       }
     }
+
+    const savedThemeBg = localStorage.getItem('themeBackground');
+    if (savedThemeBg) setThemeBackgroundState(savedThemeBg);
+    const savedChatBg = localStorage.getItem('chatBackground');
+    if (savedChatBg) setChatBackgroundState(savedChatBg);
   }, [fetchUserData]);
 
   useEffect(() => {
@@ -323,14 +352,14 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     };
 
     syncAllConversations();
-    const interval = setInterval(syncAllConversations, 5000);
+    const interval = setInterval(syncAllConversations, 30000);
 
     return () => clearInterval(interval);
   }, [currentUser, conversations.length, syncConversationMessages]);
 
   const login = useCallback(async (email: string, password: string): Promise<boolean> => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetchWithTimeout('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -355,7 +384,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
 
   const register = useCallback(async (email: string, password: string, name: string): Promise<boolean> => {
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetchWithTimeout('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),
@@ -539,7 +568,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
             ? { ...c, messages: [...c.messages, msg], lastMessage: msg }
             : c
         );
-        persistConversations(updated);
+        debouncedPersist(updated);
         return updated;
       });
 
@@ -557,7 +586,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
                   }
                 : c
             );
-            persistConversations(updated);
+            debouncedPersist(updated);
             return updated;
           });
         }, 300);
@@ -565,7 +594,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
       }
 
       try {
-        const res = await fetch('/api/messages', {
+        const res = await fetchWithTimeout('/api/messages', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -591,7 +620,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
                   }
                 : c
             );
-            persistConversations(updated);
+            debouncedPersist(updated);
             return updated;
           });
         } else {
@@ -606,7 +635,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
                   }
                 : c
             );
-            persistConversations(updated);
+            debouncedPersist(updated);
             return updated;
           });
         }
@@ -623,12 +652,12 @@ export default function AppProvider({ children }: { children: ReactNode }) {
                 }
               : c
           );
-          persistConversations(updated);
+          debouncedPersist(updated);
           return updated;
         });
       }
     },
-    [currentUser, persistConversations]
+    [currentUser, debouncedPersist]
   );
 
   const addAIMessage = useCallback(
@@ -649,11 +678,11 @@ export default function AppProvider({ children }: { children: ReactNode }) {
             ? { ...c, messages: [...c.messages, msg], lastMessage: msg, unreadCount: (c.unreadCount || 0) + 1 }
             : c
         );
-        persistConversations(updated);
+        debouncedPersist(updated);
         return updated;
       });
     },
-    [persistConversations]
+    [debouncedPersist]
   );
 
   const addReaction = useCallback(
@@ -700,7 +729,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
               }
             : c
         );
-        persistConversations(updated);
+        debouncedPersist(updated);
         return updated;
       });
 
@@ -711,7 +740,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({ conversationId, userId: currentUser?.id }),
       }).catch(() => {});
     },
-    [currentUser, persistConversations]
+    [currentUser, debouncedPersist]
   );
 
   const getUnreadCount = useCallback(
@@ -938,6 +967,24 @@ export default function AppProvider({ children }: { children: ReactNode }) {
     setIsDanmakuEnabled(prev => !prev);
   }, []);
 
+  const setThemeBackground = useCallback((url: string) => {
+    setThemeBackgroundState(url);
+    if (url) {
+      localStorage.setItem('themeBackground', url);
+    } else {
+      localStorage.removeItem('themeBackground');
+    }
+  }, []);
+
+  const setChatBackground = useCallback((url: string) => {
+    setChatBackgroundState(url);
+    if (url) {
+      localStorage.setItem('chatBackground', url);
+    } else {
+      localStorage.removeItem('chatBackground');
+    }
+  }, []);
+
   const isLoggedIn = currentUser !== null;
 
   return (
@@ -950,6 +997,7 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         matchedUsers,
         isLoggedIn,
         isOnboarded,
+        isDataLoaded,
         login,
         register,
         logout,
@@ -977,6 +1025,10 @@ export default function AppProvider({ children }: { children: ReactNode }) {
         setDanmakuMessages,
         addDanmaku,
         toggleDanmaku,
+        themeBackground,
+        chatBackground,
+        setThemeBackground,
+        setChatBackground,
       }}
     >
       {children}

@@ -33,7 +33,8 @@ function shouldShowDateSeparator(current: number, previous?: number): boolean {
   return currentDate !== previousDate;
 }
 
-function formatLastSeen(timestamp: number): string {
+function formatLastSeen(timestamp?: number): string {
+  if (!timestamp) return '离线';
   const now = Date.now();
   const diff = now - timestamp;
   const minutes = Math.floor(diff / 60000);
@@ -44,13 +45,15 @@ function formatLastSeen(timestamp: number): string {
   if (minutes < 60) return `${minutes}分钟前在线`;
   if (hours < 24) return `${hours}小时前在线`;
   if (days < 7) return `${days}天前在线`;
-  return new Date(timestamp).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }) + '在线';
+  const d = new Date(timestamp);
+  if (isNaN(d.getTime())) return '离线';
+  return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }) + '在线';
 }
 
 export default function ChatWindowPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const { conversations, getUser, sendMessage, addAIMessage, addReaction, markAsRead, currentUser, setConversations } = useApp();
+  const { conversations, getUser, sendMessage, addAIMessage, addReaction, markAsRead, currentUser, setConversations, chatBackground } = useApp();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isAIReplying, setIsAIReplying] = useState(false);
   const [isUsingFallback, setIsUsingFallback] = useState(false);
@@ -59,6 +62,7 @@ export default function ChatWindowPage() {
   const [showGroupInfo, setShowGroupInfo] = useState(false);
   const [showGroupSettings, setShowGroupSettings] = useState(false);
   const [replyingAI, setReplyingAI] = useState<string | null>(null);
+  const [pendingAIMessage, setPendingAIMessage] = useState<{ text: string; image?: string } | null>(null);
 
   const conversation = conversations.find((c) => c.id === id);
 
@@ -176,7 +180,7 @@ export default function ChatWindowPage() {
     };
 
     syncMessages();
-    const interval = setInterval(syncMessages, 2000);
+    const interval = setInterval(syncMessages, 5000);
 
     return () => clearInterval(interval);
   }, [id, currentUser, setConversations]);
@@ -277,11 +281,9 @@ export default function ChatWindowPage() {
     const isAIPersona = otherUser?.id.startsWith('ai-');
     const isGroupAI = conversation.isGroup && text && getMentionedAI(text);
 
-    // Skip server for AI-only conversations
-    sendMessage(conversation.id, text || '', image, audio, sticker, !!(isAIPersona || isGroupAI));
-
     if (conversation.isGroup && text) {
       const mentionedAIId = getMentionedAI(text);
+      sendMessage(conversation.id, text || '', image, audio, sticker, !!mentionedAIId);
       if (mentionedAIId) {
         const cleanText = text.replace(/@[\u4e00-\u9fa5a-zA-Z0-9]+/g, '').trim();
         setTimeout(() => {
@@ -298,10 +300,13 @@ export default function ChatWindowPage() {
       if (!isFollowed) {
         const userMessages = conversation.messages.filter(m => m.senderId === currentUser?.id);
         if (userMessages.length >= 3) {
+          setPendingAIMessage({ text, image });
           setShowFollowModal(true);
           return;
         }
       }
+
+      sendMessage(conversation.id, text || '', image, audio, sticker, true);
 
       if (!audio && !sticker) {
         getAIReply(text, image);
@@ -313,6 +318,8 @@ export default function ChatWindowPage() {
           addAIMessage(conversation!.id, responses[Math.floor(Math.random() * responses.length)], otherUser?.id);
         }, 800);
       }
+    } else {
+      sendMessage(conversation.id, text || '', image, audio, sticker);
     }
   };
 
@@ -338,12 +345,16 @@ export default function ChatWindowPage() {
   const displayName = isGroup ? conversation.groupName : otherUser?.name;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 right-0 z-50 glass-nav"
+    <div
+      className="min-h-screen flex flex-col"
+      style={chatBackground ? {
+        backgroundImage: `url(${chatBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      } : undefined}
+    >
+      <header
+        className="fixed top-0 left-0 right-0 z-50 glass-nav navbar-enter"
       >
         <div className="mx-auto max-w-lg flex items-center gap-3 px-4 h-14">
           <button
@@ -444,7 +455,7 @@ export default function ChatWindowPage() {
             </button>
           )}
         </div>
-      </motion.header>
+      </header>
 
       <AnimatePresence>
         {showGroupInfo && isGroup && (
@@ -490,7 +501,10 @@ export default function ChatWindowPage() {
         )}
       </AnimatePresence>
 
-      <main className="flex-1 overflow-y-auto pt-16 pb-32 px-4 max-w-lg mx-auto w-full">
+      <main
+        className="flex-1 overflow-y-auto pt-16 pb-32 px-4 max-w-lg mx-auto w-full relative"
+        style={chatBackground ? { backgroundColor: 'rgba(0,0,0,0.4)' } : undefined}
+      >
         <div className="flex flex-col gap-3 py-4">
           {conversation.messages.length === 0 ? (
             <motion.div
@@ -594,6 +608,13 @@ export default function ChatWindowPage() {
                       localStorage.setItem('followedAI', JSON.stringify(followedAI));
                     }
                     setShowFollowModal(false);
+                    if (pendingAIMessage && conversation) {
+                      sendMessage(conversation.id, pendingAIMessage.text, pendingAIMessage.image, undefined, undefined, true);
+                      setTimeout(() => {
+                        getAIReply(pendingAIMessage.text, pendingAIMessage.image);
+                      }, 500);
+                      setPendingAIMessage(null);
+                    }
                   }}
                   className="flex-1 px-4 py-2.5 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-xl text-sm font-medium shadow-md shadow-rose-200"
                 >
@@ -601,6 +622,7 @@ export default function ChatWindowPage() {
                 </button>
                 <button
                   onClick={() => {
+                    setPendingAIMessage(null);
                     setShowFollowModal(false);
                     router.push(`/user/${otherUser?.id}`);
                   }}

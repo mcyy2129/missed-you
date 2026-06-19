@@ -1,7 +1,6 @@
 'use client';
 
 import { memo, useRef, useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { MessageReaction } from '@/lib/types';
 
 interface ChatBubbleProps {
@@ -34,13 +33,18 @@ const ChatBubble = memo(function ChatBubble({
   const formatReadAt = (readAtTimestamp?: number) => {
     if (!readAtTimestamp) return '已读';
     const d = new Date(readAtTimestamp);
+    if (isNaN(d.getTime())) return '已读';
     return `已读 ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
   };
 
-  const time = new Date(timestamp).toLocaleTimeString('zh-CN', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const time = (() => {
+    const d = new Date(timestamp);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleTimeString('zh-CN', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  })();
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -99,9 +103,9 @@ const ChatBubble = memo(function ChatBubble({
       case 'sending':
         return (
           <span className="text-[10px] flex items-center gap-1 text-white/30">
-            <motion.span animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="inline-block">
+            <span className="inline-block animate-spin">
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10" strokeDasharray="31.4" strokeDashoffset="10" /></svg>
-            </motion.span>
+            </span>
             <span className="text-[9px]">发送中</span>
           </span>
         );
@@ -142,11 +146,8 @@ const ChatBubble = memo(function ChatBubble({
 
   if (sticker) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-        className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+      <div
+        className={`flex ${isMe ? 'justify-end' : 'justify-start'} chat-bubble-enter`}
       >
         <div className="relative group">
           {showSender && !isMe && senderAvatar && (
@@ -155,13 +156,12 @@ const ChatBubble = memo(function ChatBubble({
               <span className="text-[10px] text-white/50">{senderName}</span>
             </div>
           )}
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            className="text-6xl cursor-pointer"
+          <div
+            className="text-6xl cursor-pointer hover:scale-110 transition-transform"
             onDoubleClick={handleDoubleClick}
           >
             {sticker}
-          </motion.div>
+          </div>
           <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
             <p className="text-[10px] text-white/40">{time}</p>
             {getStatusIcon()}
@@ -170,30 +170,25 @@ const ChatBubble = memo(function ChatBubble({
           {groupedReactions && Object.keys(groupedReactions).length > 0 && (
             <div className={`flex gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
               {Object.entries(groupedReactions).map(([emoji, userIds]) => (
-                <motion.button
+                <button
                   key={emoji}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
                   className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white/5 border border-white/10/60 text-xs hover:bg-white/8/60 transition-colors"
                   onClick={() => onReact && onReact(emoji)}
                 >
                   <span>{emoji}</span>
                   {userIds.length > 1 && <span className="text-[10px] text-white/50">{userIds.length}</span>}
-                </motion.button>
+                </button>
               ))}
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-      className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+    <div
+      className={`flex ${isMe ? 'justify-end' : 'justify-start'} chat-bubble-enter`}
     >
       <div className="relative max-w-[75%] group">
         {showSender && !isMe && senderAvatar && (
@@ -226,10 +221,9 @@ const ChatBubble = memo(function ChatBubble({
                 className="hidden"
               />
               <div className="flex items-center gap-3">
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
+                <button
                   onClick={handlePlayPause}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-transform ${
                     isMe
                       ? 'bg-white/20 hover:bg-white/30'
                       : 'bg-white/8/50 hover:bg-white/8/70'
@@ -245,20 +239,16 @@ const ChatBubble = memo(function ChatBubble({
                       <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
                   )}
-                </motion.button>
+                </button>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-[3px]">
                     {waveHeights.map((height, i) => (
-                      <motion.div
+                      <div
                         key={i}
-                        animate={isPlaying ? {
-                          height: [height, Math.random() * 20 + 4, height],
-                        } : {}}
-                        transition={{ duration: 0.3, repeat: Infinity, delay: i * 0.05 }}
-                        className={`w-[3px] rounded-full ${
+                        className={`w-[3px] rounded-full ${isPlaying ? 'animate-pulse' : ''} ${
                           isMe ? 'bg-white/40' : 'bg-white/20'
                         }`}
-                        style={{ height: `${height}px` }}
+                        style={{ height: `${height}px`, animationDelay: isPlaying ? `${i * 50}ms` : '0ms' }}
                       />
                     ))}
                   </div>
@@ -311,16 +301,14 @@ const ChatBubble = memo(function ChatBubble({
         {groupedReactions && Object.keys(groupedReactions).length > 0 && (
           <div className={`flex gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
             {Object.entries(groupedReactions).map(([emoji, userIds]) => (
-              <motion.button
+              <button
                 key={emoji}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
                 className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-xs hover:bg-white/10 transition-colors"
                 onClick={() => onReact && onReact(emoji)}
               >
                 <span>{emoji}</span>
                 {userIds.length > 1 && <span className="text-[10px] text-white/50">{userIds.length}</span>}
-              </motion.button>
+              </button>
             ))}
           </div>
         )}
@@ -336,36 +324,29 @@ const ChatBubble = memo(function ChatBubble({
           </div>
         )}
 
-        <AnimatePresence>
-          {showReactionPicker && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: -10 }}
-              className={`absolute ${isMe ? 'right-0' : 'left-0'} -top-12 z-10 flex gap-1 rounded-2xl px-2.5 py-1.5 shadow-lg border border-white/10`}
-              style={{ background: 'rgba(20, 20, 24, 0.95)', backdropFilter: 'blur(16px)' }}
-            >
-              {QUICK_REACTIONS.map((emoji) => (
-                <motion.button
-                  key={emoji}
-                  whileHover={{ scale: 1.3 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => {
-                    if (onReact) {
-                      onReact(emoji);
-                    }
-                    setShowReactionPicker(false);
-                  }}
-                  className="text-xl p-0.5"
-                >
-                  {emoji}
-                </motion.button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {showReactionPicker && (
+          <div
+            className={`absolute ${isMe ? 'right-0' : 'left-0'} -top-12 z-10 flex gap-1 rounded-2xl px-2.5 py-1.5 shadow-lg border border-white/10 reaction-picker-enter`}
+            style={{ background: 'rgba(20, 20, 24, 0.95)', backdropFilter: 'blur(16px)' }}
+          >
+            {QUICK_REACTIONS.map((emoji) => (
+              <button
+                key={emoji}
+                onClick={() => {
+                  if (onReact) {
+                    onReact(emoji);
+                  }
+                  setShowReactionPicker(false);
+                }}
+                className="text-xl p-0.5 active:scale-90 transition-transform"
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 });
 
