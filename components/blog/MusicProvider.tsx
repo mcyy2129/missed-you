@@ -118,6 +118,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [isMuted, setIsMuted] = useState(false);
   const [playMode, setPlayMode] = useState<PlayMode>('loop');
   const [isSeeking, setIsSeeking] = useState(false);
+  const isSeekingRef = useRef(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -210,6 +211,9 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     if (playlist.length === 0) return;
     let isMounted = true;
     const currentSong = playlist[currentIndex];
+    setProgress(0);
+    setCurrentTime(0);
+    setDuration(0);
     setLyrics([]);
     setCurrentLyric("♪ 正在缓冲 ♪");
     if (currentSong.lyrics && currentSong.lyrics.length > 0) {
@@ -333,7 +337,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   };
 
   const handleTimeUpdate = () => {
-    if (audioRef.current && !isSeeking) {
+    if (audioRef.current && !isSeekingRef.current) {
       const { currentTime, duration } = audioRef.current;
       setCurrentTime(currentTime);
       setDuration(duration || 0);
@@ -362,13 +366,15 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     const newProgress = Number(e.target.value);
     setProgress(newProgress);
     setIsSeeking(true);
+    isSeekingRef.current = true;
     if (audioRef.current && audioRef.current.duration) {
       audioRef.current.currentTime = (newProgress / 100) * audioRef.current.duration;
     }
   };
 
   const handleSeekEnd = () => {
-    setIsSeeking(false);
+    isSeekingRef.current = false;
+    setTimeout(() => setIsSeeking(false), 200);
   };
 
   const setVolume = (val: number) => {
