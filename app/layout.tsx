@@ -5,6 +5,7 @@ import PointerCaptureFix from "@/components/ui/PointerCaptureFix";
 import GlobalDanmaku from "@/components/entertainment/GlobalDanmaku";
 import { MusicProvider } from "@/components/blog/MusicProvider";
 import GlobalMusicPlayer from "@/components/blog/GlobalMusicPlayer";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -48,6 +49,7 @@ export default function RootLayout({
           </MusicProvider>
           <GlobalDanmaku />
         </AppProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
